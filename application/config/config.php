@@ -24,7 +24,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 |
 */
 // $config['base_url'] = 'https://silat.fk.untan.ac.id';
-$config['base_url'] = 'http://localhost/ci3-silat/';
+$config['base_url'] = 'http://localhost/dev-silat-ci3/';
 
 /*
 |--------------------------------------------------------------------------

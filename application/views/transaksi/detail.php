@@ -59,12 +59,14 @@
                         </tr>
                         <tr>
                             <td>Status</td>
-                            <td>
-                                <!-- <h5 class="card-title"><b><?= $surat['status']; ?><?= $surat['status_keterangan']; ?></b></h5> -->
+                           <td>
                                 <b><?= $surat['status']; ?></b>
-<?php if ($surat['status_keterangan']): ?> &nbsp;<?= $surat['status_keterangan']; ?>
-<?php endif; ?><br>
+                                <?php if (!empty($surat['status_keterangan'])): ?>
+                                    &nbsp;<?= $surat['status_keterangan']; ?>
+                                <?php endif; ?>
+                                <br>
                             </td>
+
                         </tr>
 
                     </table>
