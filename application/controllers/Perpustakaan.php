@@ -47,7 +47,7 @@ class Perpustakaan extends CI_Controller
 
         $nim = $this->input->post('nim');
         //cek jika ada gambar yang akan di upload
-        $config['allowed_types'] = 'jpg|png';
+        $config['allowed_types'] = 'jpg|png|pdf';
         $config['max_size']     = '2048';
         $config['upload_path'] = './assets/bebasperpus/';
         $this->load->library('upload', $config);
@@ -104,7 +104,7 @@ class Perpustakaan extends CI_Controller
 
         $nim = $this->input->post('nim');
         //cek jika ada gambar yang akan di upload
-        $config['allowed_types'] = 'jpeg|jpg|png';
+        $config['allowed_types'] = 'jpeg|jpg|png|pdf';
         $config['max_size']     = '2048';
         $config['upload_path'] = './assets/bebasperpus/';
         $this->load->library('upload', $config);
