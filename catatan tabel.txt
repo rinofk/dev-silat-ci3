@@ -1,0 +1,39 @@
+tabel MAHASISWA 20190828
+MAHASISWA (10)
+.------>nim ----------------------------------------------.	USER
+|	nama_lengkap										  |		id
+|	tempat_lahir										  `-->	nim
+|	tgl_lahir													name
+|		- semester												email
+|		X program_studi											image
+|	prodi_id -------------------------.	PRODI					password
+|	alamat							  `->	id_prodi			role_id
+|	no_hp									nama_prodi			is_active
+|		- tahun_ajaran											date_created
+|		- keperluan
+|		- keperluan_ket
+|		- ortu
+|		- nip
+|		- pangkat
+|		- instansi					AGAMA
+|	+ agama -------------------------> 	id_agama
+|	+ jenis_kelamin						nama_agama
+|	+ tanggal_update
+|			
+|			TB_SURATPENGAJUAN (16)
+|				id_suratpengajuan
+'------------->	nim_mahasiswa
+				id_surat
+				semester
+				tahun_ajaran				KEPERLUAN (2)
+				keperluan -------------------> 	id_keperluan
+				keterangan						nama_keperluan
+				ortu							
+				nip
+				pangkat
+				instansi
+				alamat_instansi
+				date_create
+				status
+				admin
+				date_finish

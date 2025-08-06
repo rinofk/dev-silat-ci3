@@ -1,0 +1,88 @@
+Silat Online 11 November 2019
+
+
+20200327 dev0
+	+ tb_wisuda
+	+ folder asset/berkaswisuda
+	+ upload file aktif kuliah (ktm, kk , sk)
+	+ preview pdf admin aktif kuliah
+	+ tombol ditolak untuk admin aktif kuliah
+	+ form ubah aktif kuliah delete, kirim
+	+ fungsi empty
+	+ modal keterangan reject berkas wisuda
+	+ datatable berkas wisuda dipisah
+
+
+20200313 pengembangan kop dinamis
+	 pengembangan judul surat dinamis
+	 pengembangan fpdf output dan title
+	 penambahan database
+		tb_kop
+		tb_nomorsurat
+		
+
++ Surat Aktif Kuliah
++ Alumni
++ Barcode Naspub
++ surat SKL
++ surat SKL Yudisium
++ surat Studi Pendahuluan (on proses 50%)
+
+
+20190917
+	+ fungsi datepicker
+	+ menu laporan naspub
+	+ halaman admin naspub
+	+ tabel naspub
+	+ 
+
+
+20190916
+	+ penambahan tanggal indonesia di helper (tanggal lahir menggunakan format date)
+	+ add Biodata Mahasiswa di login member
+	+ tabel tb_naspub
+	+ input naspub
+	+ dan cetak barcode
+
+
+
+
+
+20190703
+sistem login #7
+user access #8 selesai
+
+edit profile #10 selesai
+access management #9 20190705 selesai
+
+20190704
+perbaikan laporan pdf bagian kop surat
+V1 perbaikan penambahan tombol print di detail mahasiswa
+	dan margin top cetak pdf
+
++ penambahan kolom di tabel mahasiswa
+	ortu v128
+	nip v128
+	pangkat v128
+	instansi v128
+
+	kolom tabel mahasiswa tgl_lahir diubah ke v128
+
++ penambahan laporan pdf manual untuk yang tanpa menampilkan orang tua
+
+20190705
+tambahan access management #9 
+
+20190709 
+penambahan fungsi tanggal indonesia
+	tanggal sekarang di laporan pdf
+fungsi hapus menu dan submenu
+
+20190724
+	penabahan kolom keperluan_ket
+	perbaikan spasi nomor surat
+
+20190730
+	penambahan kolom nomor mahasiswa
+	penambahan link detail di nim mahasiswa
+	penambahan tombol pencarian
