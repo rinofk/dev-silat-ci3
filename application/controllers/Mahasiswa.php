@@ -104,7 +104,7 @@ class Mahasiswa extends CI_Controller
     {
         $data['title'] = 'Form Ubah Data Mahasiswa';
         $data['mahasiswa'] = $this->Mahasiswa_model->getMahasiswaById($nim);
-        // $data['program_studi'] = ['Kedokteran', 'Farmasi', 'Keperawatan', 'Pendidikan Profesi Dokter', 'Pendidikan Profesi Apoteker', 'Pendidikan Profesi Ners'];
+                // $data['program_studi'] = ['Kedokteran', 'Farmasi', 'Keperawatan', 'Pendidikan Profesi Dokter', 'Pendidikan Profesi Apoteker', 'Pendidikan Profesi Ners'];
         // $data['keperluan'] = ['masuk dalam tunjangan gaji orang tua', 'pensiun orang tua', 'asuransi kesehatan (ASKES)', 'BPJS', 'pengajuan beasiswa', 'mengikuti kegiatan'];
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['keperluan'] = $this->db->get('keperluan')->result_array();

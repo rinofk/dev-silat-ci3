@@ -16,20 +16,26 @@ class Labkedokteran_model extends CI_model
         return $query->result_array();
     }
 
-    public function get_AllKedokteran()
-    {
-        $prodiid = array('1','6');
-        $status = array('di ajukan', 'reject', 'proses');
-        $this->db->select('*');
-        $this->db->from('tb_bebaslab');
-        $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
-        $this->db->join('prodi', 'prodi.id_prodi=mahasiswa.prodi_id');
-        $this->db->order_by('status', 'asc');
-        $this->db->where_in('prodi_id',$prodiid);
-        $this->db->where_in('status', $status);
+    public function get_AllKedokteran($tahun = null, $status = null)
+    {  
+            $prodiid = array('1','6');
+            $this->db->select('*');
+            $this->db->from('tb_bebaslab');
+            $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
+            $this->db->join('prodi', 'prodi.id_prodi=mahasiswa.prodi_id');
+            $this->db->order_by('date_created', 'desc');
+            $this->db->where_in('prodi_id', $prodiid);
 
-        $query = $this->db->get();
-        return $query->result_array();
+            if ($tahun) {
+                $this->db->where('YEAR(tb_bebaslab.date_created)', $tahun);
+            }
+
+            if ($status) {
+                $this->db->where('tb_bebaslab.status', $status);
+            }
+
+            $query = $this->db->get();
+            return $query->result_array();
     }
 
     public function get_Idbp($id_bebaslab)
@@ -437,4 +443,35 @@ class Labkedokteran_model extends CI_model
     $query = $this->db->get();
     return $query->row_array();
   }
+
+      
+    public function get_tahun_options()
+    {
+        $this->db->select('YEAR(date_created) AS tahun', false);
+        $this->db->from('tb_bebaslab');
+        $this->db->group_by('tahun');
+        $this->db->order_by('tahun', 'ASC');
+
+        return $this->db->get()->result_array();
+    }
+
+public function count_by_filter($tahun = null, $status = null)
+{
+    $prodiid = ['1', '6'];
+    $this->db->from('tb_bebaslab');
+    $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
+    $this->db->where_in('mahasiswa.prodi_id', $prodiid);
+
+    if ($tahun) {
+        $this->db->where('YEAR(tb_bebaslab.date_created)', $tahun);
+    }
+
+    if ($status) {
+        $this->db->where('tb_bebaslab.status', $status);
+    }
+
+    return $this->db->count_all_results();
+}
+
+
 }

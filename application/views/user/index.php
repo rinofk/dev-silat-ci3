@@ -51,7 +51,7 @@
         </div>
     </div>
     
-    <div class="card mb-3" style="max-width: 540px;">
+    <!-- <div class="card mb-3" style="max-width: 540px;">
         <div class="row no-gutters">
             <div class="col-md-8">
                 <div class="card-body">
@@ -60,7 +60,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     
 </div>
 <!-- /.container-fluid -->

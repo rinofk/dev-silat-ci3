@@ -50,6 +50,8 @@ class Auth extends CI_Controller
 
                     if ($user['role_id'] == 1) {
                         redirect('admin');
+                    } elseif (in_array($user['role_id'], [3, 5, 7, 8, 9])) {
+                    redirect('operator');
                     } else {
                         redirect('user');
                     }

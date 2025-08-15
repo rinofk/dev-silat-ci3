@@ -2,12 +2,16 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url(); ?>">
-        <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-mail-bulk"></i>
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+        <div class="sidebar-brand-icon">
+            <i class="fas fa-shield-alt"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">Silat <sup>Online</sup></div>
+        <div class="sidebar-brand-text mx-3">
+            <span style="font-weight: 700; letter-spacing: 1px;">SILAT</span> 
+            <sup style="font-size: 12px; font-weight: 400; color: #bbb;">^_^</sup>
+        </div>
     </a>
+
 
     <!-- Divider -->
     <hr class="sidebar-divider">

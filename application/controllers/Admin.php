@@ -57,7 +57,7 @@ class Admin extends CI_Controller
         $data['menu'] = $this->db->get('user_menu')->result_array();
 
         $this->load->view('templates/header_a', $data);
-        $this->load->view('templates/sidebar', $data);
+  $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
         $this->load->view('admin/role-access', $data);
         $this->load->view('templates/footer_a');
