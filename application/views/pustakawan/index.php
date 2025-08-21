@@ -116,7 +116,8 @@
                                             $label = 'Reject';
                                             $badge = 'danger';
                                         } else {
-                                            $label = $s['status'];
+                                        $label = $s['status'];
+                                        $badge = 'secondary'; // default jika status lain
                                         }
                                     ?>
                                     <span class="badge badge-<?= $badge ?>"><?= $label ?></span>
