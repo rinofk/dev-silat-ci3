@@ -327,7 +327,7 @@ class Laboran extends CI_Controller
     // KEPERAWATAN ========================================
     public function keperawatan()
     {
-        $data['title'] = 'Lab Keperawatan23';
+        $data['title'] = 'Lab S1 Keperawatan';
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
 
          $tahun = $this->input->get('tahun', true) ?? date('Y'); // default ke tahun sekarang
@@ -424,13 +424,32 @@ class Laboran extends CI_Controller
         $data['title'] = 'Lab Ners';
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
 
+
+        $tahun = $this->input->get('tahun', true) ?? date('Y'); // default ke tahun sekarang
+        $status = $this->input->get('status', true) ?? 'diajukan'; // default status
+
+        // Ambil data dari model
+        $data['total'] = $this->Labkeperawatan_model->nerscount_by_filter($tahun, null);
+        $data['total_diajukan'] = $this->Labkeperawatan_model->nerscount_by_filter($tahun, 'di ajukan');
+        $data['total_proses'] = $this->Labkeperawatan_model->nerscount_by_filter($tahun, 'proses');
+        $data['total_reject'] = $this->Labkeperawatan_model->nerscount_by_filter($tahun, 'reject');
+        $data['total_selesai'] = $this->Labkeperawatan_model->nerscount_by_filter($tahun, 'accept');
+
+        $data['filter_tahun'] = $this->Labkeperawatan_model->get_tahun_options();
+        $data['filter_status'] = ['di ajukan', 'proses', 'reject', 'accept'];
+
+        $data['bebaslab'] = $this->Labkeperawatan_model->nersget_filtered_data($tahun, $status);
+        $data['bl'] = $this->Labkeperawatan_model->nersget_filtered_data($tahun, $status);
+
+
+
         // $data['wisuda'] = $this->db->get()->result_array();
-        $data['status'] = $this->Labkedokteran_model->get_statusaccept4();
-        $data['bl'] = $this->Labkedokteran_model->get_AllNers();
-        $data['total_surat'] = $this->Labkedokteran_model->hitungJumlahSurat3();
-        $data['total_diajukan'] = $this->Labkedokteran_model->hitungJumlahdiAjukan3();
-        $data['total_proses'] = $this->Labkedokteran_model->hitungJumlahdiProses3();
-        $data['total_selesai'] = $this->Labkedokteran_model->hitungJumlahdiSelesai3();
+        // $data['status'] = $this->Labkedokteran_model->get_statusaccept4();
+        // $data['bl'] = $this->Labkedokteran_model->get_AllNers();
+        // $data['total_surat'] = $this->Labkedokteran_model->hitungJumlahSurat3();
+        // $data['total_diajukan'] = $this->Labkedokteran_model->hitungJumlahdiAjukan3();
+        // $data['total_proses'] = $this->Labkedokteran_model->hitungJumlahdiProses3();
+        // $data['total_selesai'] = $this->Labkedokteran_model->hitungJumlahdiSelesai3();
 
         $this->form_validation->set_rules('keterangan', 'Keterangan', 'required');
         if ($this->form_validation->run() == false) {
