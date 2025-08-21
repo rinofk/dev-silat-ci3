@@ -15,6 +15,7 @@ class Operator extends CI_Controller
     {
         $data['title'] = 'Dashboard Operator';
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
+        
         // echo 'Selamat Datang User ' . $data['user']['name'];
         $this->form_validation->set_rules('role', 'Role', 'required');
         if ($this->form_validation->run() == false) {
