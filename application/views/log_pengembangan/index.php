@@ -11,9 +11,9 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTableLog" width="100%" cellspacing="0">
+                <table class="table table-bordered table-hover" id="dataTableLog" width="100%" cellspacing="0">
                     <thead class="thead-light">
-                        <tr>
+                        <tr class="text-center">
                             <th>No</th>
                             <th>Kategori</th>
                             <th>Judul</th>
@@ -24,13 +24,28 @@
                     </thead>
                     <tbody>
                         <?php $no=1; foreach ($logs as $log): ?>
+                            <?php 
+                                // Pilih warna badge berdasarkan kategori
+                                switch (strtolower($log['kategori'])) {
+                                    case 'bug': 
+                                        $badge = 'badge-danger'; break;
+                                    case 'fitur': 
+                                        $badge = 'badge-success'; break;
+                                    case 'update': 
+                                        $badge = 'badge-warning'; break;
+                                    case 'dokumentasi': 
+                                        $badge = 'badge-info'; break;
+                                    default: 
+                                        $badge = 'badge-secondary'; break;
+                                }
+                            ?>
                             <tr>
-                                <td><?= $no++; ?></td>
-                                <td><span class="badge badge-info"><?= ucfirst($log['kategori']); ?></span></td>
+                                <td class="text-center"><?= $no++; ?></td>
+                                <td class="text-center"><span class="badge <?= $badge; ?>"><?= ucfirst($log['kategori']); ?></span></td>
                                 <td class="text-primary font-weight-bold"><?= $log['judul']; ?></td>
                                 <td><?= $log['deskripsi']; ?></td>
-                                <td><?= $log['tanggal']; ?></td>
-                                <td><?= $log['dibuat_oleh']; ?></td>
+                                <td class="text-center"><?= $log['tanggal']; ?></td>
+                                <td class="text-center"><?= $log['dibuat_oleh']; ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -47,7 +62,12 @@
             "pageLength": 10,
             "ordering": true,
             "lengthChange": true,
-            "autoWidth": false
+            "autoWidth": false,
+            "language": {
+                "search": "Cari:",
+                "lengthMenu": "Tampilkan _MENU_ data",
+                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data"
+            }
         });
     });
 </script>
