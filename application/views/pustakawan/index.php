@@ -1,226 +1,145 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-    <!-- Page Heading -->
-    <!--<h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>-->
+    <!-- Filter -->
+    <form method="get" action="<?= base_url('pustakawan'); ?>" class="mb-3">
+        <div class="row">
+            <div class="col-md-3">
+                <select name="tahun" class="form-control">
+                    <option value="">-- Semua Tahun --</option>
+                    <?php foreach($filter_tahun as $t): ?>
+                        <option value="<?= $t['tahun']; ?>" <?= ($t['tahun'] == $this->input->get('tahun')) ? 'selected' : ''; ?>>
+                            <?= $t['tahun']; ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-control">
+                    <option value="">-- Semua Status --</option>
+                    <?php foreach($filter_status as $s): ?>
+                        <option value="<?= $s; ?>" <?= ($s == $this->input->get('status')) ? 'selected' : ''; ?>>
+                            <?= ($s == 'di ajukan') ? 'Di Ajukan' : ucfirst($s); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </div>
+    </form>
 
-
-
-
+    <!-- Flash Message -->
     <?php if ($this->session->flashdata('flash')) : ?>
-        <div class="row mt-3">
-            <div class="col-md-6">
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    Data mahasiswa <strong>berhasil</strong> <?= $this->session->flashdata('flash'); ?>.
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
+        <div class="alert alert-success alert-dismissible fade show col-md-6" role="alert">
+            Data mahasiswa <strong>berhasil</strong> <?= $this->session->flashdata('flash'); ?>.
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
         </div>
-
     <?php endif; ?>
-    <!-- Content Row -->
+
+    <!-- Dashboard Cards -->
     <div class="row">
+        <?php 
+            $cards = [
+                ['title' => 'Di Ajukan', 'count' => $count_diajukan, 'icon' => 'fa-paper-plane', 'color' => 'primary', 'status' => 'di ajukan'],
+                ['title' => 'Reject',    'count' => $count_reject,   'icon' => 'fa-times-circle', 'color' => 'danger', 'status' => 'reject'],
+                ['title' => 'Accept',    'count' => $count_accept,   'icon' => 'fa-check-circle', 'color' => 'success', 'status' => 'accept'],
+                ['title' => 'Total',     'count' => $count_total,    'icon' => 'fa-list', 'color' => 'info', 'status' => '']
+            ]; 
+            $currentTahun = $this->input->get('tahun') ?? '';
+        ?>
 
-
-
-        <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Baru</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $total_diajukan; ?></div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Reject</div>
+        <?php foreach ($cards as $card) : ?>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <a href="<?= base_url('pustakawan?tahun=' . $currentTahun . '&status=' . $card['status']); ?>" style="text-decoration: none;">
+                    <div class="card border-left-<?= $card['color'] ?> shadow h-100 py-2">
+                        <div class="card-body">
                             <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-<?= $card['color'] ?> text-uppercase mb-1"><?= $card['title'] ?></div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $card['count'] ?></div>
+                                </div>
                                 <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?= $total_proses; ?></div>
-                                </div>
-                                <div class="col">
-                                    <div class="progress progress-sm mr-2">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
+                                    <i class="fas <?= $card['icon'] ?> fa-2x text-gray-300"></i>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>
                     </div>
-                </div>
+                </a>
             </div>
-        </div>
-
-        <!-- Pending Requests Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Selesai</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $total_selesai; ?></div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Jumlah Total</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $total_surat; ?></div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <?php endforeach; ?>
     </div>
 
-    <!-- Content Row -->
-    <!-- DATA TABLES TAMBAHAN-->
+    <!-- Data Table -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Berkasi Bebas Perpustakaan belum Valid</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Berkas Bebas Perpustakaan</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                    <div class="row">
-                        <div class="col-sm-12 col-md-12">
-                            <div class="DataTables_length" id="dataTable_length">
-                                <table class="table" id="datatable">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">NIM</th>
-                                            <th scope="col">Nama Lengkap</th>
-                                            <th scope="col">Prodi</th>
-                                            <th scope="col">Create At</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Update</th>
-                                            <th scope="col">Delete</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <?php $i = 1; ?>
-                                        <?php foreach ($perpus as $s) { ?>
-                                            <tr>
-                                                <th scope="row"><?= $i; ?></th>
-                                                <td><a href="<?= base_url(); ?>pustakawan/detail/<?= $s['id_bp']; ?>"><?= $s['nim_mahasiswa']; ?> [-<?= $s['id_bp']; ?>-]</a></td>
-                                                <td><?= $s['nama_lengkap']; ?></td>
-                                                <td><?= $s['nama_prodi']; ?></td>
-                                                <td><?= $s['date_created']; ?></td>
-                                                <td><?= $s['status']; ?></td>
-                                                <td><?= $s['date_updated']; ?>, <br><?= $s['admin']; ?></td>
-                                                <td><a href="<?= base_url(); ?>pustakawan/hapus/<?= $s['id_bp']; ?>" class="badge badge-danger float-right" onclick="return confirm('Apakah Anda yakin <?= $s['nama_lengkap']; ?> [-<?= $s['id_bp']; ?>-] data ini di HAPUS');"><i class="fas fa-trash">  Hapus</i></a></td>
-
-                                            </tr>
-                                        <?php $i++;
+                <table class="table table-bordered table-hover table-striped" id="datatable" width="100%" cellspacing="0">
+                    <thead class="thead-dark text-center">
+                        <tr>
+                            <th style="width: 4%">#</th>
+                            <th style="width: 10%">NIM</th>
+                            <th style="width: 18%">Nama Lengkap</th>
+                            <th style="width: 14%">Prodi</th>
+                            <th style="width: 12%">Create At</th>
+                            <th style="width: 10%">Status</th>
+                            <th style="width: 15%">Update</th>
+                            <th style="width: 17%">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $i = 1; ?>
+                        <?php foreach ($perpus as $s) : ?>
+                            <tr>
+                                <td class="text-center"><?= $i; ?></td>
+                                <td>
+                                    <a href="<?= base_url('pustakawan/detail/' . $s['id_bp']); ?>" class="text-primary font-weight-bold">
+                                        <?= $s['nim_mahasiswa']; ?><br><small>[<?= $s['id_bp']; ?>]</small>
+                                    </a>
+                                </td>
+                                <td><?= $s['nama_lengkap']; ?></td>
+                                <td><?= $s['nama_prodi']; ?></td>
+                                <td class="text-center"><?= date('d-m-Y', strtotime($s['date_created'])); ?></td>
+                                <td class="text-center">
+                                    <?php 
+                                        if ($s['status'] == 'accept') {
+                                            $label = 'Selesai';
+                                            $badge = 'success';
+                                        } elseif ($s['status'] == 'di ajukan') {
+                                            $label = 'Di Ajukan';
+                                            $badge = 'warning';
+                                        } elseif ($s['status'] == 'reject') {
+                                            $label = 'Reject';
+                                            $badge = 'danger';
+                                        } else {
+                                            $label = $s['status'];
                                         }
-                                        ?>
-                                    </tbody>
-
-                                </table>
-
-                                <!---->
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                    ?>
+                                    <span class="badge badge-<?= $badge ?>"><?= $label ?></span>
+                                </td>
+                                <td class="text-center">
+                                    <?= date('d-m-Y', strtotime($s['date_updated'])); ?><br>
+                                    <small class="text-muted"><?= $s['admin']; ?></small>
+                                </td>
+                                <td class="text-center">
+                                    <?php if ($s['status'] != 'accept') : ?>
+                                        <a href="<?= base_url('pustakawan/hapus/' . $s['id_bp']); ?>" 
+                                           class="btn btn-sm btn-danger"
+                                           onclick="return confirm('Apakah Anda yakin ingin menghapus <?= $s['nama_lengkap']; ?> [<?= $s['id_bp']; ?>]?')">Delete
+                                        </a>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                            <?php $i++; ?>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
-
-        <!---->
-
-
     </div>
 
-
-    <!-- DATA TABLES ACCEPT-->
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Berkas Bebas Perpustakaan yang telah Valid</h6>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                    <div class="row">
-                        <div class="col-sm-12 col-md-12">
-                            <div class="DataTables_length" id="dataTable_length">
-                                <table class="table" id="datatable">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">NIM</th>
-                                            <th scope="col">Nama Lengkap</th>
-                                            <th scope="col">Prodi</th>
-                                            <th scope="col">Create At</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Update</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <?php $i = 1; ?>
-                                        <?php foreach ($status as $s) { ?>
-                                            <tr>
-                                                <th scope="row"><?= $i; ?></th>
-                                                <td><a href="<?= base_url(); ?>pustakawan/detail/<?= $s['id_bp']; ?>"><?= $s['nim_mahasiswa']; ?> [-<?= $s['id_bp']; ?>-]</a></td>
-                                                <td><?= $s['nama_lengkap']; ?></td>
-                                                <td><?= $s['nama_prodi']; ?></td>
-                                                <td><?= $s['date_created']; ?></td>
-                                                <td><?= $s['status']; ?></td>
-                                                <td><?= $s['date_updated']; ?></td>
-                                            </tr>
-                                        <?php $i++;
-                                        }
-                                        ?>
-                                    </tbody>
-
-                                </table>
-
-                                <!---->
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!---->
-
-
-    </div>
-
-</div>
 </div>

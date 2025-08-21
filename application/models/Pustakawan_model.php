@@ -157,4 +157,50 @@ class Pustakawan_model extends CI_model
             return 0;
         }
     }
+
+//new
+public function count_by_filter($tahun = null, $status = null)
+{
+    $this->db->from('tb_bebasperpus b');
+
+    if (!empty($tahun)) {
+        $this->db->where('YEAR(b.date_created)', $tahun);
+    }
+
+    if (!empty($status)) {
+        $this->db->where('b.status', $status);
+    }
+
+    return $this->db->count_all_results();
+}
+
+public function get_filtered_data($tahun = null, $status = null)
+{
+    $this->db->select('b.*, m.nama_lengkap, p.nama_prodi');
+    $this->db->from('tb_bebasperpus b');
+    $this->db->join('mahasiswa m', 'm.nim = b.nim_mahasiswa', 'left');
+    $this->db->join('prodi p', 'p.id_prodi = m.prodi_id', 'left');
+
+    if (!empty($tahun)) {
+        $this->db->where('YEAR(b.date_created)', $tahun);
+    }
+
+    if (!empty($status)) {
+        $this->db->where('b.status', $status);
+    }
+
+    return $this->db->get()->result_array();
+}
+
+public function get_tahun_options()
+{
+    $this->db->select('YEAR(date_created) as tahun');
+    $this->db->from('tb_bebasperpus');
+    $this->db->group_by('YEAR(date_created)');
+    $this->db->order_by('tahun', 'DESC');
+
+    return $this->db->get()->result_array();
+}
+
+
 }
