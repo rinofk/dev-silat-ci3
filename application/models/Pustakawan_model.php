@@ -188,7 +188,8 @@ public function get_filtered_data($tahun = null, $status = null)
     if (!empty($status)) {
         $this->db->where('b.status', $status);
     }
-
+    // Urutkan berdasarkan tanggal dibuat, terbaru di atas
+    $this->db->order_by('b.date_created', 'DESC');
     return $this->db->get()->result_array();
 }
 

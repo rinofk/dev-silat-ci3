@@ -88,7 +88,7 @@
                             <th style="width: 12%">Create At</th>
                             <th style="width: 10%">Status</th>
                             <th style="width: 15%">Update</th>
-                            <th style="width: 17%">Aksi</th>
+                            <th style="width: 5%">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -120,17 +120,24 @@
                                         }
                                     ?>
                                     <span class="badge badge-<?= $badge ?>"><?= $label ?></span>
+                                    <br><small><?= $s['keterangan']; ?></small>
                                 </td>
                                 <td class="text-center">
                                     <?= date('d-m-Y', strtotime($s['date_updated'])); ?><br>
                                     <small class="text-muted"><?= $s['admin']; ?></small>
+
                                 </td>
                                 <td class="text-center">
+                                
                                     <?php if ($s['status'] != 'accept') : ?>
-                                        <a href="<?= base_url('pustakawan/hapus/' . $s['id_bp']); ?>" 
-                                           class="btn btn-sm btn-danger"
-                                           onclick="return confirm('Apakah Anda yakin ingin menghapus <?= $s['nama_lengkap']; ?> [<?= $s['id_bp']; ?>]?')">Delete
-                                        </a>
+                                        <div class="dropdown mt-1">
+                                            <a class="btn btn-sm btn-danger dropdown-toggle" href="#" role="button" id="dropdownMenu<?= $i; ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                &middot;&middot;&middot;
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenu<?= $i; ?>">
+                                                <a class="dropdown-item text-danger" href="<?= base_url('pustakawan/hapus/' . $s['id_bp']); ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus <?= $s['nama_lengkap']; ?> [<?= $s['id_bp']; ?>]?')">Delete</a>
+                                            </div>
+                                        </div>
                                     <?php endif; ?>
                                 </td>
                             </tr>
