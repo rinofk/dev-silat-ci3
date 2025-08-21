@@ -13,7 +13,7 @@ class Log_pengembangan extends CI_Controller {
     public function index() {
         $data['title'] = 'Log Pengembangan';
         $data['logs'] = $this->Log_pengembangan_model->get_all_logs();
-                $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
 
 
         $this->load->view('templates/header_a', $data);
