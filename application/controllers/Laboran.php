@@ -60,6 +60,49 @@ class Laboran extends CI_Controller
             redirect('adminwisuda/detail');
         }
     }
+    public function profesidokter() //profesi dokter
+    {
+
+        $tahun = $this->input->get('tahun', true) ?? date('Y'); // default ke tahun sekarang
+        $status = $this->input->get('status', true) ?? 'diajukan'; // default status
+
+        // Ambil data dari model
+        $data['total'] = $this->Labkedokteran_model->profesidoktercount_by_filter($tahun, null);
+        $data['total_diajukan'] = $this->Labkedokteran_model->profesidoktercount_by_filter($tahun, 'di ajukan');
+        $data['total_proses'] = $this->Labkedokteran_model->profesidoktercount_by_filter($tahun, 'proses');
+        $data['total_reject'] = $this->Labkedokteran_model->profesidoktercount_by_filter($tahun, 'reject');
+        $data['total_terima'] = $this->Labkedokteran_model->profesidoktercount_by_filter($tahun, 'accept');
+
+        $data['filter_tahun'] = $this->Labkedokteran_model->get_tahun_options();
+        $data['filter_status'] = ['di ajukan', 'proses', 'reject', 'accept'];
+
+        $data['bebaslab'] = $this->Labkedokteran_model->get_AllProfesiDokter($tahun, $status);
+    
+        $data['title'] = 'Lab Kedokteran';
+        $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
+
+        $data['status'] = $this->Labkedokteran_model->get_statusaccept1();
+        $data['bl'] = $this->Labkedokteran_model->get_AllProfesiDokter($tahun, $status);
+
+
+        $this->form_validation->set_rules('keterangan', 'Keterangan', 'required');
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header_a', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('labprofesidokter/index', $data);
+            $this->load->view('templates/footer_a');
+        } else {
+            $keterangan = $this->input->post('keterangan', true);
+            $this->db->set('keterangan', $keterangan);
+            $this->db->set('status', 'reject');
+            $this->db->where('id_bw', $this->input->post('id_bw'));
+            $this->db->update('tb_berkaswisuda');
+            // $this->db->insert('user_role', ['role' => $this->input->post('role')]);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New Menu Added</div>');
+            redirect('adminwisuda/detail');
+        }
+    }
     public function kedokterandetail($id_bebaslab)
     {
         $data['title'] = 'Bebas Lab Prodi Kedokteran';
@@ -71,6 +114,19 @@ class Laboran extends CI_Controller
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
         $this->load->view('labkedokteran/detail', $data);
+        $this->load->view('templates/footer_a');
+    }
+    public function profesidokterdetail($id_bebaslab)
+    {
+        $data['title'] = 'Bebas Lab Prodi Profesi Dokter';
+        $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
+        $data['bl'] = $this->Labkedokteran_model->get_Idbp($id_bebaslab);
+
+
+        $this->load->view('templates/header_a', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('labprofesidokter/detail', $data);
         $this->load->view('templates/footer_a');
     }
     public function kedokteranaccept($id_bebaslab)
@@ -93,6 +149,18 @@ class Laboran extends CI_Controller
         $this->session->set_flashdata('flash', 'di REJECT');
         redirect('laboran/kedokteran');
     }
+
+    public function profesidokterreject($id_bebaslab)
+    {
+
+        $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
+
+
+        $this->Labkedokteran_model->reject_Idbp($id_bebaslab);
+        $this->session->set_flashdata('flash', 'di REJECT');
+        redirect('laboran/profesidokter');
+    }
+
     public function kedokteranproses($id_bebaslab)
     {
 
@@ -483,6 +551,18 @@ class Laboran extends CI_Controller
          
         $this->session->set_flashdata('flash', 'di HAPUS');
         redirect('laboran/farmasi');
+    }
+    public function hapus_profesidokter($id_bebaslab){
+        
+         $data['tanggal'] = tanggal();
+         $data['judul'] = 'Hapus Data Mahasiswa';
+         $data['surat'] = $this->Labkedokteran_model->getBebasLabById($id_bebaslab);
+        
+         $this->db->where('id_bebaslab', $id_bebaslab);
+         $this->db->delete('tb_bebaslab');
+         
+        $this->session->set_flashdata('flash', 'di HAPUS');
+        redirect('laboran/profesidokter');
     }
     
 }
