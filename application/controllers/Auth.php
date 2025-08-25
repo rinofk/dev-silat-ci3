@@ -10,6 +10,8 @@ class Auth extends CI_Controller
     {
         parent::__construct();
         $this->load->library('form_validation');
+        $this->load->model('Visitor_model');
+
     }
     public function index()
     {
@@ -27,6 +29,7 @@ class Auth extends CI_Controller
         } else {
             // validasi succes
             $this->_login();
+
         }
     }
 
@@ -47,6 +50,7 @@ class Auth extends CI_Controller
                         'role_id' => $user['role_id']
                     ];
                     $this->session->set_userdata($data);
+                    $this->Visitor_model->log_login($user['nim'], true);
 
                     if ($user['role_id'] == 1) {
                         redirect('admin');

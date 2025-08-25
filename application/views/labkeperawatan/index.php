@@ -13,7 +13,7 @@
                 </div>
             </div>
         </div>
-    <?php endif; ?>
+    <?php endif; ?> 
 
     <!-- Filter Form -->
     <form method="get" class="form-inline mb-3">
