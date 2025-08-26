@@ -26,6 +26,7 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary"><?= $title; ?></h6>
+            <p> - Setelah surat diajukan diharapkan untuk konfirmasi kembali ke admin melalui wa sebelah ini agar bisa di proses lebih lanjut, Hubungi Admin <a href="https://wa.me/6285252161577?text=Hai%20Admin%20Aplikasi%20Surat%20SKL, " rel="nofollow" target="_blank"><i class="fab fa-whatsapp"></i> Yasinta Pagi</a></p>
             <p> - jika terjadi kesalahan dalam input data, Hubungi Admin <a href="https://wa.me/6285252161577?text=Hai%20Admin%20Aplikasi%20Surat%20SKL, " rel="nofollow" target="_blank"><i class="fab fa-whatsapp"></i> Yasinta Pagi</a></p>
         </div>
 

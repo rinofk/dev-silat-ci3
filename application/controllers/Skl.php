@@ -279,7 +279,7 @@ class Skl extends CI_Controller
     public function tandai_selesai($id_skl)
     {
         $this->db->where('id_skl', $id_skl);
-        $this->db->update('tb_skl', ['status' => 'selesai']);
+        $this->db->update('tb_skl', ['status' => 'selesai','admin' => $this->session->userdata('name')]);
 
         $this->session->set_flashdata('flash', 'Status berhasil diubah menjadi selesai');
         redirect('skl?tahun=2025&status=proses');
