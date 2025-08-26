@@ -120,7 +120,7 @@
                 <td>
                   <?php 
                     if ($s['status'] == 'selesai') {
-                      $label = 'Selesai'; $badge = 'success';
+                      $label = 'Selesai'; $badge = 'primary';
                     } elseif ($s['status'] == 'diajukan') {
                       $label = 'Di Ajukan'; $badge = 'secondary';
                     } elseif ($s['status'] == 'proses') {
@@ -132,7 +132,15 @@
                   <span class="badge badge-<?= $badge ?>"><?= $label ?></span><br>
                   <small class="text-muted"><?= $s['admin']; ?></small>
                 </td>
-                <td><?= tgl_ind(date($s['date_finish'])); ?></td>
+                <td><?= tgl_ind(date($s['date_finish'])); ?><br>
+                      <?php if ($s['status'] == 'proses' && strtotime($s['date_create']) < strtotime('2025-08-01')) : ?>
+                          <a href="<?= base_url('skl/tandai_selesai/' . $s['id_skl']); ?>" 
+                            class="badge badge-primary"
+                            onclick="return confirm('Yakin ingin menandai selesai?')">
+                            Tandai Selesai
+                          </a>
+                      <?php endif; ?>
+                </td>
               </tr>
             <?php endforeach; ?>
           </tbody>

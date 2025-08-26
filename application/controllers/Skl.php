@@ -276,4 +276,14 @@ class Skl extends CI_Controller
             redirect('skl/updateyudisium/' . $id_alumni); 
             }
     }
+    public function update_status($id_skl)
+    {
+        $this->db->where('id_skl', $id_skl);
+        $this->db->update('tb_skl', ['status' => 'selesai']);
+
+        $this->session->set_flashdata('flash', 'Status berhasil diubah menjadi selesai');
+        redirect('skl?tahun=2025&status=proses');
+    }
+
+
 }
