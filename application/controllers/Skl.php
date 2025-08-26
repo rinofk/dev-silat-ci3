@@ -3,6 +3,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Skl extends CI_Controller
 {
+    private $status_badge = [
+        'diajukan' => 'secondary',
+        'proses'   => 'warning',
+        'selesai'  => 'success'
+    ];
 
     public function __construct()
     {
@@ -16,15 +21,35 @@ class Skl extends CI_Controller
 
 
 
-    public function index()
+    public function index() 
     {
         $data['title'] = 'Surat Kerangan Lulus';
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
-        $data['surat'] = $this->Skl_model->getSkl();
-        $data['total_surat'] = $this->Skl_model->hitungJumlahSurat();
-        $data['total_diajukan'] = $this->Skl_model->hitungJumlahdiAjukan();
-        $data['total_proses'] = $this->Skl_model->hitungJumlahdiProses();
-        $data['total_selesai'] = $this->Skl_model->hitungJumlahdiSelesai();
+        // $data['surat'] = $this->Skl_model->getSkl();
+
+        // Ambil filter dari URL
+        $tahun  = $this->input->get('tahun', true) ?? date('Y');
+        $status = $this->input->get('status', true);
+
+        // Hitungan untuk card dashboard 
+        $data['count_diajukan'] = $this->Skl_model->count_by_filter($tahun, 'diajukan');
+        $data['count_proses']   = $this->Skl_model->count_by_filter($tahun, 'proses');
+        $data['count_selesai']   = $this->Skl_model->count_by_filter($tahun, 'selesai');
+        $data['count_total']    = $this->Skl_model->count_by_filter($tahun, null);
+
+        // Data untuk filter dropdown
+        $data['filter_tahun']  = $this->Skl_model->get_tahun_options();
+        $data['filter_status'] = array_keys($this->status_badge);
+
+        // Data utama
+        $data['skl'] = $this->Skl_model->get_filtered_data($tahun, $status);
+        $data['status_badge'] = $this->status_badge;
+
+
+        // $data['total_surat'] = $this->Skl_model->hitungJumlahSurat();
+        // $data['total_diajukan'] = $this->Skl_model->hitungJumlahdiAjukan();
+        // $data['total_proses'] = $this->Skl_model->hitungJumlahdiProses();
+        // $data['total_selesai'] = $this->Skl_model->hitungJumlahdiSelesai();
 
         $this->form_validation->set_rules('nama_lengkap', 'Nama Lengkap', 'required');
         if ($this->form_validation->run() == FALSE) {
@@ -131,6 +156,7 @@ class Skl extends CI_Controller
         $this->Skl_model->selesaiSkl($id_skl);
         $this->session->set_flashdata('flash', 'di SELESAIKAN');
         redirect('skl/detail/' . $id_skl);
+        
     }
 
 

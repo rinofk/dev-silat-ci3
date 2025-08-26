@@ -53,7 +53,8 @@ class Auth extends CI_Controller
                     $this->Visitor_model->log_login($user['nim'], true);
 
                     if ($user['role_id'] == 1) {
-                        redirect('admin');
+                        // redirect('admin');
+                        redirect('operator');
                     } elseif (in_array($user['role_id'], [3, 5, 7, 8, 9])) {
                     redirect('operator');
                     } else {

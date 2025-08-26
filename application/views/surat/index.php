@@ -109,14 +109,14 @@
                                                             
                                                             <?php if ($s['status'] == 'selesai' && !empty($s['file_selesai'])): ?>
                                                                 <br>
-                                                                <a href="<?= base_url('assets/surat_selesai/' . $s['file_selesai']); ?>" target="_blank" class="btn btn-outline-success mt-2">
+                                                                <a href="<?= base_url('assets/surat_selesai/' . $s['file_selesai']); ?>" target="_blank" class="badge badge-primary mt-2">
                                                                     <i class="fas fa-download"></i> Lihat Surat Selesai
                                                                 </a>
                                                             <?php endif; ?>
                                                         <?php endif; ?>
                                                     <?php else: ?>
                                                         Anda Tidak Lagi Aktif
-                                                    <?php endif; ?>
+                                                    <?php endif; ?> 
                                                 </td>
 
 

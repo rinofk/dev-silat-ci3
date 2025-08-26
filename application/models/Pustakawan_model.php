@@ -117,46 +117,46 @@ class Pustakawan_model extends CI_model
         $this->db->update('tb_bebasperpus', $data);
     }
 
-    public function hitungJumlahSurat()
-    {
-        // get_where('tb_skl', ['nim' => $id, 'jenis_skl' => '2'])
-        $query = $this->db->get('tb_bebasperpus');
-        if ($query->num_rows() > 0) {
-            return $query->num_rows();
-        } else {
-            return 0;
-        }
-    }
+    // public function hitungJumlahSurat() 
+    // {
+    //     // get_where('tb_skl', ['nim' => $id, 'jenis_skl' => '2'])
+    //     $query = $this->db->get('tb_bebasperpus');
+    //     if ($query->num_rows() > 0) {
+    //         return $query->num_rows();
+    //     } else {
+    //         return 0;
+    //     }
+    // }
 
-    public function hitungJumlahdiAjukan()
-    {
-        $query = $this->db->get_where('tb_bebasperpus', ['status' => '']);
-        if ($query->num_rows() > 0) {
-            return $query->num_rows();
-        } else {
-            return 0;
-        }
-    }
+    // public function hitungJumlahdiAjukan()
+    // {
+    //     $query = $this->db->get_where('tb_bebasperpus', ['status' => '']);
+    //     if ($query->num_rows() > 0) {
+    //         return $query->num_rows();
+    //     } else {
+    //         return 0;
+    //     }
+    // }
 
-    public function hitungJumlahdiProses()
-    {
-        $query = $this->db->get_where('tb_bebasperpus', ['status' => 'reject']);
-        if ($query->num_rows() > 0) {
-            return $query->num_rows();
-        } else {
-            return 0;
-        }
-    }
+    // public function hitungJumlahdiProses()
+    // {
+    //     $query = $this->db->get_where('tb_bebasperpus', ['status' => 'reject']);
+    //     if ($query->num_rows() > 0) {
+    //         return $query->num_rows();
+    //     } else {
+    //         return 0;
+    //     }
+    // }
 
-    public function hitungJumlahdiSelesai()
-    {
-        $query = $this->db->get_where('tb_bebasperpus', ['status' => 'accept']);
-        if ($query->num_rows() > 0) {
-            return $query->num_rows();
-        } else {
-            return 0;
-        }
-    }
+    // public function hitungJumlahdiSelesai()
+    // {
+    //     $query = $this->db->get_where('tb_bebasperpus', ['status' => 'accept']);
+    //     if ($query->num_rows() > 0) {
+    //         return $query->num_rows();
+    //     } else {
+    //         return 0;
+    //     }
+    // }
 
 //new
 public function count_by_filter($tahun = null, $status = null)

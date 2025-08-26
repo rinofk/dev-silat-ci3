@@ -162,7 +162,9 @@ class Transaksi extends CI_Controller
                     $config['upload_path'] = './assets/surat_selesai/';
                     $config['allowed_types'] = 'pdf';
                     $config['overwrite'] = true; // Penting untuk replace
-                    $config['file_name'] = 'surat_aktif_kuliah_' . $id;
+                    // $config['file_name'] = 'surat_aktif_kuliah_' . $id;
+                    $config['file_name'] = 'Aktifkuliah_' . date('Ymd') . '_' . $id;
+
 
                     $this->load->library('upload', $config);
 

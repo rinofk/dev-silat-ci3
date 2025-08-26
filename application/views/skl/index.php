@@ -1,96 +1,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-  <!-- Page Heading -->
-  <!--<h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>-->
-
-  <!-- Content Row -->
-  <div class="row">
-
-
-
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-left-success shadow h-100 py-2">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Baru</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $total_diajukan; ?></div>
-            </div>
-            <div class="col-auto">
-              <i class="fas fa-calendar fa-2x text-gray-300"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-left-info shadow h-100 py-2">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Sedang Proses</div>
-              <div class="row no-gutters align-items-center">
-                <div class="col-auto">
-                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?= $total_proses; ?></div>
-                </div>
-                <div class="col">
-                  <div class="progress progress-sm mr-2">
-                    <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-auto">
-              <i class="fas fa-calendar fa-2x text-gray-300"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Pending Requests Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-left-warning shadow h-100 py-2">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Selesai</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $total_selesai; ?></div>
-            </div>
-            <div class="col-auto">
-              <i class="fas fa-calendar fa-2x text-gray-300"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-left-primary shadow h-100 py-2">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Jumlah Total</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $total_surat; ?></div>
-            </div>
-            <div class="col-auto">
-              <i class="fas fa-calendar fa-2x text-gray-300"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Content Row -->
-
-
+  <!-- Flash Message -->
   <?php if ($this->session->flashdata('flash')) : ?>
     <div class="row mt-3">
       <div class="col-md-6">
@@ -102,66 +13,132 @@
         </div>
       </div>
     </div>
-
   <?php endif; ?>
-  <!-- DATA TABLES TAMBAHAN-->
+
+  <!-- Filter -->
+  <form method="get" action="<?= base_url('skl'); ?>" class="mb-3">
+    <div class="row">
+      <div class="col-md-3">
+        <select name="tahun" class="form-control">
+          <option value="">-- Semua Tahun --</option>
+          <?php foreach($filter_tahun as $t): ?>
+            <option value="<?= $t['tahun']; ?>" <?= ($t['tahun'] == $this->input->get('tahun')) ? 'selected' : ''; ?>>
+              <?= $t['tahun']; ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <select name="status" class="form-control">
+          <option value="">-- Semua Status --</option>
+          <?php foreach($filter_status as $s): ?>
+            <option value="<?= $s; ?>" <?= ($s == $this->input->get('status')) ? 'selected' : ''; ?>>
+              <?= ($s == 'diajukan') ? 'Di Ajukan' : ucfirst($s); ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-filter"></i> Filter
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Dashboard Cards -->
+  <div class="row">
+    <?php 
+      $cards = [
+        ['title' => 'Di Ajukan', 'count' => $count_diajukan, 'icon' => 'fa-paper-plane', 'color' => 'secondary', 'status' => 'diajukan'],
+        ['title' => 'Proses',    'count' => $count_proses,   'icon' => 'fa-sync-alt',    'color' => 'warning',   'status' => 'proses'],
+        ['title' => 'Selesai',   'count' => $count_selesai,  'icon' => 'fa-check-circle','color' => 'success',  'status' => 'selesai'],
+        ['title' => 'Total',     'count' => $count_total,    'icon' => 'fa-list',        'color' => 'info',     'status' => '']
+      ]; 
+      $currentTahun = $this->input->get('tahun') ?? '';
+    ?>
+
+    <?php foreach ($cards as $card) : ?>
+      <div class="col-xl-3 col-md-6 mb-4">
+        <a href="<?= base_url('skl?tahun=' . $currentTahun . '&status=' . $card['status']); ?>" class="text-decoration-none">
+          <div class="card border-left-<?= $card['color'] ?> shadow h-100 py-2">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div class="text-xs font-weight-bold text-<?= $card['color'] ?> text-uppercase mb-1">
+                    <?= $card['title'] ?>
+                  </div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $card['count'] ?></div>
+                </div>
+                <div class="col-auto">
+                  <i class="fas <?= $card['icon'] ?> fa-2x text-gray-300"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    <?php endforeach; ?> 
+  </div>
+
+  <!-- Data Table -->
   <div class="card shadow mb-4">
     <div class="card-header py-3">
       <h6 class="m-0 font-weight-bold text-primary"><?= $title; ?></h6>
     </div>
     <div class="card-body">
       <div class="table-responsive">
-        <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
-          <div class="row">
-            <div class="col-sm-12 col-md-12">
-              <div class="DataTables_length" id="dataTable_length">
-
-
-
-                <table class="table" id="datatable">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">NIM</th>
-                      <th scope="col">Nama Lengkap</th>
-                      <th scope="col">Prodi</th>
-                      <th scope="col">Create At</th>
-                      <th scope="col">Status</th>
-                      <th scope="col">Finish</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    <?php $i = 1; ?>
-                    <?php foreach ($surat as $s) { ?>
-                      <tr>
-                        <th scope="row"><?= $i; ?></th>
-                        <td><a href="<?= base_url(); ?>skl/detail/<?= $s['id_skl']; ?>"><?= $s['nim']; ?> [-<?= $s['id_skl']; ?>-]</a></td>
-                        <td><?= $s['nama_lengkap']; ?></td>
-                        <td><?= $s['nama_prodi']; ?></td>
-                        <td><?= tgl_ind(date($s['date_create'])); ?></td>
-                        <td><?= $s['status']; ?><br><?= $s['admin']; ?></td>
-                        <td><?= tgl_ind(date($s['date_finish'])); ?></td>
-                      </tr>
-                    <?php $i++;
+        <table class="table" id="datatable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>NIM</th>
+              <th>Nama Lengkap</th>
+              <th>Prodi</th>
+              <th>Create At</th>
+              <th>Status</th>
+              <th>Finish</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php $i = 1; ?>
+            <?php foreach ($skl as $s): ?>
+              <tr>
+                <td><?= $i++; ?></td>
+                <td>
+                  <a href="<?= base_url('skl/detail/'.$s['id_skl']); ?>">
+                    <?= $s['nim']; ?> [-<?= $s['id_skl']; ?>-]
+                  </a>
+                </td>
+                <td><?= $s['nama_lengkap']; ?><br><?php if (!empty($s['file_selesai'])): ?>
+                  <a href="<?= base_url('assets/surat_selesai/' . $s['file_selesai']); ?>" target="_blank" class="badge badge-primary mt-2">
+                    <i class="fas fa-download"></i> Surat Selesai
+                  </a><?php endif; ?>
+                </td>
+                <td><?= $s['nama_prodi']; ?></td>
+                <td><?= tgl_ind(date($s['date_create'])); ?></td>
+                <td>
+                  <?php 
+                    if ($s['status'] == 'selesai') {
+                      $label = 'Selesai'; $badge = 'success';
+                    } elseif ($s['status'] == 'diajukan') {
+                      $label = 'Di Ajukan'; $badge = 'secondary';
+                    } elseif ($s['status'] == 'proses') {
+                      $label = 'Proses'; $badge = 'warning';
+                    } else {
+                      $label = $s['status']; $badge = 'secondary';
                     }
-                    ?>
-                  </tbody>
-
-                </table>
-
-                <!---->
-
-              </div>
-            </div>
-          </div>
-        </div>
+                  ?>
+                  <span class="badge badge-<?= $badge ?>"><?= $label ?></span><br>
+                  <small class="text-muted"><?= $s['admin']; ?></small>
+                </td>
+                <td><?= tgl_ind(date($s['date_finish'])); ?></td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
       </div>
     </div>
-
-    <!---->
-
-
   </div>
-</div>
+
 </div>

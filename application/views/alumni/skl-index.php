@@ -85,40 +85,33 @@
                                                         <td><?= tgl_ind(date($skl['date_create'])); ?></td>
                                                         <td><?= $skl['status']; ?></td>
                                                         <td>
-                                                            <?php
-                                                            if ($skl['status'] == 'diajukan') {; ?>
+                                                            <?php if ($skl['status'] == 'diajukan'): ?>
                                                                 <a href="<?= base_url(); ?>alumni/sklcetak/<?= $skl['id_skl']; ?>" target='_blank' class="badge badge-dark"><i class="fas fa-print"></i><br>Surat Pengajuan</a>
-                                                            <?php }; ?>
-                                                            <?php
-                                                            if ($skl['status'] == 'selesai') {; ?>
-                                                                <!--<a href="<?= base_url(); ?>alumni/sklcetak2/<?= $skl['id_skl']; ?>" target='_blank' class="badge badge-dark"><i class="fas fa-print"></i><br>Cetak SKL</a>-->
-                                                                <?= $skl['admin']; ?><br><?= tgl_ind(date($skl['date_finish'])); ?>
-                                                            <?php }; ?>
+                                                            <?php else: ?>
+                                                                <?= tgl_ind(date($skl['date_finish'])) . '<br>' . $skl['admin']; ?>
+                                                                
+                                                                <?php if ($skl['status'] == 'selesai' && !empty($skl['file_selesai'])): ?>
+                                                                    <br>
+                                                                    <a href="<?= base_url('assets/surat_selesai/' . $skl['file_selesai']); ?>" target="_blank" class="badge badge-primary mt-2">
+                                                                        <i class="fas fa-download"></i> Download Surat Selesai
+                                                                    </a>
+                                                                <?php endif; ?>
+                                                            <?php endif; ?>                                                                                                  
+
                                                         </td>
                                                     </tr>
-
                                                 </tbody>
-
                                             </table>
-
-                                            <!---->
-
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!---->
-
                 </div>
 
             <?php }; ?>
         <?php }; ?>
-
-        <!---->
-
-    </DIV>
+    </div>
 </div>
 </div>
