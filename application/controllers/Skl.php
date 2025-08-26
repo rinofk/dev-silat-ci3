@@ -276,7 +276,7 @@ class Skl extends CI_Controller
             redirect('skl/updateyudisium/' . $id_alumni); 
             }
     }
-    public function update_status($id_skl)
+    public function tandai_selesai($id_skl)
     {
         $this->db->where('id_skl', $id_skl);
         $this->db->update('tb_skl', ['status' => 'selesai']);
