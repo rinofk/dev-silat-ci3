@@ -175,7 +175,7 @@
           <div class="form-group">
             <label for="file_surat">Pilih File Surat (PDF)</label>
             <input type="file" class="form-control" id="file_surat" name="file_surat" accept="application/pdf" required>
-          </div>
+          </div> 
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>

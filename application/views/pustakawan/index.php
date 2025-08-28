@@ -68,7 +68,7 @@
                     </div>
                 </a>
             </div>
-        <?php endforeach; ?>
+        <?php endforeach; ?> 
     </div>
 
     <!-- Data Table -->

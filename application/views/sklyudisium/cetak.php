@@ -13,16 +13,12 @@ $margin_kiri = 15;
 $margin_kop = 28;
 
 
+$pdf->Image('assets/img/pejabat/wahyudi.png', 140, 170, 10, 28);
+$pdf->Image('assets/img/pejabat/cap.png', 115, 165, 33, 32);
 $pdf->Image('assets/img/logo.png', 18, 10, 30, 30);
-
 $pdf->SetFont('times', '', $kop['size_k']);
 $pdf->Cell($margin_kop, 5, '', 0, 0);
-$pdf->Cell(160, 5, $kop['kementerian1'], 0, 1, 'C');
-
-$pdf->Cell($margin_kop, 5, '', 0, 0);
-$pdf->Cell(160, 5, $kop['kementerian2'], 0, 1, 'C');
-
-$pdf->Cell(10, 2, '', 0, 1);
+$pdf->Cell(160, 5, $kop['kementerian'], 0, 1, 'C');
 
 $pdf->SetFont('times', '', $kop['size_u']);
 $pdf->Cell($margin_kop, 5, '', 0, 0);
@@ -31,9 +27,6 @@ $pdf->Cell(160, 5, $kop['universitas'], 0, 1, 'C');
 $pdf->SetFont('times', 'B', $kop['size_f']);
 $pdf->Cell($margin_kop, 5, '', 0, 0);
 $pdf->Cell(160, 5, $kop['fakultas'], 0, 1, 'C');
-
-$pdf->Cell(10, 1, '', 0, 1);
-
 
 $pdf->SetFont('times', '', $kop['size_j']);
 $pdf->Cell($margin_kop, 5, '', 0, 0);
@@ -46,10 +39,10 @@ $pdf->Cell(160, 5, $kop['telpon'], 0, 1, 'C');
 $pdf->SetFont('times', '', $kop['size_j']);
 $pdf->Cell($margin_kop, 5, '', 0, 0);
 $pdf->Cell(160, 5, $kop['email'], 0, 1, 'C');
+// $pdf->Cell(190, 6, '', 'B', 1, 'L'); membuat garis 
 
 $pdf->SetLineWidth(0.9); // tebal garis
-$pdf->Line(10, 49, 200, 49); // posisi garis
-
+$pdf->Line(10, 43, 200, 43); // posisi garis
 $pdf->Cell($margin_kiri, 10, '', 0, 1);
 
 $pdf->Cell($margin_kiri, 5, '', 0, 0);
@@ -58,7 +51,7 @@ $pdf->Cell(160, 5, $nomor['surat'], 0, 1, 'C');
 
 $pdf->SetFont('times', '', 12);
 $pdf->Cell($margin_kiri, 5, '', 0, 0);
-$pdf->Cell(160, 5, 'Nomor :         ' . $nomor['nomor'], 0, 1, 'C');
+$pdf->Cell(160, 5, 'ID : ' . $surat['id_skl'], 0, 1, 'C');
 
 $pdf->Cell($margin_kiri, 10, '', 0, 1);
 
@@ -95,36 +88,20 @@ $pdf->MultiCell($width_cell, 5, 'Demikian Surat Keterangan ini diberikan untuk d
 $pdf->SetFont('Times', '', 12);
 $pdf->Cell(10, 20, '', 0, 1);
 $pdf->Cell(120, 5, '', 0, 0);
-$pdf->Cell(60, 5, 'Pontianak, ' .tgl_ind(date($surat['date_finish'])), 0, 1, 'L');
-
+$pdf->Cell(60, 5, 'Pontianak, ' . tgl_ind(date($surat['date_finish'])), 0, 1, 'L');
 $pdf->Cell(120, 5, '', 0, 0);
 $pdf->Cell(60, 5, 'a.n. Dekan,', 0, 1, 'L');
 $pdf->Cell(120, 5, '', 0, 0);
-$pdf->Cell(60, 5, 'Wakil Dekan Bidang Kemahasiswaan', 0, 1, 'L');
+$pdf->Cell(60, 5, 'Kepala Bagian Umum', 0, 1, 'L');
 $pdf->Cell(120, 5, '', 0, 0);
-$pdf->Cell(60, 5, 'dan Alumni,', 0, 1, 'L');
-
+$pdf->Cell(60, 5, '', 0, 1, 'L');
 $pdf->Cell($margin_kiri, 5, '', 0, 1);
 $pdf->Cell($margin_kiri, 5, '', 0, 1);
 $pdf->Cell($margin_kiri, 5, '', 0, 1);
 $pdf->Cell(120, 5, '', 0, 0);
-$pdf->Cell(60, 5, 'Titan Ligita, S.Kp., MN., Ph.D	', 0, 1);
+$pdf->Cell(60, 5, 'Wahyudi, MM', 0, 1);
 $pdf->Cell(120, 5, '', 0, 0);
-$pdf->Cell(60, 5, 'NIP 197904042002122011', 0, 1);
-
-
-
-// $pdf->Cell(120, 5, '', 0, 0);
-// $pdf->Cell(60, 5, 'Dekan,', 0, 1, 'L');
-// $pdf->Cell(120, 5, '', 0, 0);
-// $pdf->Cell(60, 5, 'Kepala Bagian Tata Usaha,', 0, 1, 'L');
-// $pdf->Cell($margin_kiri, 5, '', 0, 1);
-// $pdf->Cell($margin_kiri, 5, '', 0, 1);
-// $pdf->Cell($margin_kiri, 5, '', 0, 1);
-// $pdf->Cell(120, 5, '', 0, 0);
-// $pdf->Cell(60, 5, 'dr. Muhammad Asroruddin, Sp.M.', 0, 1);
-// $pdf->Cell(120, 5, '', 0, 0);
-// $pdf->Cell(60, 5, 'NIP 198012312006041002', 0, 1);
+$pdf->Cell(60, 5, 'NIP. 197509232006041001', 0, 1);
 
 
 

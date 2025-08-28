@@ -353,7 +353,7 @@ class Alumni extends CI_Controller
     {
         $data['tanggal'] = tanggal();
         $data['surat'] = $this->Skl_model->getSklId($id_skl);
-        $data['kop'] = $this->db->get_where('tb_kop', ['id_kop' => '1'])->row_array();
+        $data['kop'] = $this->db->get_where('tb_kop', ['id_kop' => '2'])->row_array();
         $data['nomor'] = $this->db->get_where('tb_nomorsurat', ['id_nomor' => '2'])->row_array();
         $data['title'] = 'Edit Alumni';
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();

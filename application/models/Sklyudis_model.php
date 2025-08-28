@@ -3,19 +3,19 @@
 class Sklyudis_model extends CI_model
 {
 
-  public function getSkl()
-  {
+  // public function getSkl()
+  // {
 
-    $this->db->select('*');
-    $this->db->from('tb_skl');
-    $this->db->join('mahasiswa', 'mahasiswa.nim=tb_skl.nim');
-    $this->db->join('prodi', 'prodi.id_prodi=mahasiswa.prodi_id');
-    $this->db->order_by('status', 'asc');
-    $this->db->where('jenis_skl', 1);
+  //   $this->db->select('*');
+  //   $this->db->from('tb_skl');
+  //   $this->db->join('mahasiswa', 'mahasiswa.nim=tb_skl.nim');
+  //   $this->db->join('prodi', 'prodi.id_prodi=mahasiswa.prodi_id');
+  //   $this->db->order_by('status', 'asc');
+  //   $this->db->where('jenis_skl', 1);
 
-    $query = $this->db->get();
-    return $query->result_array();
-  }
+  //   $query = $this->db->get();
+  //   return $query->result_array();
+  // }
 
   public function getSklId($id_skl)
   {
@@ -89,44 +89,92 @@ class Sklyudis_model extends CI_model
     $this->db->where('id_alumni', $id_alumni);
     $this->db->update('tb_alumni', $data);
   }
-  public function hitungJumlahSurat()
-  {
-    // get_where('tb_skl', ['nim' => $id, 'jenis_skl' => '2'])
-    $query = $this->db->get_where('tb_skl', ['jenis_skl' => '1']);
-    if ($query->num_rows() > 0) {
-      return $query->num_rows();
-    } else {
-      return 0;
-    }
-  }
+  // public function hitungJumlahSurat()
+  // {
+  //   // get_where('tb_skl', ['nim' => $id, 'jenis_skl' => '2'])
+  //   $query = $this->db->get_where('tb_skl', ['jenis_skl' => '1']);
+  //   if ($query->num_rows() > 0) {
+  //     return $query->num_rows();
+  //   } else {
+  //     return 0;
+  //   }
+  // }
 
-  public function hitungJumlahdiAjukan()
-  {
-    $query = $this->db->get_where('tb_skl', ['status' => 'diajukan', 'jenis_skl' => '1']);
-    if ($query->num_rows() > 0) {
-      return $query->num_rows();
-    } else {
-      return 0;
-    }
-  }
+  // public function hitungJumlahdiAjukan()
+  // {
+  //   $query = $this->db->get_where('tb_skl', ['status' => 'diajukan', 'jenis_skl' => '1']);
+  //   if ($query->num_rows() > 0) {
+  //     return $query->num_rows();
+  //   } else {
+  //     return 0;
+  //   }
+  // }
 
-  public function hitungJumlahdiProses()
-  {
-    $query = $this->db->get_where('tb_skl', ['status' => 'proses', 'jenis_skl' => '1']);
-    if ($query->num_rows() > 0) {
-      return $query->num_rows();
-    } else {
-      return 0;
-    }
-  }
+  // public function hitungJumlahdiProses()
+  // {
+  //   $query = $this->db->get_where('tb_skl', ['status' => 'proses', 'jenis_skl' => '1']);
+  //   if ($query->num_rows() > 0) {
+  //     return $query->num_rows();
+  //   } else {
+  //     return 0;
+  //   }
+  // }
 
-  public function hitungJumlahdiSelesai()
-  {
-    $query = $this->db->get_where('tb_skl', ['status' => 'selesai', 'jenis_skl' => '1']);
-    if ($query->num_rows() > 0) {
-      return $query->num_rows();
-    } else {
-      return 0;
+  // public function hitungJumlahdiSelesai()
+  // {
+  //   $query = $this->db->get_where('tb_skl', ['status' => 'selesai', 'jenis_skl' => '1']);
+  //   if ($query->num_rows() > 0) {
+  //     return $query->num_rows();
+  //   } else {
+  //     return 0;
+  //   }
+  // }
+
+// =========================================================================================
+  
+    public function count_by_filter($tahun = null, $status = null)
+    {
+        $this->db->from('tb_skl s');
+        $this->db->where('s.jenis_skl', '1');
+        if (!empty($tahun)) {
+            $this->db->where('YEAR(s.date_create)', $tahun);
+        }
+
+        if (!empty($status)) {
+            $this->db->where('s.status', $status);
+        }
+
+        return $this->db->count_all_results();
     }
-  }
+
+      public function get_filtered_data($tahun = null, $status = null)
+      {
+          $this->db->select('s.*, m.nama_lengkap, p.nama_prodi');
+          $this->db->from('tb_skl s');
+          $this->db->join('mahasiswa m', 'm.nim = s.nim', 'left');
+          $this->db->join('prodi p', 'p.id_prodi = m.prodi_id', 'left');
+          $this->db->where('s.jenis_skl', '1');
+
+          if (!empty($tahun)) {
+              $this->db->where('YEAR(s.date_create)', $tahun);
+          }
+
+          if (!empty($status)) {
+              $this->db->where('s.status', $status);
+          }
+          // Urutkan berdasarkan tanggal dibuat, terbaru di atas
+          $this->db->order_by('s.date_create', 'DESC');
+          return $this->db->get()->result_array();
+      }
+
+    public function get_tahun_options()
+    {
+        $this->db->select('YEAR(date_create) as tahun');
+        $this->db->from('tb_skl');
+        $this->db->group_by('YEAR(date_create)');
+        $this->db->order_by('tahun', 'DESC');
+
+        return $this->db->get()->result_array();
+    }
+
 }

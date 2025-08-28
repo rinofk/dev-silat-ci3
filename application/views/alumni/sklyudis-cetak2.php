@@ -51,7 +51,7 @@ $pdf->Cell(160, 5, $nomor['surat'], 0, 1, 'C');
 
 $pdf->SetFont('times', '', 12);
 $pdf->Cell($margin_kiri, 5, '', 0, 0);
-$pdf->Cell(160, 5, 'Nomor :         ' . $nomor['nomor'], 0, 1, 'C');
+$pdf->Cell(160, 5, 'ID : ' . $surat['id_skl'], 0, 1, 'C');
 
 $pdf->Cell($margin_kiri, 10, '', 0, 1);
 
@@ -92,9 +92,9 @@ $pdf->Cell(60, 5, 'Pontianak, ' . tgl_ind(date($surat['date_finish'])), 0, 1, 'L
 $pdf->Cell(120, 5, '', 0, 0);
 $pdf->Cell(60, 5, 'a.n. Dekan,', 0, 1, 'L');
 $pdf->Cell(120, 5, '', 0, 0);
-$pdf->Cell(60, 5, 'Kasubbag. Akademik', 0, 1, 'L');
+$pdf->Cell(60, 5, 'Kepala Bagian Umum', 0, 1, 'L');
 $pdf->Cell(120, 5, '', 0, 0);
-$pdf->Cell(60, 5, 'dan Kemahasiswaan,', 0, 1, 'L');
+$pdf->Cell(60, 5, '', 0, 1, 'L');
 $pdf->Cell($margin_kiri, 5, '', 0, 1);
 $pdf->Cell($margin_kiri, 5, '', 0, 1);
 $pdf->Cell($margin_kiri, 5, '', 0, 1);

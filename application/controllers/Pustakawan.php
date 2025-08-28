@@ -27,7 +27,7 @@ class Pustakawan extends CI_Controller
         $tahun  = $this->input->get('tahun', true) ?? date('Y');
         $status = $this->input->get('status', true);
 
-        // Hitungan untuk card dashboard
+        // Hitungan untuk card dashboard 
         $data['count_diajukan'] = $this->Pustakawan_model->count_by_filter($tahun, 'di ajukan');
         $data['count_accept']   = $this->Pustakawan_model->count_by_filter($tahun, 'accept');
         $data['count_reject']   = $this->Pustakawan_model->count_by_filter($tahun, 'reject');
