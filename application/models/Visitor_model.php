@@ -67,9 +67,21 @@ class Visitor_model extends CI_Model
         $this->db->select('DATE(login_at) as visit_date, COUNT(*) as total');
         $this->db->from('visitor_logs');
         $this->db->group_by('DATE(login_at)');
-        $this->db->order_by('login_at', 'ASC');
+        $this->db->order_by('login_at', 'DESC');
         return $this->db->get()->result();
     }
+
+    // public function get_visitors_by_date($date)
+    // {
+    //     $this->db->select('v.nim, m.nama_lengkap, p.nama_prodi, v.login_at');
+    //     $this->db->from('visitor_logs v');
+    //     $this->db->join('mahasiswa m', 'v.nim = m.nim', 'left');
+    //     $this->db->join('prodi p', 'p.id_prodi = m.prodi_id', 'left');
+    //     $this->db->where('DATE(v.login_at)', $date);
+    //     $this->db->order_by('v.login_at', 'DESC');
+    //     return $this->db->get()->result();
+    // }
+
      // Tambahkan fungsi ini
     public function get_all()
     {

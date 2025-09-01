@@ -13,7 +13,7 @@
         </div>
       </div>
     </div>
-  <?php endif; ?>
+  <?php endif; ?> 
 
   <!-- Filter -->
   <form method="get" action="<?= base_url('skl'); ?>" class="mb-3">

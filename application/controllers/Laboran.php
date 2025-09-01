@@ -3,6 +3,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Laboran extends CI_Controller
 {
+     private $status_badge = [
+        'diajukan' => 'secondary',
+        'proses'   => 'warning',
+        'selesai'  => 'success'
+    ];
+
     public function __construct()
     {
         parent::__construct();
@@ -35,12 +41,12 @@ class Laboran extends CI_Controller
         $data['title'] = 'Lab Kedokteran';
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
 
-        $data['status'] = $this->Labkedokteran_model->get_statusaccept1();
+        // $data['status'] = $this->Labkedokteran_model->get_statusaccept1();
         $data['bl'] = $this->Labkedokteran_model->get_AllKedokteran($tahun, $status);
         // $data['total_surat'] = $this->Labkedokteran_model->hitungJumlahSurat1();
         // $data['total_diajukan'] = $this->Labkedokteran_model->hitungJumlahdiAjukan1();
         // $data['total_proses'] = $this->Labkedokteran_model->hitungJumlahdiProses1();
-        // $data['total_selesai'] = $this->Labkedokteran_model->hitungJumlahdiSelesai1();
+        // $data['total_selesai'] = $this->Labkedokteran_model->hitungJumlahdiSelesai1(); 
 
         $this->form_validation->set_rules('keterangan', 'Keterangan', 'required');
         if ($this->form_validation->run() == false) {

@@ -14,7 +14,7 @@
             </div>
         </div>
     <?php endif; ?>
-
+ 
     <!-- Filter Form -->
     <form method="get" class="form-inline mb-3">
         <div class="form-group mr-2">
@@ -25,14 +25,13 @@
                     $selectedTahun = $this->input->get('tahun') ?? '';
                     $lastTahun = end($filter_tahun)['tahun'];
                     if ($selectedTahun == '') $selectedTahun = $lastTahun;
-                    foreach ($filter_tahun as $t): 
+                    foreach (array_reverse($filter_tahun) as $t): 
                 ?>
                     <option value="<?= $t['tahun']; ?>" <?= ($selectedTahun == $t['tahun']) ? 'selected' : ''; ?>>
                         <?= $t['tahun']; ?>
                     </option>
                 <?php endforeach; ?>
             </select>
-
         </div>
 
         <div class="form-group mr-2">
@@ -41,7 +40,7 @@
                 <option value="">Semua Status</option>
                 <?php foreach ($filter_status as $s): ?>
                     <option value="<?= $s; ?>" <?= ($this->input->get('status') == $s) ? 'selected' : ''; ?>>
-                        <?= $s; ?>
+                        <?= ucfirst($s); ?>
                     </option>
                 <?php endforeach; ?>
             </select>
@@ -49,6 +48,46 @@
 
         <button type="submit" class="btn btn-primary ml-2">Filter</button>
     </form>
+
+
+  <!-- Dashboard Cards -->
+  <div class="row">
+    <?php 
+      $cards = [
+        ['title' => 'Di Ajukan', 'count' => $total_diajukan, 'icon' => 'fa-paper-plane', 'color' => 'secondary', 'status' => 'di ajukan'],
+        ['title' => 'Proses',    'count' => $total_proses,   'icon' => 'fa-sync-alt',    'color' => 'warning',   'status' => 'proses'],
+        ['title' => 'Selesai',   'count' => $total_terima,  'icon' => 'fa-check-circle','color' => 'success',  'status' => 'accept'],
+        ['title' => 'Reject',    'count' => $total_reject,   'icon' => 'fa-times-circle','color' => 'danger',  'status' => 'reject'],
+        ['title' => 'Total',     'count' => $total,    'icon' => 'fa-list',        'color' => 'info',     'status' => '']
+      ]; 
+      $currentTahun = $this->input->get('tahun') ?? '';
+    ?>
+
+    <?php foreach ($cards as $card) : ?>
+      <!-- <div class="col-xl-3 col-md-6 mb-4"> -->
+        <div class="col-md mb-2">
+        <a href="<?= base_url('laboran/kedokteran?tahun=' . $currentTahun . '&status=' . $card['status']); ?>" class="text-decoration-none">
+          <div class="card border-left-<?= $card['color'] ?> shadow h-100 py-2">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div class="text-xs font-weight-bold text-<?= $card['color'] ?> text-uppercase mb-1">
+                    <?= $card['title'] ?>
+                  </div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $card['count'] ?></div>
+                </div>
+                <div class="col-auto">
+                  <i class="fas <?= $card['icon'] ?> fa-2x text-gray-300"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    <?php endforeach; ?> 
+  </div>
+
+<!-- 
 <div class="row">
     <div class="col-md mb-2">
         <a href="?tahun=<?= $this->input->get('tahun'); ?>&status=">
@@ -104,7 +143,7 @@
             </div>
         </a>
     </div>
-</div>
+</div> -->
 
     <!-- DataTable -->
     <div class="card shadow mb-4">
@@ -138,7 +177,7 @@
                                     </a>
                                 </td>
                                 <td><?= $s['nama_lengkap']; ?></td>
-                                <td><?= $s['nama_prodi']; ?></td>
+                                <td><?= $s['nama_prodi']; ?></td> 
                                 <td><?= $s['date_created']; ?></td>
                                 <td><?= $s['status']; ?></td>
                                 <td><?= $s['date_updated']; ?><br><?= $s['lab1_admin']; ?></td>

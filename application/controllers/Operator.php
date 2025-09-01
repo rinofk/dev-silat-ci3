@@ -20,6 +20,7 @@ class Operator extends CI_Controller
 
          // ambil data visitor per hari
         $visitors = $this->Visitor_model->get_visitors_per_day();
+        // $visitors = $this->Visitor_model->get_visitors_by_date($date);
 
         // siapkan data untuk chart
         $labels = [];
@@ -35,6 +36,7 @@ class Operator extends CI_Controller
 
         $data['visitor_logs'] = $this->Visitor_model->get_all();
 
+        // $data['visitordate']   = $this->Visitor_model->get_visitors_by_date($date);
         $data['total_visitors']   = $this->Visitor_model->count_all();
         $data['today_visitors']   = $this->Visitor_model->count_today();
         $data['unique_visitors']  = $this->Visitor_model->count_unique_nim();
