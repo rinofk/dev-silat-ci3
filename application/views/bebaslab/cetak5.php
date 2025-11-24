@@ -139,7 +139,7 @@ $pdf->Cell(105, 5, 'Wahyudi, MM', 0, 0);
 $pdf->Cell(60, 5, 'Hazwani, S.Kep., Ners.', 0, 1);
 $pdf->Cell($margin_kiri, 5, '', 0, 0);
 $pdf->Cell(105, 5, 'NIP. 197509232006041001', 0, 0);
-$pdf->Cell(60, 5, 'NIH. 19890121201305271', 0, 1);
+$pdf->Cell(60, 5, 'NIPPPK. 198901212025211047', 0, 1);
 
 
 $pdf->Cell($margin_kiri, 15, '', 0, 1);

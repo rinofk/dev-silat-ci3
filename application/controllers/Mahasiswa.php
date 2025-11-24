@@ -9,7 +9,7 @@ class Mahasiswa extends CI_Controller
         parent::__construct();
         cek_login();
         $this->load->model('Mahasiswa_model');
-        $this->load->library('form_validation');
+        $this->load->library('form_validation'); 
         $this->load->library('pdf');
     }
 

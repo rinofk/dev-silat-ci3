@@ -46,7 +46,7 @@ class Arsip_model extends CI_model
         // $this->db->join('a_periode', 'a_periode.id_periode=a_yudisium.id_periode');
 
         $this->db->where('id_periode', $id_periode);
-        $this->db->where('status', $status);
+        // $this->db->where('status', $status);
         $query = $this->db->get();
         return $query->result_array();
     } 
