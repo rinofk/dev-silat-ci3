@@ -96,7 +96,7 @@
               if ($isActive): ?>
                 <tr class="text-center">
                   <td><?= $i++; ?></td>
-                  <td><a href="<?= base_url('arsip/yudisiumperiodedetail/'.$s['id_periode']); ?>"><?= $s['nama_periode']; ?></a></td>
+                  <td class="text-left"><a href="<?= base_url('arsip/yudisiumperiodedetail/'.$s['id_periode']); ?>"><?= $s['nama_periode']; ?></a></td>
                   <td><?= $s['tahun_sem']; ?></td>
                   <td><?= $s['tgl_mulai']; ?></td>
                   <td><?= $s['tgl_selesai']; ?></td>
@@ -163,7 +163,7 @@
               if (!$isActive): ?>
                 <tr class="text-center">
                   <td><?= $i++; ?></td>
-                  <td><a href="<?= base_url('arsip/yudisiumperiodedetail/'.$s['id_periode']); ?>"><?= $s['nama_periode']; ?></a></td>
+                  <td class="text-left"><a href="<?= base_url('arsip/yudisiumperiodedetail/'.$s['id_periode']); ?>"><?= $s['nama_periode']; ?></a></td>
                   <td><?= $s['tahun_sem']; ?></td>
                   <td><?= $s['tgl_mulai']; ?></td>
                   <td><?= $s['tgl_selesai']; ?></td>
@@ -239,7 +239,7 @@
                 <label>Tahun</label>
                 <input type="text" class="form-control" name="tahun_sem" placeholder="20251" required>
               </div>
-
+ 
             </div>
             <div class="col-md-6">
 

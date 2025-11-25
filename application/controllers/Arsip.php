@@ -10,6 +10,8 @@ class Arsip extends CI_Controller
         $this->load->model('Arsip_model');
         $this->load->library('pdf');
         $this->load->library('form_validation');
+        $this->load->library('upload'); // ← TAMBAHKAN INI
+
     }
 
     /* ======================================
@@ -113,137 +115,144 @@ public function yudisiumperiodedetail($id_periode)
     /* ======================================
        ✅ PROSES PERIODE YUDISIUM
     ====================================== */
-        public function periodeyudisium($slug = null)
-        {
-            $data['title'] = 'Periode Yudisium';
-            $data['user'] = $this->db->get_where('user', [
-                'nim' => $this->session->userdata('nim')
-            ])->row_array();
+       public function periodeyudisium($slug = null)
+{
+    $data['title'] = 'Periode Yudisium';
+    $data['user'] = $this->db->get_where('user', [
+        'nim' => $this->session->userdata('nim')
+    ])->row_array();
 
-            // Ambil daftar periode + prodi
-            $data['periode'] = $this->Arsip_model->get_Periode();
-            $data['prodis'] = $this->db->get('prodi')->result_array();
+    $data['prodis'] = $this->db->get('prodi')->result_array();
 
-            $today = date('Y-m-d');
-            $prodi = $this->db->get_where('prodi', ['slug' => $slug])->row_array();
+    $today = date('Y-m-d');
+    $prodi = $this->db->get_where('prodi', ['slug' => $slug])->row_array();
 
-            if ($prodi) {
-                $id_prodi = $prodi['id_prodi'];
+    if ($prodi) {
+        $id_prodi = $prodi['id_prodi'];
 
-                $data['periode_aktif'] = $this->db
-                    ->where('id_prodi', $id_prodi)
-                    ->where('tgl_mulai <=', $today)
-                    ->where('tgl_selesai >=', $today)
-                    ->get('a_periode')
-                    ->result_array();
+        // Periode aktif per prodi (urut tgl_yudisium desc)
+        $data['periode_aktif'] = $this->db
+            ->where('id_prodi', $id_prodi)
+            ->where('tgl_mulai <=', $today)
+            ->where('tgl_selesai >=', $today)
+            ->order_by('tgl_yudisium', 'DESC')
+            ->get('a_periode')
+            ->result_array();
 
-                $data['periode_selesai'] = $this->db
-                    ->where('id_prodi', $id_prodi)
-                    ->where('tgl_selesai <', $today)
-                    ->get('a_periode')
-                    ->result_array();
+        // Periode selesai per prodi
+        $data['periode_selesai'] = $this->db
+            ->where('id_prodi', $id_prodi)
+            ->where('tgl_selesai <', $today)
+            ->order_by('tgl_yudisium', 'DESC')
+            ->get('a_periode')
+            ->result_array();
 
-                $data['selected_prodi'] = $id_prodi;
-                $data['selected_prodi_name'] = $prodi['nama_prodi'];
+        $data['selected_prodi'] = $id_prodi;
+        $data['selected_prodi_name'] = $prodi['nama_prodi'];
+    } else {
+        // Periode aktif semua prodi
+        $data['periode_aktif'] = $this->db
+            ->where('tgl_mulai <=', $today)
+            ->where('tgl_selesai >=', $today)
+            ->order_by('tgl_yudisium', 'DESC')
+            ->get('a_periode')
+            ->result_array();
+
+        // Periode selesai semua prodi
+        $data['periode_selesai'] = $this->db
+            ->where('tgl_selesai <', $today)
+            ->order_by('tgl_yudisium', 'DESC')
+            ->get('a_periode')
+            ->result_array();
+
+        $data['selected_prodi'] = null;
+        $data['selected_prodi_name'] = '';
+    }
+
+    // Daftar periode yang tampil di tabel utama
+    if ($slug && $prodi) {
+        $data['selected_prodi'] = $prodi['id_prodi'];
+        $data['selected_prodi_name'] = $prodi['nama_prodi'];
+
+        $data['periode'] = $this->db
+            ->where('id_prodi', $prodi['id_prodi'])
+            ->order_by('tgl_yudisium', 'DESC')
+            ->get('a_periode')
+            ->result_array();
+    } else {
+        $data['periode'] = $this->db
+            ->order_by('tgl_yudisium', 'DESC')
+            ->get('a_periode')
+            ->result_array();
+    }
+
+    // Tentukan status otomatis
+    foreach ($data['periode'] as &$p) {
+        $p['status_otomatis'] = ($today >= $p['tgl_mulai'] && $today <= $p['tgl_selesai'])
+            ? 'Aktif'
+            : 'Tidak Aktif';
+    }
+
+    // === Validasi ===
+    $this->form_validation->set_rules('nama_periode', 'Nama Periode', 'required');
+    $this->form_validation->set_rules('tahun_sem', 'Tahun', 'required');
+    $this->form_validation->set_rules('tgl_mulai', 'Tanggal Mulai', 'required');
+    $this->form_validation->set_rules('tgl_selesai', 'Tanggal Selesai', 'required');
+    $this->form_validation->set_rules('id_prodi', 'Program Studi', 'required');
+
+    if ($this->form_validation->run() == false) {
+        $this->load->view('templates/header_a', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('arsip/periodeyudisium', $data);
+        $this->load->view('templates/footer_a');
+    } else {
+        // === Upload File (opsional) ===
+        $config['upload_path']   = './uploads/yudisium/';
+        $config['allowed_types'] = 'pdf|doc|docx';
+        $config['max_size']      = 5120; // 5MB
+        $this->load->library('upload', $config);
+
+        $ba = null;
+        $sk = null;
+
+        if (!empty($_FILES['ba']['name'])) {
+            if ($this->upload->do_upload('ba')) {
+                $ba = $this->upload->data('file_name');
             } else {
-                $data['periode_aktif'] = $this->db
-                    ->where('tgl_mulai <=', $today)
-                    ->where('tgl_selesai >=', $today)
-                    ->get('a_periode')
-                    ->result_array();
-
-                $data['periode_selesai'] = $this->db
-                    ->where('tgl_selesai <', $today)
-                    ->get('a_periode')
-                    ->result_array();
-
-                $data['selected_prodi'] = null;
-                $data['selected_prodi_name'] = '';
-            }
-
-            // Jika slug dipilih, filter periode-nya
-            if ($slug) {
-                $prodi = $this->db->get_where('prodi', ['slug' => $slug])->row_array();
-                if ($prodi) {
-                    $data['selected_prodi'] = $prodi['id_prodi'];
-                    $data['selected_prodi_name'] = $prodi['nama_prodi'];
-                    $data['periode'] = $this->db
-                        ->get_where('a_periode', ['id_prodi' => $prodi['id_prodi']])
-                        ->result_array();
-                }
-            } else {
-                $data['periode'] = $this->db->get('a_periode')->result_array();
-            }
-
-            // Tentukan status otomatis
-            foreach ($data['periode'] as &$p) {
-                $p['status_otomatis'] = ($today >= $p['tgl_mulai'] && $today <= $p['tgl_selesai'])
-                    ? 'Aktif'
-                    : 'Tidak Aktif';
-            }
-
-            // === Validasi ===
-            $this->form_validation->set_rules('nama_periode', 'Nama Periode', 'required');
-            $this->form_validation->set_rules('tahun_sem', 'Tahun', 'required');
-            $this->form_validation->set_rules('tgl_mulai', 'Tanggal Mulai', 'required');
-            $this->form_validation->set_rules('tgl_selesai', 'Tanggal Selesai', 'required');
-            $this->form_validation->set_rules('id_prodi', 'Program Studi', 'required');
-
-            if ($this->form_validation->run() == false) {
-                $this->load->view('templates/header_a', $data);
-                $this->load->view('templates/sidebar', $data);
-                $this->load->view('templates/topbar', $data);
-                $this->load->view('arsip/periodeyudisium', $data);
-                $this->load->view('templates/footer_a');
-            } else {
-                // === Upload File (opsional) ===
-                $config['upload_path']   = './uploads/yudisium/';
-                $config['allowed_types'] = 'pdf|doc|docx';
-                $config['max_size']      = 5120; // 5MB
-                $this->load->library('upload', $config);
-
-                $ba = null;
-                $sk = null;
-
-                // Upload Berita Acara (boleh kosong)
-                if (!empty($_FILES['ba']['name'])) {
-                    if ($this->upload->do_upload('ba')) {
-                        $ba = $this->upload->data('file_name');
-                    } else {
-                        $this->session->set_flashdata('message', '<div class="alert alert-danger">Gagal upload Berita Acara: ' . $this->upload->display_errors() . '</div>');
-                        redirect('arsip/periodeyudisium');
-                    }
-                }
-
-                // Upload SK Yudisium (boleh kosong)
-                if (!empty($_FILES['sk']['name'])) {
-                    if ($this->upload->do_upload('sk')) {
-                        $sk = $this->upload->data('file_name');
-                    } else {
-                        $this->session->set_flashdata('message', '<div class="alert alert-danger">Gagal upload SK Yudisium: ' . $this->upload->display_errors() . '</div>');
-                        redirect('arsip/periodeyudisium');
-                    }
-                }
-
-                // === Simpan Data ke DB ===
-                $dataInsert = [
-                    'id_prodi'     => $this->input->post('id_prodi'),
-                    'nama_periode' => $this->input->post('nama_periode'),
-                    'tahun_sem'        => $this->input->post('tahun_sem'),
-                    'tgl_mulai'    => $this->input->post('tgl_mulai'),
-                    'tgl_selesai'  => $this->input->post('tgl_selesai'),
-                    'tgl_yudisium' => $this->input->post('tgl_yudisium'),
-                    'ba'           => $ba, // bisa null
-                    'sk'           => $sk, // bisa null
-                    'admin'        => $this->session->userdata('name')
-                ];
-
-                $this->db->insert('a_periode', $dataInsert);
-
-                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Periode baru berhasil ditambahkan!</div>');
+                $this->session->set_flashdata('message', '<div class="alert alert-danger">Gagal upload Berita Acara: ' . $this->upload->display_errors() . '</div>');
                 redirect('arsip/periodeyudisium');
             }
         }
+
+        if (!empty($_FILES['sk']['name'])) {
+            if ($this->upload->do_upload('sk')) {
+                $sk = $this->upload->data('file_name');
+            } else {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger">Gagal upload SK Yudisium: ' . $this->upload->display_errors() . '</div>');
+                redirect('arsip/periodeyudisium');
+            }
+        }
+
+        $dataInsert = [
+            'id_prodi'     => $this->input->post('id_prodi'),
+            'nama_periode' => $this->input->post('nama_periode'),
+            'tahun_sem'    => $this->input->post('tahun_sem'),
+            'tgl_mulai'    => $this->input->post('tgl_mulai'),
+            'tgl_selesai'  => $this->input->post('tgl_selesai'),
+            'tgl_yudisium' => $this->input->post('tgl_yudisium'),
+            'ba'           => $ba,
+            'sk'           => $sk,
+            'admin'        => $this->session->userdata('name')
+        ];
+
+        $this->db->insert('a_periode', $dataInsert);
+
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Periode baru berhasil ditambahkan!</div>');
+        redirect('arsip/periodeyudisium');
+    }
+}
+
 //==================================================
         public function updateyudisium()
         {
@@ -286,7 +295,9 @@ public function yudisiumperiodedetail($id_periode)
                 $config['max_size']      = 2048; // 2 MB
                 $config['file_name']     = 'BA_' . $tgl_yudisium . '_' . $nama_prodi_safe;
 
-                $this->load->library('upload', $config);
+                // $this->load->library('upload', $config);
+                $this->upload->initialize($config); // ← GANTI load->library jadi initialize
+
 
                 if ($this->upload->do_upload('ba')) {
                     // Hapus file lama jika ada
@@ -409,3 +420,4 @@ public function yudisiumperiodedetail($id_periode)
 
 
 }
+ 

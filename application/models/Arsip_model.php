@@ -86,6 +86,7 @@ class Arsip_model extends CI_model
         // $this->db->join('mahasiswa', 'mahasiswa.nim=a_yudisium.nim_mahasiswa');
         // $this->db->join('prodi', 'prodi.id_prodi=mahasiswa.prodi_id');
         // $this->db->where_in('status', $status);
+        $this->db->order_by('tgl_yudisium', 'DESC'); // urutkan berdasarkan tanggal yudisium terbaru
         $query = $this->db->get();
         return $query->result_array();
 
