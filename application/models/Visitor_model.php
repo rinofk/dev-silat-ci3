@@ -24,7 +24,7 @@ class Visitor_model extends CI_Model
 
         $data = [
             'nim'        => $nim,
-            'session_id' => $this->session->userdata('session_id'),
+            'session_id' => $this->session->userdata('name'),
             'ip_address' => $this->input->ip_address(),
             'user_agent' => $this->input->user_agent(),
             'referrer'   => isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null,
