@@ -157,4 +157,21 @@ class Laboratorium_model extends CI_model
             return 0;
         }
     }
+
+    public function getAllPengajuanByNim($nim)
+    {
+        return $this->db->order_by('id_bebaslab', 'DESC')
+            ->get_where('tb_bebaslab', ['nim_mahasiswa' => $nim])
+            ->result_array();
+    }
+
+    public function getById($id_bebaslab)
+    {
+        return $this->db->get_where('tb_bebaslab', ['id_bebaslab' => $id_bebaslab])->row_array();
+    }
+
+    public function delete($id_bebaslab)
+    {
+        return $this->db->delete('tb_bebaslab', ['id_bebaslab' => $id_bebaslab]);
+    }
 }

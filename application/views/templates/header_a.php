@@ -21,11 +21,11 @@
     <link href="<?= base_url('assets/'); ?>css/sb-admin-2.min.css" rel="stylesheet">
 
     <style>
-    .status-card.active {
-        box-shadow: 0 0 10px rgba(0, 123, 255, 0.7);
-        transform: scale(1.02);
-        transition: 0.2s;
-    }
+        .status-card.active {
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.7);
+            transform: scale(1.02);
+            transition: 0.2s;
+        }
     </style>
 
     <!-- datepicker -->
@@ -87,7 +87,7 @@
         });
     </script>
     <!-- end Keterangan FUNGSI Hide dan Show Form Input Jika List Menu Dipilih -->
-<script data-ad-client="ca-pub-4023762833393579" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script data-ad-client="ca-pub-4023762833393579" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 
 <body id="page-top">

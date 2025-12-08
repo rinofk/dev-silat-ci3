@@ -15,10 +15,12 @@ class Laboratorium extends CI_Controller
     {
         $data['title'] = 'Bebas Lab';
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
-        $data['bl'] = $this->db->get_where('tb_bebaslab', ['nim_mahasiswa' => $this->session->userdata('nim')])->row_array();
+        // $data['bl'] = $this->db->get_where('tb_bebaslab', ['nim_mahasiswa' => $this->session->userdata('nim')])->row_array();
         $nim = $data['user']['nim'];
         $data['mahasiswa'] = $this->Mahasiswa_model->getMahasiswaByJoin($nim);
-        $data['ajuan'] = $this->Laboratorium_model->ajuan($nim);
+        // $data['ajuan'] = $this->Laboratorium_model->ajuan($nim);
+        // Semua daftar pengajuan
+        $data['pengajuan'] = $this->Laboratorium_model->getAllPengajuanByNim($nim);
 
         $this->load->view('templates/header_a', $data);
         $this->load->view('templates/sidebar', $data);
@@ -54,10 +56,6 @@ class Laboratorium extends CI_Controller
 
         $upload_ktm = $_FILES['ktm']['name'];
         if ($upload_ktm) {
-            // $old_image = $data['wisuda']['ktm'];
-            // if ($old_image != 'default.jpg') {
-            //     unlink(FCPATH . 'assets/berkaswisuda/' . $old_image);
-            // }
             if ($this->upload->do_upload('ktm')) {
                 $ktm = $this->upload->data('file_name');
                 $this->db->set('ktm', $ktm);
@@ -71,8 +69,8 @@ class Laboratorium extends CI_Controller
         $data = [
             "nim_mahasiswa" => $this->input->post('nim', true),
             "semester" => $this->input->post('semester', true),
+            // "status"        => 'di ajukan',       // set langsung
             "date_created" => $date
-
         ];
         $this->db->insert('tb_bebaslab', $data);
 
@@ -80,61 +78,79 @@ class Laboratorium extends CI_Controller
         redirect('laboratorium');
     }
 
+    public function edit($id_bebaslab)
+    {
+        $data['title'] = 'Edit Pengajuan Bebas Lab';
+        $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
+        $data['pengajuan'] = $this->Laboratorium_model->getById($id_bebaslab);
+
+        if (!$data['pengajuan']) {
+            show_404();
+        }
+
+        $this->load->view('templates/header_a', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('bebaslab/edit', $data);
+        $this->load->view('templates/footer_a');
+    }
     public function do_update()
     {
-        $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
-        $data['bp'] = $this->db->get_where('tb_bebaslab', ['nim_mahasiswa' => $this->session->userdata('nim')])->row_array();
+        $id = $this->input->post('id_bebaslab', true);
 
-        $nim = $this->input->post('nim');
-        //cek jika ada gambar yang akan di upload
+        // Ambil data lama
+        $pengajuan = $this->db->get_where('tb_bebaslab', [
+            'id_bebaslab' => $id
+        ])->row_array();
+
+        if (!$pengajuan) {
+            show_404();
+        }
+
+        // Konfigurasi upload
         $config['allowed_types'] = 'jpg|png';
         $config['max_size']     = '2048';
-        $config['upload_path'] = './assets/bebaslab/';
+        $config['upload_path']  = './assets/bebaslab/';
         $this->load->library('upload', $config);
 
-        $upload_ktm = $_FILES['ktm']['name'];
-        if ($upload_ktm) {
-            $old_image = $data['bp']['ktm'];
-            if ($old_image != 'default.jpg') {
-                unlink(FCPATH . 'assets/bebaslab/' . $old_image);
-            }
+        // Jika ada upload KTM baru
+        if (!empty($_FILES['ktm']['name'])) {
+
             if ($this->upload->do_upload('ktm')) {
+
+                // Hapus file lama (jika ada)
+                if (!empty($pengajuan['ktm'])) {
+                    @unlink(FCPATH . 'assets/bebaslab/' . $pengajuan['ktm']);
+                }
+
                 $ktm = $this->upload->data('file_name');
                 $this->db->set('ktm', $ktm);
             } else {
-                echo $this->upload->display_errors();
+                $this->session->set_flashdata(
+                    'message',
+                    '<div class="alert alert-danger">' . $this->upload->display_errors() . '</div>'
+                );
+                redirect('laboratorium/edit/' . $id);
             }
         }
 
-        // $upload_kartuanggota = $_FILES['anggota']['name'];
-        // if ($upload_kartuanggota) {
-        //     $old_kartuanggota = $data['bp']['kartuanggota'];
-        //     if ($old_kartuanggota != 'default.jpg') {
-        //         unlink(FCPATH . 'assets/bebasperpus/' . $old_kartuanggota);
-        //     }
-        //     if ($this->upload->do_upload('anggota')) {
-        //         $kartu_anggota = $this->upload->data('file_name');
-        //         $this->db->set('kartuperpus', $kartu_anggota);
-        //     } else {
-        //         echo $this->upload->display_errors();
-        //     }
-        // }
+        // Jika kamu ingin edit semester (di form harus ada input semester)
+        if ($this->input->post('semester')) {
+            $this->db->set('semester', $this->input->post('semester', true));
+        }
 
-        $this->db->where('nim_mahasiswa', $nim);
-        $this->db->set('semester', $this->input->post('semester'));
+        // Update data
+        $this->db->where('id_bebaslab', $id);
         $this->db->update('tb_bebaslab');
-        // $date = date("Y-m-d");
-        // $data = [
-        //     "nim_mahasiswa" => $this->input->post('nim', true),
-        //     "semester" => $this->input->post('semester', true),
-        //     "date_created" => $date
 
-        // ];
-        // $this->db->insert('tb_bebasperpus', $data);
+        $this->session->set_flashdata(
+            'message',
+            '<div class="alert alert-success" role="alert">Pengajuan berhasil diperbarui</div>'
+        );
 
-        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berkas Anda Berhasil di UPDATE</div>');
         redirect('laboratorium');
     }
+
     public function ajukan($id_bebaslab)
     {
 
@@ -177,5 +193,21 @@ class Laboratorium extends CI_Controller
             $this->session->set_flashdata('flash', 'Ditambahkan');
             redirect('surat/naskahpublikasi');
         }
+    }
+
+    public function delete($id_bebaslab)
+    {
+        // cek apakah data ada
+        $data = $this->Laboratorium_model->getById($id_bebaslab);
+        if (!$data) {
+            $this->session->set_flashdata('error', 'Data tidak ditemukan');
+            redirect('laboratorium');
+        }
+
+        // melakukan penghapusan
+        $this->Laboratorium_model->delete($id_bebaslab);
+
+        $this->session->set_flashdata('success', 'Data berhasil dihapus');
+        redirect('laboratorium');
     }
 }

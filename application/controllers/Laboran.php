@@ -3,11 +3,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Laboran extends CI_Controller
 {
-     private $status_badge = [
-        'diajukan' => 'secondary',
-        'proses'   => 'warning',
-        'selesai'  => 'success'
-    ];
+    // private $status_badge = [
+    //     'diajukan' => 'secondary',
+    //     'proses'   => 'warning',
+    //     'selesai'  => 'success'
+    // ];
 
     public function __construct()
     {
@@ -16,15 +16,13 @@ class Laboran extends CI_Controller
         $this->load->model('Labkedokteran_model');
         $this->load->model('Labkeperawatan_model');
         $this->load->model('Labfarmasi_model');
-
         $this->load->library('pdf');
-
     }
     public function kedokteran()
     {
 
         $tahun = $this->input->get('tahun', true) ?? date('Y'); // default ke tahun sekarang
-        $status = $this->input->get('status', true) ?? 'diajukan'; // default status
+        $status = $this->input->get('status', true) ?? 'di ajukan'; // default status
 
         // Ambil data dari model
         $data['total'] = $this->Labkedokteran_model->count_by_filter($tahun, null);
@@ -32,21 +30,13 @@ class Laboran extends CI_Controller
         $data['total_proses'] = $this->Labkedokteran_model->count_by_filter($tahun, 'proses');
         $data['total_reject'] = $this->Labkedokteran_model->count_by_filter($tahun, 'reject');
         $data['total_terima'] = $this->Labkedokteran_model->count_by_filter($tahun, 'accept');
-
         $data['filter_tahun'] = $this->Labkedokteran_model->get_tahun_options();
         $data['filter_status'] = ['di ajukan', 'proses', 'reject', 'accept'];
-
-        $data['bebaslab'] = $this->Labkedokteran_model->get_AllKedokteran($tahun, $status);
-    
+        // $data['bebaslab'] = $this->Labkedokteran_model->get_AllKedokteran($tahun, $status);
         $data['title'] = 'Lab Kedokteran';
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
-
-        // $data['status'] = $this->Labkedokteran_model->get_statusaccept1();
         $data['bl'] = $this->Labkedokteran_model->get_AllKedokteran($tahun, $status);
-        // $data['total_surat'] = $this->Labkedokteran_model->hitungJumlahSurat1();
-        // $data['total_diajukan'] = $this->Labkedokteran_model->hitungJumlahdiAjukan1();
-        // $data['total_proses'] = $this->Labkedokteran_model->hitungJumlahdiProses1();
-        // $data['total_selesai'] = $this->Labkedokteran_model->hitungJumlahdiSelesai1(); 
+
 
         $this->form_validation->set_rules('keterangan', 'Keterangan', 'required');
         if ($this->form_validation->run() == false) {
@@ -82,8 +72,8 @@ class Laboran extends CI_Controller
         $data['filter_tahun'] = $this->Labkedokteran_model->get_tahun_options();
         $data['filter_status'] = ['di ajukan', 'proses', 'reject', 'accept'];
 
-        $data['bebaslab'] = $this->Labkedokteran_model->get_AllProfesiDokter($tahun, $status);
-    
+        // $data['bebaslab'] = $this->Labkedokteran_model->get_AllProfesiDokter($tahun, $status);
+
         $data['title'] = 'Lab Kedokteran';
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
 
@@ -197,7 +187,7 @@ class Laboran extends CI_Controller
         $this->session->set_flashdata('flash', 'di Proses');
         redirect('laboran/keperawatandetail/' . $id_bebaslab);
     }
-        public function nersproses($id_bebaslab)
+    public function nersproses($id_bebaslab)
     {
 
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
@@ -229,13 +219,13 @@ class Laboran extends CI_Controller
     public function farmasi()
     {
 
-        
+
         $data['title'] = 'Lab Farmasi';
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
 
         // Filter
-        $tahun  = $this->input->get('tahun', true) ?? date('Y'); 
-        $status = $this->input->get('status', true) ?? 'di ajukan'; 
+        $tahun  = $this->input->get('tahun', true) ?? date('Y');
+        $status = $this->input->get('status', true) ?? 'di ajukan';
 
         // Statistik card
         $data['total']         = $this->Labfarmasi_model->count_by_filter($tahun, null);
@@ -248,17 +238,9 @@ class Laboran extends CI_Controller
         $data['filter_tahun']  = $this->Labfarmasi_model->get_tahun_options();
         $data['filter_status'] = ['di ajukan', 'proses', 'reject', 'accept'];
 
-         // Data utama
+        // Data utama
         $data['bebaslab'] = $this->Labfarmasi_model->get_filtered_data($tahun, $status);
         $data['bl']       = $this->Labfarmasi_model->get_filtered_data($tahun, $status);
-
-        // $data['wisuda'] = $this->db->get()->result_array();
-  //      $data['status'] = $this->Labkedokteran_model->get_statusaccept2();
-  //      $data['bl'] = $this->Labkedokteran_model->get_AllFarmasi();
-  //      $data['total_surat'] = $this->Labkedokteran_model->hitungJumlahSurat2();
-  //      $data['total_diajukan'] = $this->Labkedokteran_model->hitungJumlahdiAjukan2();
-  //      $data['total_proses'] = $this->Labkedokteran_model->hitungJumlahdiProses2();
-//        $data['total_selesai'] = $this->Labkedokteran_model->hitungJumlahdiSelesai2();
 
         $this->form_validation->set_rules('keterangan', 'Keterangan', 'required');
         if ($this->form_validation->run() == false) {
@@ -336,7 +318,7 @@ class Laboran extends CI_Controller
         $data['title'] = 'Lab S1 Keperawatan';
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
 
-         $tahun = $this->input->get('tahun', true) ?? date('Y'); // default ke tahun sekarang
+        $tahun = $this->input->get('tahun', true) ?? date('Y'); // default ke tahun sekarang
         $status = $this->input->get('status', true) ?? 'diajukan'; // default status
 
         // Ambil data dari model
@@ -349,7 +331,7 @@ class Laboran extends CI_Controller
         $data['filter_tahun'] = $this->Labkeperawatan_model->get_tahun_options();
         $data['filter_status'] = ['di ajukan', 'proses', 'reject', 'accept'];
 
-        $data['bebaslab'] = $this->Labkeperawatan_model->get_filtered_data($tahun, $status);
+        // $data['bebaslab'] = $this->Labkeperawatan_model->get_filtered_data($tahun, $status);
         $data['bl'] = $this->Labkeperawatan_model->get_filtered_data($tahun, $status);
 
 
@@ -422,8 +404,8 @@ class Laboran extends CI_Controller
             redirect('surat/naskahpublikasi');
         }
     }
-    
-    
+
+
     // NERS ========================================
     public function ners()
     {
@@ -444,18 +426,8 @@ class Laboran extends CI_Controller
         $data['filter_tahun'] = $this->Labkeperawatan_model->get_tahun_options();
         $data['filter_status'] = ['di ajukan', 'proses', 'reject', 'accept'];
 
-        $data['bebaslab'] = $this->Labkeperawatan_model->nersget_filtered_data($tahun, $status);
+        // $data['bebaslab'] = $this->Labkeperawatan_model->nersget_filtered_data($tahun, $status);
         $data['bl'] = $this->Labkeperawatan_model->nersget_filtered_data($tahun, $status);
-
-
-
-        // $data['wisuda'] = $this->db->get()->result_array();
-        // $data['status'] = $this->Labkedokteran_model->get_statusaccept4();
-        // $data['bl'] = $this->Labkedokteran_model->get_AllNers();
-        // $data['total_surat'] = $this->Labkedokteran_model->hitungJumlahSurat3();
-        // $data['total_diajukan'] = $this->Labkedokteran_model->hitungJumlahdiAjukan3();
-        // $data['total_proses'] = $this->Labkedokteran_model->hitungJumlahdiProses3();
-        // $data['total_selesai'] = $this->Labkedokteran_model->hitungJumlahdiSelesai3();
 
         $this->form_validation->set_rules('keterangan', 'Keterangan', 'required');
         if ($this->form_validation->run() == false) {
@@ -526,68 +498,72 @@ class Laboran extends CI_Controller
             redirect('surat/naskahpublikasi');
         }
     }
-    
-    public function hapus_ners($id_bebaslab){
-        
-         $data['tanggal'] = tanggal();
-         $data['judul'] = 'Hapus Data Mahasiswa';
-         $data['surat'] = $this->Labkedokteran_model->getBebasLabById($id_bebaslab);
-        
-         $this->db->where('id_bebaslab', $id_bebaslab);
-         $this->db->delete('tb_bebaslab');
-         
+
+    public function hapus_ners($id_bebaslab)
+    {
+
+        $data['tanggal'] = tanggal();
+        $data['judul'] = 'Hapus Data Mahasiswa';
+        $data['surat'] = $this->Labkedokteran_model->getBebasLabById($id_bebaslab);
+
+        $this->db->where('id_bebaslab', $id_bebaslab);
+        $this->db->delete('tb_bebaslab');
+
         $this->session->set_flashdata('flash', 'di HAPUS');
         redirect('laboran/ners');
     }
 
-         public function hapus_keperawatan($id_bebaslab){
-        
-         $data['tanggal'] = tanggal();
-         $data['judul'] = 'Hapus Data Mahasiswa';
-         $data['surat'] = $this->Labkedokteran_model->getBebasLabById($id_bebaslab);
-        
-         $this->db->where('id_bebaslab', $id_bebaslab);
-         $this->db->delete('tb_bebaslab');
-         
+    public function hapus_keperawatan($id_bebaslab)
+    {
+
+        $data['tanggal'] = tanggal();
+        $data['judul'] = 'Hapus Data Mahasiswa';
+        $data['surat'] = $this->Labkedokteran_model->getBebasLabById($id_bebaslab);
+
+        $this->db->where('id_bebaslab', $id_bebaslab);
+        $this->db->delete('tb_bebaslab');
+
         $this->session->set_flashdata('flash', 'di HAPUS');
         redirect('laboran/keperawatan');
     }
 
-     public function hapus_dokter($id_bebaslab){
-        
-         $data['tanggal'] = tanggal();
-         $data['judul'] = 'Hapus Data Mahasiswa';
-         $data['surat'] = $this->Labkedokteran_model->getBebasLabById($id_bebaslab);
-        
-         $this->db->where('id_bebaslab', $id_bebaslab);
-         $this->db->delete('tb_bebaslab');
-         
+    public function hapus_dokter($id_bebaslab)
+    {
+
+        $data['tanggal'] = tanggal();
+        $data['judul'] = 'Hapus Data Mahasiswa';
+        $data['surat'] = $this->Labkedokteran_model->getBebasLabById($id_bebaslab);
+
+        $this->db->where('id_bebaslab', $id_bebaslab);
+        $this->db->delete('tb_bebaslab');
+
         $this->session->set_flashdata('flash', 'di HAPUS');
         redirect('laboran/kedokteran');
     }
-     public function hapus_farmasi($id_bebaslab){
-        
-         $data['tanggal'] = tanggal();
-         $data['judul'] = 'Hapus Data Mahasiswa';
-         $data['surat'] = $this->Labkedokteran_model->getBebasLabById($id_bebaslab);
-        
-         $this->db->where('id_bebaslab', $id_bebaslab);
-         $this->db->delete('tb_bebaslab');
-         
+    public function hapus_farmasi($id_bebaslab)
+    {
+
+        $data['tanggal'] = tanggal();
+        $data['judul'] = 'Hapus Data Mahasiswa';
+        $data['surat'] = $this->Labkedokteran_model->getBebasLabById($id_bebaslab);
+
+        $this->db->where('id_bebaslab', $id_bebaslab);
+        $this->db->delete('tb_bebaslab');
+
         $this->session->set_flashdata('flash', 'di HAPUS');
         redirect('laboran/farmasi');
     }
-    public function hapus_profesidokter($id_bebaslab){
-        
-         $data['tanggal'] = tanggal();
-         $data['judul'] = 'Hapus Data Mahasiswa';
-         $data['surat'] = $this->Labkedokteran_model->getBebasLabById($id_bebaslab);
-        
-         $this->db->where('id_bebaslab', $id_bebaslab);
-         $this->db->delete('tb_bebaslab');
-         
+    public function hapus_profesidokter($id_bebaslab)
+    {
+
+        $data['tanggal'] = tanggal();
+        $data['judul'] = 'Hapus Data Mahasiswa';
+        $data['surat'] = $this->Labkedokteran_model->getBebasLabById($id_bebaslab);
+
+        $this->db->where('id_bebaslab', $id_bebaslab);
+        $this->db->delete('tb_bebaslab');
+
         $this->session->set_flashdata('flash', 'di HAPUS');
         redirect('laboran/profesidokter');
     }
-    
 }

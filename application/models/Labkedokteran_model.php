@@ -2,61 +2,47 @@
 
 class Labkedokteran_model extends CI_model
 {
-
-    // public function get_All()
-    // {
-    //     $this->db->select('*');
-    //     $this->db->from('tb_bebaslab');
-    //     $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
-    //     // $this->db->join('prodi', 'prodi.id_prodi=mahasiswa.prodi_id');
-    //     $this->db->order_by('status', 'asc');
-
-
-    //     $query = $this->db->get();
-    //     return $query->result_array();
-    // }
-
     public function get_AllKedokteran($tahun = null, $status = null)
-    {  
-            $prodiid = array('1'); //id s1 kedokteran
-            $this->db->select('*');
-            $this->db->from('tb_bebaslab');
-            $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
-            $this->db->join('prodi', 'prodi.id_prodi=mahasiswa.prodi_id');
-            $this->db->order_by('date_created', 'desc');
-            $this->db->where_in('prodi_id', $prodiid);
+    {
+        $prodiid = array('1'); //id s1 kedokteran
+        $this->db->select('*');
+        $this->db->from('tb_bebaslab');
+        $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
+        $this->db->join('prodi', 'prodi.id_prodi=mahasiswa.prodi_id');
+        $this->db->order_by('date_created', 'desc');
+        $this->db->where_in('prodi_id', $prodiid);
 
-            if ($tahun) {
-                $this->db->where('YEAR(tb_bebaslab.date_created)', $tahun);
-            }
+        if ($tahun) {
+            $this->db->where('YEAR(tb_bebaslab.date_finished)', $tahun);
+        }
 
-            if ($status) {
-                $this->db->where('tb_bebaslab.status', $status);
-            }
+        if ($status) {
+            $this->db->where('tb_bebaslab.status', $status);
+        }
 
-            $query = $this->db->get();
-            return $query->result_array();
+        $query = $this->db->get();
+        return $query->result_array();
     }
-        public function get_AllProfesiDokter($tahun = null, $status = null)
-    {  
-            $prodiid = array('6'); // id profesi dokter
-            $this->db->select('*');
-            $this->db->from('tb_bebaslab');
-            $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
-            $this->db->join('prodi', 'prodi.id_prodi=mahasiswa.prodi_id');
-            $this->db->order_by('date_created', 'desc');
-            $this->db->where_in('prodi_id', $prodiid);
+    public function get_AllProfesiDokter($tahun = null, $status = null)
+    {
+        $prodiid = array('6'); // id profesi dokter
+        $this->db->select('*');
+        $this->db->from('tb_bebaslab');
+        $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
+        $this->db->join('prodi', 'prodi.id_prodi=mahasiswa.prodi_id');
+        $this->db->order_by('date_created', 'desc');
+        $this->db->where_in('prodi_id', $prodiid);
 
-            if ($tahun) {
-                $this->db->where('YEAR(tb_bebaslab.date_created)', $tahun);
-            }
+        if ($tahun) {
+            $this->db->where('YEAR(tb_bebaslab.date_finished)', $tahun);
+        }
 
-            if ($status) {
-                $this->db->where('tb_bebaslab.status', $status);
-            }
+        if ($status) {
+            $this->db->where('tb_bebaslab.status', $status);
+        }
 
-            $query = $this->db->get();
-            return $query->result_array();
+        $query = $this->db->get();
+        return $query->result_array();
     }
 
     public function get_Idbp($id_bebaslab)
@@ -80,7 +66,7 @@ class Labkedokteran_model extends CI_model
         $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
         $this->db->join('prodi', 'prodi.id_prodi=mahasiswa.prodi_id');
 
-        $this->db->where_in('prodi_id', [1,6]);
+        $this->db->where_in('prodi_id', [1, 6]);
         $this->db->where('status', $accept);
         $query = $this->db->get();
         return $query->result_array();
@@ -113,8 +99,8 @@ class Labkedokteran_model extends CI_model
         $query = $this->db->get();
         return $query->result_array();
     }
-    
-     public function get_statusaccept4()
+
+    public function get_statusaccept4()
     {
         $accept = 'accept';
         $this->db->select('*');
@@ -127,7 +113,7 @@ class Labkedokteran_model extends CI_model
         $query = $this->db->get();
         return $query->result_array();
     }
-    
+
     public function accept_Idbp($id_bebaslab)
     {
         $proses = 'accept';
@@ -138,6 +124,7 @@ class Labkedokteran_model extends CI_model
             'nomor' => $this->input->post('nomor', true),
             'keterangan' => 'Validasi Lengkap',
             'date_finished' => $date,
+            'berlaku_sampai' => date("Y-m-d", strtotime("+90 days")),
             'lab1_admin' => $this->session->userdata('name')
 
         ];
@@ -187,203 +174,6 @@ class Labkedokteran_model extends CI_model
         return $query->row_array();
     }
 
-    // public function hitungJumlahSurat1()
-    // {
-    //     $this->db->select('*');
-    //     $this->db->from('tb_bebaslab');
-    //     $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
-    //     $this->db->order_by('date_created', 'asc');
-    //     $this->db->where_in('prodi_id', [1,6]);
-    //     $this->db->where_not_in('status', '');
-
-    //     $query = $this->db->get();
-    //     if ($query->num_rows() > 0) {
-    //         return $query->num_rows();
-    //     } else {
-    //         return 0;
-    //     }
-    // }
-    // public function hitungJumlahSurat2()
-    // {
-    //     $this->db->select('*');
-    //     $this->db->from('tb_bebaslab');
-    //     $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
-    //     $this->db->order_by('date_created', 'asc');
-    //     $this->db->where('prodi_id', '2');
-    //     $this->db->where_not_in('status', '');
-
-    //     $query = $this->db->get();
-    //     if ($query->num_rows() > 0) {
-    //         return $query->num_rows();
-    //     } else {
-    //         return 0;
-    //     }
-    // }
-    // public function hitungJumlahSurat3()
-    // {
-    //     $this->db->select('*');
-    //     $this->db->from('tb_bebaslab');
-    //     $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
-    //     $this->db->order_by('date_created', 'asc');
-    //     $this->db->where('prodi_id', '3');
-    //     $this->db->where_not_in('status', '');
-
-    //     $query = $this->db->get();
-    //     if ($query->num_rows() > 0) {
-    //         return $query->num_rows();
-    //     } else {
-    //         return 0;
-    //     }
-    // }
-    // public function hitungJumlahdiAjukan1()
-    // {
-    //     $this->db->select('*');
-    //     $this->db->from('tb_bebaslab');
-    //     $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
-    //     $this->db->order_by('date_created', 'asc');
-    //     $this->db->where('status', 'di ajukan');
-    //     $this->db->where_in('prodi_id' , [1,6]);
-
-    //     $query = $this->db->get();
-
-    //     // $query = $this->db->get_where(['status' => 'di ajukan', 'prodi_id' => '1']);
-    //     if ($query->num_rows() > 0) {
-    //         return $query->num_rows();
-    //     } else {
-    //         return 0;
-    //     }
-    // }
-    // public function hitungJumlahdiAjukan2()
-    // {
-    //     $this->db->select('*');
-    //     $this->db->from('tb_bebaslab');
-    //     $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
-    //     $this->db->order_by('date_created', 'asc');
-    //     $this->db->where(['status' => 'di ajukan', 'prodi_id' => '2']);
-
-    //     $query = $this->db->get();
-
-    //     // $query = $this->db->get_where(['status' => 'di ajukan', 'prodi_id' => '1']);
-    //     if ($query->num_rows() > 0) {
-    //         return $query->num_rows();
-    //     } else {
-    //         return 0;
-    //     }
-    // }
-    // public function hitungJumlahdiAjukan3()
-    // {
-    //     $this->db->select('*');
-    //     $this->db->from('tb_bebaslab');
-    //     $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
-    //     $this->db->order_by('date_created', 'asc');
-    //     $this->db->where(['status' => 'di ajukan', 'prodi_id' => '3']);
-
-    //     $query = $this->db->get();
-
-    //     // $query = $this->db->get_where(['status' => 'di ajukan', 'prodi_id' => '1']);
-    //     if ($query->num_rows() > 0) {
-    //         return $query->num_rows();
-    //     } else {
-    //         return 0;
-    //     }
-    // }
-    // public function hitungJumlahdiProses1()
-    // {
-    //     // $query = $this->db->get_where('tb_bebaslab', ['status' => 'reject']);
-    //     $this->db->select('*');
-    //     $this->db->from('tb_bebaslab');
-    //     $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
-    //     $this->db->order_by('date_created', 'asc');
-    //     $this->db->where('status', 'proses');
-    //     $this->db->where_in ('prodi_id', [1,6]);
-
-    //     $query = $this->db->get();
-
-    //     if ($query->num_rows() > 0) {
-    //         return $query->num_rows();
-    //     } else {
-    //         return 0;
-    //     }
-    // }
-    // public function hitungJumlahdiProses2()
-    // {
-    //     // $query = $this->db->get_where('tb_bebaslab', ['status' => 'reject']);
-    //     $this->db->select('*');
-    //     $this->db->from('tb_bebaslab');
-    //     $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
-    //     $this->db->order_by('date_created', 'asc');
-    //     $this->db->where(['status' => 'proses', 'prodi_id' => '2']);
-
-    //     $query = $this->db->get();
-
-    //     if ($query->num_rows() > 0) {
-    //         return $query->num_rows();
-    //     } else {
-    //         return 0;
-    //     }
-    // }
-    // public function hitungJumlahdiProses3()
-    // {
-    //     // $query = $this->db->get_where('tb_bebaslab', ['status' => 'reject']);
-    //     $this->db->select('*');
-    //     $this->db->from('tb_bebaslab');
-    //     $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
-    //     $this->db->order_by('date_created', 'asc');
-    //     $this->db->where(['status' => 'proses', 'prodi_id' => '3']);
-
-    //     $query = $this->db->get();
-
-    //     if ($query->num_rows() > 0) {
-    //         return $query->num_rows();
-    //     } else {
-    //         return 0;
-    //     }
-    // }
-
-    // public function hitungJumlahdiSelesai1()
-    // {
-    //     $this->db->select('*');
-    //     $this->db->from('tb_bebaslab');
-    //     $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
-    //     $this->db->order_by('date_created', 'asc');
-    //     $this->db->where('status', 'accept');
-    //     $this->db->where_in('prodi_id',[1,6]);
-    //     $query = $this->db->get();
-    //     if ($query->num_rows() > 0) {
-    //         return $query->num_rows();
-    //     } else {
-    //         return 0;
-    //     }
-    // }
-    // public function hitungJumlahdiSelesai2()
-    // {
-    //     $this->db->select('*');
-    //     $this->db->from('tb_bebaslab');
-    //     $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
-    //     $this->db->order_by('date_created', 'asc');
-    //     $this->db->where(['status' => 'accept', 'prodi_id' => '2']);
-    //     $query = $this->db->get();
-    //     if ($query->num_rows() > 0) {
-    //         return $query->num_rows();
-    //     } else {
-    //         return 0;
-    //     }
-    // }
-    // public function hitungJumlahdiSelesai3()
-    // {
-    //     $this->db->select('*');
-    //     $this->db->from('tb_bebaslab');
-    //     $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
-    //     $this->db->order_by('date_created', 'asc');
-    //     $this->db->where(['status' => 'accept', 'prodi_id' => '3']);
-    //     $query = $this->db->get();
-    //     if ($query->num_rows() > 0) {
-    //         return $query->num_rows();
-    //     } else {
-    //         return 0;
-    //     }
-    // }
-
 
     //FARMASI
     public function get_AllFarmasi()
@@ -418,8 +208,8 @@ class Labkedokteran_model extends CI_model
         $query = $this->db->get();
         return $query->result_array();
     }
-    
-     //Ners
+
+    //Ners
     public function get_AllNers()
     {
         $status = array('di ajukan', 'reject', 'proses');
@@ -435,25 +225,21 @@ class Labkedokteran_model extends CI_model
         $query = $this->db->get();
         return $query->result_array();
     }
-    
+
     public function getBebasLabById($id_bebaslab)
-  {
+    {
 
-    $this->db->select('*');
-    $this->db->from('tb_bebaslab');
-    //$this->db->join('keperluan', 'keperluan.id_keperluan=tb_suratpengajuan.keperluan');
-   // $this->db->join('mahasiswa', 'mahasiswa.nim=tb_suratpengajuan.nim_mahasiswa');
-   // $this->db->join('prodi', 'prodi.id_prodi=mahasiswa.prodi_id');
+        $this->db->select('*');
+        $this->db->from('tb_bebaslab');
+        $this->db->where('id_bebaslab', $id_bebaslab);
+        $query = $this->db->get();
+        return $query->row_array();
+    }
 
-    $this->db->where('id_bebaslab', $id_bebaslab);
-    $query = $this->db->get();
-    return $query->row_array();
-  }
 
-      
     public function get_tahun_options()
     {
-        $this->db->select('YEAR(date_finished) AS tahun', false);
+        $this->db->select('YEAR(date_finished) AS tahun', false); //
         $this->db->from('tb_bebaslab');
         $this->db->group_by('tahun');
         $this->db->order_by('tahun', 'ASC');
@@ -461,41 +247,40 @@ class Labkedokteran_model extends CI_model
         return $this->db->get()->result_array();
     }
 
-public function count_by_filter($tahun = null, $status = null)
-{
-    $prodiid = ['1', '6'];
-    $this->db->from('tb_bebaslab');
-    $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
-    $this->db->where_in('mahasiswa.prodi_id', $prodiid);
+    public function count_by_filter($tahun = null, $status = null)
+    {
+        $prodiid = ['1', '6'];
+        $this->db->from('tb_bebaslab');
+        $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
+        $this->db->where_in('mahasiswa.prodi_id', $prodiid);
 
-    if ($tahun) {
-        $this->db->where('YEAR(tb_bebaslab.date_created)', $tahun);
+        if ($tahun) {
+            $this->db->where('YEAR(tb_bebaslab.date_finished)', $tahun);
+        }
+
+        if ($status) {
+            $this->db->where('tb_bebaslab.status', $status);
+        }
+
+        return $this->db->count_all_results();
     }
 
-    if ($status) {
-        $this->db->where('tb_bebaslab.status', $status);
+
+    public function profesidoktercount_by_filter($tahun = null, $status = null)
+    {
+        $prodiid = ['6']; //id profesi dokter
+        $this->db->from('tb_bebaslab');
+        $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
+        $this->db->where_in('mahasiswa.prodi_id', $prodiid);
+
+        if ($tahun) {
+            $this->db->where('YEAR(tb_bebaslab.date_finished)', $tahun);
+        }
+
+        if ($status) {
+            $this->db->where('tb_bebaslab.status', $status);
+        }
+
+        return $this->db->count_all_results();
     }
-
-    return $this->db->count_all_results();
-}
-
-
-public function profesidoktercount_by_filter($tahun = null, $status = null) 
-{
-    $prodiid = ['6']; //id profesi dokter
-    $this->db->from('tb_bebaslab');
-    $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebaslab.nim_mahasiswa');
-    $this->db->where_in('mahasiswa.prodi_id', $prodiid);
-
-    if ($tahun) {
-        $this->db->where('YEAR(tb_bebaslab.date_created)', $tahun);
-    }
-
-    if ($status) {
-        $this->db->where('tb_bebaslab.status', $status);
-    }
-
-    return $this->db->count_all_results();
-}
-
 }

@@ -7,7 +7,7 @@
             <i class="fas fa-shield-alt"></i>
         </div>
         <div class="sidebar-brand-text mx-3">
-            <span style="font-weight: 700; letter-spacing: 1px;">SILAT</span> 
+            <span style="font-weight: 700; letter-spacing: 1px;">SILAT</span>
             <sup style="font-size: 12px; font-weight: 400; color: #bbb;">^_^</sup>
         </div>
     </a>
@@ -59,31 +59,31 @@
                 <a class="nav-link pb-0" href="<?= base_url($sm['url']); ?>">
                     <i class="<?= $sm['icon']; ?>"></i>
                     <span><?= $sm['title']; ?></span></a>
-            </li>
+                </li>
 
+            <?php endforeach; ?>
+            <hr class="sidebar-divider mt-3">
         <?php endforeach; ?>
-        <hr class="sidebar-divider mt-3">
-    <?php endforeach; ?>
-    <!-- Nav Item - Dashboard -->
+        <!-- Nav Item - Dashboard -->
 
 
-    <li class="nav-item">
-        <a class="nav-link" href="<?= base_url('auth/logout'); ?>">
-            <i class="fas fa-fw fa-sign-out-alt"></i>
-            <span>Logout</span></a>
-    </li>
+        <li class="nav-item">
+            <a class="nav-link" href="<?= base_url('auth/logout'); ?>">
+                <i class="fas fa-fw fa-sign-out-alt"></i>
+                <span>Logout</span></a>
+        </li>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
+        <!-- Divider -->
+        <hr class="sidebar-divider">
 
 
 
 
 
-    <!-- Sidebar Toggler (Sidebar) -->
-    <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-    </div>
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
 
 </ul>
 <!-- End of Sidebar -->

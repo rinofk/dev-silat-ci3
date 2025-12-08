@@ -95,10 +95,10 @@
     });
 </script>
 <script>
-$(document).ready(function() {
-    $('#datatableAdmin').DataTable();
-    $('#datatableMahasiswa').DataTable();
-});
+    $(document).ready(function() {
+        $('#datatableAdmin').DataTable();
+        $('#datatableMahasiswa').DataTable();
+    });
 </script>
 
 </body>

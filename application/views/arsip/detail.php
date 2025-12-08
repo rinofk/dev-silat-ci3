@@ -67,7 +67,7 @@
                                     <input type="text" class="form-control" id="no_hp" name="no_hp" value="<?= $ydetail['no_hp'] ?>" readonly>
                                 </div>
                             </div>
- 
+
 
 
                             <div class="form-group row">
@@ -116,7 +116,7 @@
                                 </div>
                             </div>
 
-                            
+
                             <div class="form-group row">
                                 <div class="col-sm-2">Kwitansi Pembayaran UKT</div>
                                 <div class="col-sm-10">
@@ -140,7 +140,7 @@
                                 </div>
                             </div>
 
-                            
+
                             <div class="form-group row">
                                 <div class="col-sm-2">Bukti Bebas Lab</div>
                                 <div class="col-sm-10">
@@ -163,7 +163,7 @@
                                     </div>
                                 </div>
                             </div>
-                          
+
                             <div class="form-group row">
                                 <label for="status" class="col-sm-2 col-form-label">Status</label>
                                 <div class="col-sm-10">
@@ -193,7 +193,7 @@
 </div>
 </div>
 
- 
+
 
 <!-- Modal Reject-->
 <div class="modal fade" id="newRoleModal" tabindex="-1" role="dialog" aria-labelledby="newRoleModalLabel" aria-hidden="true">

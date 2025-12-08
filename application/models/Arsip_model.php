@@ -3,6 +3,7 @@
 class Arsip_model extends CI_model
 {
 
+    
     public function get_All()
     {
         $status = array('di terima', '');

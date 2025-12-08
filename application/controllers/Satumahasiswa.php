@@ -12,10 +12,10 @@ class Satumahasiswa extends CI_Controller
 
     public function index()
     {
-            // tambahkan ini:
-         $data['user'] = $this->db->get_where('user', [
+        // tambahkan ini:
+        $data['user'] = $this->db->get_where('user', [
             'email' => $this->session->userdata('email')
-        ])->row_array();        
+        ])->row_array();
         $data['title'] = 'Sinkronisasi Data Mahasiswa (Satu Data)';
         $data['mahasiswa'] = $this->Satumahasiswa_model->getAll();
 

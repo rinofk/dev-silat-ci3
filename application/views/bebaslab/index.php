@@ -2,162 +2,138 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <div class="row">
+    <h1 class="h4 mb-4 text-gray-800">Pengajuan Bebas Lab</h1>
+
+    <div class="row mb-3">
         <div class="col-lg-6">
             <?= $this->session->flashdata('message'); ?>
         </div>
     </div>
 
-    <?php
-    if (empty($bl['nim_mahasiswa'])) {; ?>
-        <div class="container">
-            <div class="row mt-3">
-                <div class="col-md-6">
-                    <a href="<?= base_url(); ?>laboratorium/tambah" type="button" class="btn btn-outline-primary mb-3">Buat Surat Bebas Lab</a>
-                </div>
-            </div>
+    <!-- tombol tambah pengajuan -->
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <a href="<?= base_url('laboratorium/tambah'); ?>" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Buat Pengajuan Baru
+            </a>
         </div>
-    <?php } else {; ?>
-        <!-- Basic Card Example -->
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Bebas laboratorium</h6>
-                    </div>
+    </div>
 
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <?= form_open_multipart('laboratorium/do_update'); ?>
-                                <div class="form-group row">
-                                    <label for="name" class="col-sm-2 col-form-label">Nama Lengkap</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="name" name="name" value="<?= $mahasiswa['nama_lengkap'] ?>" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="nim" class="col-sm-2 col-form-label">NIM</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="nim" name="nim" value="<?= $mahasiswa['nim'] ?>" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="email" class="col-sm-2 col-form-label">Email</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="email" name="email" value="<?= $user['email'] ?>" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="prodi" class="col-sm-2 col-form-label">Program Studi</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="prodi" name="prodi" value="<?= $mahasiswa['nama_prodi'] ?>" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="ttl" class="col-sm-2 col-form-label">Tempat, Tanggal Lahir</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="ttl" name="ttl" value="<?= $mahasiswa['tempat_lahir'] . ', ' . $mahasiswa['tgl_lahir'] ?>" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="alamat" class="col-sm-2 col-form-label">Alamat</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="alamat" name="alamat" value="<?= $mahasiswa['alamat'] ?>" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="no_hp" class="col-sm-2 col-form-label">No HP</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="no_hp" name="no_hp" value="<?= $mahasiswa['no_hp'] ?>" readonly>
-                                    </div>
-                                </div>
-                                <!-- <div class="form-group row">
-                                    <label for="semester" class="col-sm-2 col-form-label">Semester</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="semester" name="semester" value="<?= $bl['semester'] ?>">
-                                    </div>
-                                </div> -->
-
-
-                                <div class="form-group row">
-                                    <div class="col-sm-2">KTM</div>
-                                    <div class="col-sm-10">
-                                        <div class="row">
-                                            <div class="col-sm-8">
-                                                <div class="input-group">
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" id="ktm" name="ktm" aria-describedby="inputGroupFileAddon04">
-                                                        <label class="custom-file-label" for="ktm"><?= $bl['ktm'] ?></label>
-                                                    </div>
-                                                    <div class="input-group-append">
-                                                        <a href="<?= base_url(); ?>assets/bebaslab/<?= $bl['ktm'] ?>" target="_blank" class="btn btn-outline-secondary">
-                                                            Preview
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                format filename "nim_ktm.jpg"
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="status" class="col-sm-2 col-form-label">Status</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="status" name="status" value="<?= $bl['status'] ?>" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="keterangan" class="col-sm-2 col-form-label">Keterangan</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="keterangan" name="keterangan" value="<?= $bl['keterangan'] ?>" readonly>
-                                    </div>
-                                </div>
-                                <?php
-                                if (empty($bl['status'])) {; ?>
-                                    <div class="form-group row justify-content-end">
-                                        <div class="col-sm-2">
-                                            <button type="submit" class="btn btn-primary">Simpan</button>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <a href="<?= base_url(); ?>laboratorium/ajukan/<?= $bl['id_bebaslab']; ?>" class="btn btn-outline-primary"> KIRIM </a>
-                                        </div>
-                                    </div>
-                                <?php }; ?>
-                                <?php
-                                if ($bl['status'] == 'reject') {; ?>
-                                    <div class="form-group row justify-content-end">
-                                        <div class="col-sm-2">
-                                            <button type="submit" class="btn btn-primary">Update</button>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <a href="<?= base_url(); ?>laboratorium/ajukan/<?= $bl['id_bebaslab']; ?>" class="btn btn-outline-primary"> Kirim </a>
-                                        </div>
-                                    </div>
-                                <?php }; ?>
-                                <?php
-                                if ($bl['status'] == 'accept') {; ?>
-                                    <div class="form-group row justify-content-end">
-                                        <div class="col-sm-2">
-                                            <a href="<?= base_url(); ?>laboratorium/cetak/<?= $bl['id_bebaslab']; ?>" class="btn btn-outline-primary" target="blank"> Cetak </a>
-                                        </div>
-                                    </div>
-                                <?php }; ?>
-                                </form>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
+    <!-- daftar pengajuan -->
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Daftar Pengajuan</h6>
         </div>
-    <?php }; ?>
 
-</div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th width="5%">No</th>
+                        <th>ID Surat</th>
+                        <th>Nim</th>
+                        <th>Status</th>
+                        <th>Berkas KTM</th>
+                        <th>Tanggal Pengajuan</th>
+                        <th>Tanggal Surat</th>
+                        <th>Berlaku Sampai</th>
+                        <th width="15%">Aksi</th>
+                    </tr>
+                </thead>
 
+                <tbody>
+                    <?php $no = 1;
+                    foreach ($pengajuan as $p): ?>
+                        <tr>
+                            <td><?= $no++; ?></td>
+                            <td><?= $p['id_bebaslab']; ?></td>
+                            <td><?= $p['nim_mahasiswa']; ?></td>
+
+                            <td>
+                                <?php if ($p['status'] == 'di ajukan'): ?>
+                                    <span class="badge badge-secondary">di Ajukan</span>
+                                <?php elseif ($p['status'] == 'proses'): ?>
+                                    <span class="badge badge-warning">Diproses</span>
+                                <?php elseif ($p['status'] == 'reject'): ?>
+                                    <span class="badge badge-danger">Ditolak</span>
+                                <?php elseif ($p['status'] == 'accept'): ?>
+                                    <span class="badge badge-success">Diterima</span>
+                                <?php endif; ?>
+                                <br> <?= $p['keterangan']; ?>
+                            </td>
+
+                            <td>
+                                <?php if (!empty($p['ktm'])): ?>
+                                    <img src="<?= base_url('assets/bebaslab/' . $p['ktm']); ?>"
+                                        width="120" class="mb-2">
+                                <?php endif; ?>
+                                <!-- <?php if (!empty($p['ktm'])): ?>
+                                    <a href="<?= base_url('assets/bebaslab/' . $p['ktm']); ?>" target="_blank">Lihat</a> -->
+                            <?php else: ?>
+                                <span class="text-muted">Belum upload</span>
+                            <?php endif; ?>
+                            </td>
+                            <td><?= date('Y-m-d', strtotime($p['date_created'])); ?></td>
+                            <td><?php if ($p['date_finished'] != '1970-01-01' && !empty($p['date_finished'])): ?>
+                                    <?= $p['date_finished']; ?>
+                                <?php else: ?>
+                                    -
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php if (!empty($p['berlaku_sampai'])): ?>
+                                    <?= $p['berlaku_sampai']; ?>
+                                <?php else: ?>
+                                    -
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+
+                                    <!-- Tombol Edit (tampil jika status bukan 'di ajukan' dan bukan 'accept') -->
+                                    <?php if ($p['status'] != 'di ajukan' && $p['status'] != 'accept'): ?>
+                                        <a href="<?= base_url('laboratorium/edit/' . $p['id_bebaslab']); ?>"
+                                            class="btn btn-sm btn-primary">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                    <?php endif; ?>
+
+                                    <!-- Tombol Ajukan (tampil jika status kosong atau 'reject') -->
+                                    <?php if ($p['status'] == '' || $p['status'] == 'reject'): ?>
+                                        <a href="<?= base_url('laboratorium/ajukan/' . $p['id_bebaslab']); ?>"
+                                            class="btn btn-sm btn-success">
+                                            <i class="fas fa-paper-plane"></i> Ajukan
+                                        </a>
+                                    <?php endif; ?>
+
+                                    <!-- Tombol Delete (tampil jika status bukan 'accept', bukan 'di ajukan', dan bukan 'reject') -->
+                                    <?php if ($p['status'] != 'accept' && $p['status'] != 'di ajukan' && $p['status'] != 'reject'): ?>
+                                        <a href="<?= site_url('laboratorium/delete/' . $p['id_bebaslab']); ?>"
+                                            class="btn btn-sm btn-danger"
+                                            onclick="return confirm('Yakin ingin menghapus data ini?');">
+                                            <i class="fas fa-trash-alt"></i> Hapus
+                                        </a>
+                                    <?php endif; ?>
+
+                                    <!-- Tombol Cetak (hanya status accept) -->
+                                    <?php if ($p['status'] == 'accept'): ?>
+                                        <a href="<?= site_url('laboratorium/cetak/' . $p['id_bebaslab']); ?>"
+                                            class="btn btn-sm btn-info" target="_blank">
+                                            <i class="fas fa-print"></i> Cetak
+                                        </a>
+                                    <?php endif; ?>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+
+                    <?php if (empty($pengajuan)): ?>
+                        <tr>
+                            <td colspan="7" class="text-center text-muted">Belum ada pengajuan</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-<!-- End of Main Content -->

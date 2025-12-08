@@ -14,18 +14,18 @@
             </div>
         </div>
     <?php endif; ?>
- 
+
     <!-- Filter Form -->
     <form method="get" class="form-inline mb-3">
         <div class="form-group mr-2">
             <label for="tahun">Tahun:</label>
             <select name="tahun" id="tahun" class="form-control ml-2">
                 <option value="">Semua Tahun</option>
-                <?php 
-                    $selectedTahun = $this->input->get('tahun') ?? '';
-                    $lastTahun = end($filter_tahun)['tahun'];
-                    if ($selectedTahun == '') $selectedTahun = $lastTahun;
-                    foreach (array_reverse($filter_tahun) as $t): 
+                <?php
+                $selectedTahun = $this->input->get('tahun') ?? '';
+                $lastTahun = end($filter_tahun)['tahun'];
+                if ($selectedTahun == '') $selectedTahun = $lastTahun;
+                foreach (array_reverse($filter_tahun) as $t):
                 ?>
                     <option value="<?= $t['tahun']; ?>" <?= ($selectedTahun == $t['tahun']) ? 'selected' : ''; ?>>
                         <?= $t['tahun']; ?>
@@ -50,100 +50,42 @@
     </form>
 
 
-  <!-- Dashboard Cards -->
-  <div class="row">
-    <?php 
-      $cards = [
-        ['title' => 'Di Ajukan', 'count' => $total_diajukan, 'icon' => 'fa-paper-plane', 'color' => 'secondary', 'status' => 'di ajukan'],
-        ['title' => 'Proses',    'count' => $total_proses,   'icon' => 'fa-sync-alt',    'color' => 'warning',   'status' => 'proses'],
-        ['title' => 'Selesai',   'count' => $total_terima,  'icon' => 'fa-check-circle','color' => 'success',  'status' => 'accept'],
-        ['title' => 'Reject',    'count' => $total_reject,   'icon' => 'fa-times-circle','color' => 'danger',  'status' => 'reject'],
-        ['title' => 'Total',     'count' => $total,    'icon' => 'fa-list',        'color' => 'info',     'status' => '']
-      ]; 
-      $currentTahun = $this->input->get('tahun') ?? '';
-    ?>
+    <!-- Dashboard Cards -->
+    <div class="row">
+        <?php
+        $cards = [
+            ['title' => 'Di Ajukan', 'count' => $total_diajukan, 'icon' => 'fa-paper-plane', 'color' => 'secondary', 'status' => 'di ajukan'],
+            ['title' => 'Proses',    'count' => $total_proses,   'icon' => 'fa-sync-alt',    'color' => 'warning',   'status' => 'proses'],
+            ['title' => 'Selesai',   'count' => $total_terima,  'icon' => 'fa-check-circle', 'color' => 'success',  'status' => 'accept'],
+            ['title' => 'Reject',    'count' => $total_reject,   'icon' => 'fa-times-circle', 'color' => 'danger',  'status' => 'reject'],
+            ['title' => 'Total',     'count' => $total,    'icon' => 'fa-list',        'color' => 'info',     'status' => '']
+        ];
+        $currentTahun = $this->input->get('tahun') ?? '';
+        ?>
 
-    <?php foreach ($cards as $card) : ?>
-      <!-- <div class="col-xl-3 col-md-6 mb-4"> -->
-        <div class="col-md mb-2">
-        <a href="<?= base_url('laboran/kedokteran?tahun=' . $currentTahun . '&status=' . $card['status']); ?>" class="text-decoration-none">
-          <div class="card border-left-<?= $card['color'] ?> shadow h-100 py-2">
-            <div class="card-body">
-              <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                  <div class="text-xs font-weight-bold text-<?= $card['color'] ?> text-uppercase mb-1">
-                    <?= $card['title'] ?>
-                  </div>
-                  <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $card['count'] ?></div>
-                </div>
-                <div class="col-auto">
-                  <i class="fas <?= $card['icon'] ?> fa-2x text-gray-300"></i>
-                </div>
-              </div>
+        <?php foreach ($cards as $card) : ?>
+            <!-- <div class="col-xl-3 col-md-6 mb-4"> -->
+            <div class="col-md mb-2">
+                <a href="<?= base_url('laboran/kedokteran?tahun=' . $currentTahun . '&status=' . $card['status']); ?>" class="text-decoration-none">
+                    <div class="card border-left-<?= $card['color'] ?> shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-<?= $card['color'] ?> text-uppercase mb-1">
+                                        <?= $card['title'] ?>
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $card['count'] ?></div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas <?= $card['icon'] ?> fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
             </div>
-          </div>
-        </a>
-      </div>
-    <?php endforeach; ?> 
-  </div>
-
-<!-- 
-<div class="row">
-    <div class="col-md mb-2">
-        <a href="?tahun=<?= $this->input->get('tahun'); ?>&status=">
-            <div class="card border-primary shadow h-100 py-2">
-                <div class="card-body text-center">
-                    <h6 class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total</h6>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $total ?></div>
-                </div>
-            </div>
-        </a>
+        <?php endforeach; ?>
     </div>
-
-    <div class="col-md mb-2">
-        <a href="?tahun=<?= $this->input->get('tahun'); ?>&status=di ajukan">
-            <div class="card border-info shadow h-100 py-2">
-                <div class="card-body text-center">
-                    <h6 class="text-xs font-weight-bold text-info text-uppercase mb-1">Diajukan</h6>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $total_diajukan ?></div>
-                </div>
-            </div>
-        </a>
-    </div>
-
-    <div class="col-md mb-2">
-        <a href="?tahun=<?= $this->input->get('tahun'); ?>&status=proses">
-            <div class="card border-warning shadow h-100 py-2">
-                <div class="card-body text-center">
-                    <h6 class="text-xs font-weight-bold text-warning text-uppercase mb-1">Proses</h6>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $total_proses ?></div>
-                </div>
-            </div>
-        </a>
-    </div>
-
-    <div class="col-md mb-2">
-        <a href="?tahun=<?= $this->input->get('tahun'); ?>&status=reject">
-            <div class="card border-danger shadow h-100 py-2">
-                <div class="card-body text-center">
-                    <h6 class="text-xs font-weight-bold text-danger text-uppercase mb-1">Reject</h6>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $total_reject ?></div>
-                </div>
-            </div>
-        </a>
-    </div>
-
-    <div class="col-md mb-2">
-        <a href="?tahun=<?= $this->input->get('tahun'); ?>&status=accept">
-            <div class="card border-success shadow h-100 py-2">
-                <div class="card-body text-center">
-                    <h6 class="text-xs font-weight-bold text-success text-uppercase mb-1">Accept</h6>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $total_terima ?></div>
-                </div>
-            </div>
-        </a>
-    </div>
-</div> -->
 
     <!-- DataTable -->
     <div class="card shadow mb-4">
@@ -177,22 +119,23 @@
                                     </a>
                                 </td>
                                 <td><?= $s['nama_lengkap']; ?></td>
-                                <td><?= $s['nama_prodi']; ?></td> 
+                                <td><?= $s['nama_prodi']; ?></td>
                                 <td><?= $s['date_created']; ?></td>
                                 <td><?= $s['status']; ?></td>
                                 <td><?= $s['date_updated']; ?><br><?= $s['lab1_admin']; ?></td>
                                 <td>
-                                     <?php if (strtolower($s['status']) !== 'accept'): ?>
-                                        <a href="<?= base_url("laboran/hapus_dokter/{$s['id_bebaslab']}"); ?>" 
-                                        class="btn btn-sm btn-danger mt-1"
-                                        onclick="return confirm('Yakin ingin menghapus data ini? <?= $s['nama_lengkap']; ?>');">
+                                    <?php if (strtolower($s['status']) !== 'accept'): ?>
+                                        <a href="<?= base_url("laboran/hapus_dokter/{$s['id_bebaslab']}"); ?>"
+                                            class="btn btn-sm btn-danger mt-1"
+                                            onclick="return confirm('Yakin ingin menghapus data ini? <?= $s['nama_lengkap']; ?>');">
                                             Delete
                                         </a>
                                     <?php endif; ?>
-                                    
+
                                 </td>
                             </tr>
-                        <?php $i++; endforeach; ?>
+                        <?php $i++;
+                        endforeach; ?>
                     </tbody>
                 </table>
             </div>
