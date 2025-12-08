@@ -44,39 +44,65 @@ class Laboratorium extends CI_Controller
     }
     public function do_upload()
     {
-        $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
-        // $data['bp'] = $this->db->get_where('tb_bebasperpus', ['nim_mahasiswa' => $this->session->userdata('nim')])->row_array();
+        $data['user'] = $this->db->get_where('user', [
+            'nim' => $this->session->userdata('nim')
+        ])->row_array();
 
         $nim = $this->input->post('nim');
-        //cek jika ada gambar yang akan di upload
-        $config['allowed_types'] = 'jpg|png';
-        $config['max_size']     = '2048';
-        $config['upload_path'] = './assets/bebaslab/';
+
+        // ==== PERBAIKAN UPLOAD ====
+        $config['upload_path']   = './assets/bebaslab/';
+        $config['allowed_types'] = 'jpg|jpeg|png';  // TAMBAH jpeg
+        $config['max_size']      = 2048;
+
+        // FIX MIME type WhatsApp Web
+        $config['mime_types'] = [
+            'jpg'  => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
+            'jpeg' => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
+            'png'  => ['image/png',  'image/x-png']
+        ];
+
         $this->load->library('upload', $config);
 
-        $upload_ktm = $_FILES['ktm']['name'];
-        if ($upload_ktm) {
+        // Upload file KTM
+        if (!empty($_FILES['ktm']['name'])) {
             if ($this->upload->do_upload('ktm')) {
                 $ktm = $this->upload->data('file_name');
                 $this->db->set('ktm', $ktm);
             } else {
-                echo $this->upload->display_errors();
+                // Tampilkan error bila gagal
+                $this->session->set_flashdata(
+                    'message',
+                    '<div class="alert alert-danger">Upload gagal: ' .
+                        $this->upload->display_errors() . '</div>'
+                );
+                redirect('laboratorium/tambah');
             }
         }
 
+        // ==== INSERT DATA ====
         date_default_timezone_set('Asia/Jakarta');
         $date = date("Y-m-d H:i:s");
-        $data = [
-            "nim_mahasiswa" => $this->input->post('nim', true),
-            "semester" => $this->input->post('semester', true),
-            // "status"        => 'di ajukan',       // set langsung
-            "date_created" => $date
-        ];
-        $this->db->insert('tb_bebaslab', $data);
 
-        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berkas Anda Berhasil di UPDATE</div>');
+        $dataInsert = [
+            "nim_mahasiswa" => $nim,
+            "semester"      => $this->input->post('semester', true),
+            "status"        => '',            // status awal kosong dulu
+            "date_created"  => $date
+        ];
+
+        $this->db->insert('tb_bebaslab', $dataInsert);
+
+        $this->session->set_flashdata(
+            'message',
+            '<div class="alert alert-success" role="alert">
+            Pengajuan berhasil dibuat.
+        </div>'
+        );
+
         redirect('laboratorium');
     }
+
 
     public function edit($id_bebaslab)
     {
