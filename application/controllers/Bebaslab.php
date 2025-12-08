@@ -31,7 +31,11 @@ class Bebaslab extends CI_Controller
         $defaultTahun = !empty($tahunList) ? $tahunList[0] : date('Y');
 
         // GET Parameter Filter
-        $filter_prodi  = $this->input->get('prodi');
+        // $filter_prodi  = $this->input->get('prodi');
+        $filter_prodi = $this->input->get('prodi');
+        if ($filter_prodi) {
+            $filter_prodi = str_replace('-', ' ', $filter_prodi); // ubah kembali ke nama asli
+        }
         $filter_tahun  = $this->input->get('tahun') ? $this->input->get('tahun') : $defaultTahun;
         $filter_status = $this->input->get('status');
 
@@ -50,11 +54,23 @@ class Bebaslab extends CI_Controller
             'di ajukan'
         );
 
+        // ======== DATA UTAMA TAB "Proses" =========
+        $data['proses'] = $this->Bebaslab_model->getFiltered(
+            $filter_prodi,
+            $filter_tahun,
+            'proses'
+        );
         // ======== DATA UTAMA TAB "SELESAI" =========
         $data['selesai'] = $this->Bebaslab_model->getFiltered(
             $filter_prodi,
             $filter_tahun,
             'accept'
+        );
+        // ======== DATA UTAMA TAB "Reject" =========
+        $data['reject'] = $this->Bebaslab_model->getFiltered(
+            $filter_prodi,
+            $filter_tahun,
+            'reject'
         );
 
         // ======== STATISTIK CARD =========

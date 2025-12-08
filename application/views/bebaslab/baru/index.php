@@ -297,7 +297,7 @@
                                             <td><?= htmlspecialchars($r->nim_mahasiswa) ?></td>
                                             <td><?= htmlspecialchars($r->nama_lengkap) ?></td>
                                             <td><?= htmlspecialchars($r->nama_prodi) ?></td>
-                                            <td><?= htmlspecialchars($r->alasan) ?></td>
+                                            <td><?= htmlspecialchars($r->keterangan) ?></td>
                                             <td><?= !empty($r->date_reject) ? date('d-m-Y', strtotime($r->date_reject)) : '-' ?></td>
                                             <td><span class="badge badge-danger">Reject</span></td>
                                         </tr>
