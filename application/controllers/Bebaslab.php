@@ -31,11 +31,11 @@ class Bebaslab extends CI_Controller
         $defaultTahun = !empty($tahunList) ? $tahunList[0] : date('Y');
 
         // GET Parameter Filter
-        // $filter_prodi  = $this->input->get('prodi');
-        $filter_prodi = $this->input->get('prodi');
-        if ($filter_prodi) {
-            $filter_prodi = str_replace('-', ' ', $filter_prodi); // ubah kembali ke nama asli
-        }
+        $filter_prodi  = $this->input->get('prodi');
+        // $filter_prodi = $this->input->get('prodi');
+        // if ($filter_prodi) {
+        //     $filter_prodi = str_replace('-', ' ', $filter_prodi); // ubah kembali ke nama asli
+        // }
         $filter_tahun  = $this->input->get('tahun') ? $this->input->get('tahun') : $defaultTahun;
         $filter_status = $this->input->get('status');
 

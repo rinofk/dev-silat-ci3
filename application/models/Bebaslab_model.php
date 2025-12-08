@@ -9,14 +9,15 @@ class Bebaslab_model extends CI_Model
         $this->db->select('
             tb_bebaslab.*,
             mahasiswa.nama_lengkap,
-            prodi.nama_prodi
+            prodi.nama_prodi,
+            prodi.slug
         ');
         $this->db->from('tb_bebaslab');
         $this->db->join('mahasiswa', 'mahasiswa.nim = tb_bebaslab.nim_mahasiswa');
         $this->db->join('prodi', 'prodi.id_prodi = mahasiswa.prodi_id');
 
         if (!empty($prodi)) {
-            $this->db->where('prodi.nama_prodi', $prodi);
+            $this->db->where('prodi.slug', $prodi);
         }
 
         if (!empty($tahun)) {
@@ -39,7 +40,9 @@ class Bebaslab_model extends CI_Model
         $this->db->select('
             tb_bebaslab.*,
             mahasiswa.nama_lengkap,
-            prodi.nama_prodi
+            prodi.nama_prodi,
+            prodi.slug
+
         ');
         $this->db->from('tb_bebaslab');
         $this->db->join('mahasiswa', 'mahasiswa.nim = tb_bebaslab.nim_mahasiswa');
@@ -74,7 +77,7 @@ class Bebaslab_model extends CI_Model
         $this->db->from('tb_bebaslab');
         $this->db->join('mahasiswa', 'mahasiswa.nim = tb_bebaslab.nim_mahasiswa');
         $this->db->join('prodi', 'prodi.id_prodi = mahasiswa.prodi_id');
-        if ($prodi) $this->db->where('prodi.nama_prodi', $prodi);
+        if ($prodi) $this->db->where('prodi.slug', $prodi);
         if ($tahun) $this->db->where('YEAR(tb_bebaslab.date_created)', $tahun);
         $stats['total'] = $this->db->count_all_results();
 
@@ -83,7 +86,7 @@ class Bebaslab_model extends CI_Model
         $this->db->join('mahasiswa', 'mahasiswa.nim = tb_bebaslab.nim_mahasiswa');
         $this->db->join('prodi', 'prodi.id_prodi = mahasiswa.prodi_id');
         $this->db->where('tb_bebaslab.status', 'disetujui');
-        if ($prodi) $this->db->where('prodi.nama_prodi', $prodi);
+        if ($prodi) $this->db->where('prodi.slug', $prodi);
         if ($tahun) $this->db->where('YEAR(tb_bebaslab.date_created)', $tahun);
         $stats['disetujui'] = $this->db->count_all_results();
 
@@ -92,7 +95,7 @@ class Bebaslab_model extends CI_Model
         $this->db->join('mahasiswa', 'mahasiswa.nim = tb_bebaslab.nim_mahasiswa');
         $this->db->join('prodi', 'prodi.id_prodi = mahasiswa.prodi_id');
         $this->db->where('tb_bebaslab.status', 'ditolak');
-        if ($prodi) $this->db->where('prodi.nama_prodi', $prodi);
+        if ($prodi) $this->db->where('prodi.slug', $prodi);
         if ($tahun) $this->db->where('YEAR(tb_bebaslab.date_created)', $tahun);
         $stats['ditolak'] = $this->db->count_all_results();
 
@@ -101,7 +104,7 @@ class Bebaslab_model extends CI_Model
         $this->db->join('mahasiswa', 'mahasiswa.nim = tb_bebaslab.nim_mahasiswa');
         $this->db->join('prodi', 'prodi.id_prodi = mahasiswa.prodi_id');
         $this->db->where('tb_bebaslab.status', 'menunggu');
-        if ($prodi) $this->db->where('prodi.nama_prodi', $prodi);
+        if ($prodi) $this->db->where('prodi.slug', $prodi);
         if ($tahun) $this->db->where('YEAR(tb_bebaslab.date_created)', $tahun);
         $stats['menunggu'] = $this->db->count_all_results();
 
@@ -126,7 +129,7 @@ class Bebaslab_model extends CI_Model
         $this->db->join('prodi', 'prodi.id_prodi = mahasiswa.prodi_id');
 
         if (!empty($prodi)) {
-            $this->db->where('prodi.nama_prodi', $prodi);
+            $this->db->where('prodi.slug', $prodi);
         }
 
         if (!empty($tahun)) {

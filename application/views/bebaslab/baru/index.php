@@ -24,8 +24,8 @@
                 <option value="">Semua Prodi</option>
                 <?php if (!empty($daftar_prodi)): ?>
                     <?php foreach ($daftar_prodi as $pr): ?>
-                        <option value="<?= htmlspecialchars($pr->nama_prodi) ?>"
-                            <?= (isset($filter_prodi) && $filter_prodi == $pr->nama_prodi ? 'selected' : '') ?>>
+                        <option value="<?= htmlspecialchars($pr->slug) ?>"
+                            <?= (isset($filter_prodi) && $filter_prodi == $pr->slug ? 'selected' : '') ?>>
                             <?= htmlspecialchars($pr->nama_prodi) ?>
                         </option>
                     <?php endforeach; ?>
