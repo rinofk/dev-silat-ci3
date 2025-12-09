@@ -13,7 +13,7 @@ class Labkedokteran_model extends CI_model
         $this->db->where_in('prodi_id', $prodiid);
 
         if ($tahun) {
-            $this->db->where('YEAR(tb_bebaslab.date_finished)', $tahun);
+            $this->db->where('YEAR(tb_bebaslab.date_created)', $tahun);
         }
 
         if ($status) {
@@ -34,7 +34,7 @@ class Labkedokteran_model extends CI_model
         $this->db->where_in('prodi_id', $prodiid);
 
         if ($tahun) {
-            $this->db->where('YEAR(tb_bebaslab.date_finished)', $tahun);
+            $this->db->where('YEAR(tb_bebaslab.date_created)', $tahun);
         }
 
         if ($status) {
@@ -255,7 +255,7 @@ class Labkedokteran_model extends CI_model
         $this->db->where_in('mahasiswa.prodi_id', $prodiid);
 
         if ($tahun) {
-            $this->db->where('YEAR(tb_bebaslab.date_finished)', $tahun);
+            $this->db->where('YEAR(tb_bebaslab.date_created)', $tahun);
         }
 
         if ($status) {
@@ -274,7 +274,7 @@ class Labkedokteran_model extends CI_model
         $this->db->where_in('mahasiswa.prodi_id', $prodiid);
 
         if ($tahun) {
-            $this->db->where('YEAR(tb_bebaslab.date_finished)', $tahun);
+            $this->db->where('YEAR(tb_bebaslab.date_created)', $tahun);
         }
 
         if ($status) {
