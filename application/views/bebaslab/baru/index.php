@@ -71,10 +71,10 @@
     </div>
 
     <!-- ROW CARD STATISTIK -->
-    <div class="row mb-4">
+    <!-- <div class="row mb-4"> -->
 
-        <!-- TOTAL DIAJUKAN -->
-        <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4">
+    <!-- TOTAL DIAJUKAN -->
+    <!-- <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4">
             <div class="card shadow border-0" style="background:#007bff; color:white;">
                 <div class="card-body text-center">
                     <h6 class="card-title mb-2">Diajukan</h6>
@@ -83,10 +83,10 @@
                     </p>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <!-- TOTAL PROSES -->
-        <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4">
+    <!-- TOTAL PROSES -->
+    <!-- <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4">
             <div class="card shadow border-0" style="background:#17a2b8; color:white;">
                 <div class="card-body text-center">
                     <h6 class="card-title mb-2">Proses</h6>
@@ -95,10 +95,10 @@
                     </p>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <!-- TOTAL SELESAI -->
-        <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4">
+    <!-- TOTAL SELESAI -->
+    <!-- <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4">
             <div class="card shadow border-0" style="background:#28a745; color:white;">
                 <div class="card-body text-center">
                     <h6 class="card-title mb-2">Selesai</h6>
@@ -107,10 +107,10 @@
                     </p>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <!-- TOTAL REJECT -->
-        <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4">
+    <!-- TOTAL REJECT -->
+    <!-- <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4">
             <div class="card shadow border-0" style="background:#dc3545; color:white;">
                 <div class="card-body text-center">
                     <h6 class="card-title mb-2">Reject</h6>
@@ -119,10 +119,10 @@
                     </p>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <!-- TOTAL SEMUA -->
-        <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4">
+    <!-- TOTAL SEMUA -->
+    <!-- <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4">
             <div class="card shadow border-0" style="background:#343a40; color:white;">
                 <div class="card-body text-center">
                     <h6 class="card-title mb-2">Semua</h6>
@@ -133,10 +133,10 @@
             </div>
         </div>
 
-    </div>
+    </div> -->
 
     <!-- Tabs -->
-    <ul class="nav nav-tabs mb-4" id="bebaslabTab" role="tablist">
+    <!-- <ul class="nav nav-tabs mb-4" id="bebaslabTab" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" href="#pengajuan">Pengajuan</a>
         </li>
@@ -152,7 +152,47 @@
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#blacklist">Blacklist</a>
         </li>
+    </ul> -->
+
+    <ul class="nav nav-tabs mb-4" id="bebaslabTab" role="tablist">
+
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#pengajuan">
+                Pengajuan
+                <span class="badge badge-primary"><?= (int)$total_pengajuan ?></span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#proses">
+                Proses
+                <span class="badge badge-info"><?= (int)$total_proses ?></span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#selesai">
+                Selesai
+                <span class="badge badge-success"><?= (int)$total_selesai ?></span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#reject">
+                Reject
+                <span class="badge badge-danger"><?= (int)$total_ditolak ?></span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#blacklist">
+                Blacklist
+                <!-- <span class="badge badge-dark"><?= (int)$total_blacklist ?></span> -->
+            </a>
+        </li>
+
     </ul>
+
 
     <div class="tab-content">
 
