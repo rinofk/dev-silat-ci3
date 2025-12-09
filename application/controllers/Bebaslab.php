@@ -32,10 +32,6 @@ class Bebaslab extends CI_Controller
 
         // GET Parameter Filter
         $filter_prodi  = $this->input->get('prodi');
-        // $filter_prodi = $this->input->get('prodi');
-        // if ($filter_prodi) {
-        //     $filter_prodi = str_replace('-', ' ', $filter_prodi); // ubah kembali ke nama asli
-        // }
         $filter_tahun  = $this->input->get('tahun') ? $this->input->get('tahun') : $defaultTahun;
         $filter_status = $this->input->get('status');
 
@@ -46,6 +42,13 @@ class Bebaslab extends CI_Controller
 
         // Dropdown Prodi
         $data['daftar_prodi'] = $this->db->get('prodi')->result();
+
+        $stats = $this->Bebaslab_model->getStatistik($filter_prodi, $filter_tahun);
+        $data['total_pengajuan'] = $stats['diajukan'];
+        $data['total_selesai'] = $stats['accept'];
+        $data['total_ditolak']   = $stats['reject'];
+        $data['total_proses']  = $stats['proses'];
+        $data['total_semua']     = $stats['total'];
 
         // ======== DATA UTAMA PADA TAB "PENGAJUAN" =========
         $data['pengajuan'] = $this->Bebaslab_model->getFiltered(

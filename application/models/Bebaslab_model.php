@@ -85,28 +85,38 @@ class Bebaslab_model extends CI_Model
         $this->db->from('tb_bebaslab');
         $this->db->join('mahasiswa', 'mahasiswa.nim = tb_bebaslab.nim_mahasiswa');
         $this->db->join('prodi', 'prodi.id_prodi = mahasiswa.prodi_id');
-        $this->db->where('tb_bebaslab.status', 'disetujui');
+        $this->db->where('tb_bebaslab.status', 'accept');
         if ($prodi) $this->db->where('prodi.slug', $prodi);
         if ($tahun) $this->db->where('YEAR(tb_bebaslab.date_created)', $tahun);
-        $stats['disetujui'] = $this->db->count_all_results();
+        $stats['accept'] = $this->db->count_all_results();
+
+        // ========== Diajukan ==========
+        $this->db->from('tb_bebaslab');
+        $this->db->join('mahasiswa', 'mahasiswa.nim = tb_bebaslab.nim_mahasiswa');
+        $this->db->join('prodi', 'prodi.id_prodi = mahasiswa.prodi_id');
+        $this->db->where('tb_bebaslab.status', 'di ajukan'); // <--- STATUS BENAR
+        if ($prodi) $this->db->where('prodi.slug', $prodi);
+        if ($tahun) $this->db->where('YEAR(tb_bebaslab.date_created)', $tahun);
+        $stats['diajukan'] = $this->db->count_all_results();
+
 
         // ========== Ditolak ==========
         $this->db->from('tb_bebaslab');
         $this->db->join('mahasiswa', 'mahasiswa.nim = tb_bebaslab.nim_mahasiswa');
         $this->db->join('prodi', 'prodi.id_prodi = mahasiswa.prodi_id');
-        $this->db->where('tb_bebaslab.status', 'ditolak');
+        $this->db->where('tb_bebaslab.status', 'reject');
         if ($prodi) $this->db->where('prodi.slug', $prodi);
         if ($tahun) $this->db->where('YEAR(tb_bebaslab.date_created)', $tahun);
-        $stats['ditolak'] = $this->db->count_all_results();
+        $stats['reject'] = $this->db->count_all_results();
 
-        // ========== Menunggu ==========
+        // ========== Proses ==========
         $this->db->from('tb_bebaslab');
         $this->db->join('mahasiswa', 'mahasiswa.nim = tb_bebaslab.nim_mahasiswa');
         $this->db->join('prodi', 'prodi.id_prodi = mahasiswa.prodi_id');
-        $this->db->where('tb_bebaslab.status', 'menunggu');
+        $this->db->where('tb_bebaslab.status', 'proses');
         if ($prodi) $this->db->where('prodi.slug', $prodi);
         if ($tahun) $this->db->where('YEAR(tb_bebaslab.date_created)', $tahun);
-        $stats['menunggu'] = $this->db->count_all_results();
+        $stats['proses'] = $this->db->count_all_results();
 
         return $stats;
     }

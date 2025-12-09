@@ -115,7 +115,7 @@
                 <div class="card-body text-center">
                     <h6 class="card-title mb-2">Reject</h6>
                     <p class="card-text" style="font-size: 26px; font-weight: 700;">
-                        <?= isset($total_reject) ? (int)$total_reject : 0 ?>
+                        <?= isset($total_ditolak) ? (int)$total_ditolak : 0 ?>
                     </p>
                 </div>
             </div>
