@@ -16,7 +16,7 @@ class Bebaslab extends CI_Controller
     // ===============================
     public function index()
     {
-        $data['title'] = 'Bebas Lab';
+        $data['title'] = 'Bebas Laboratorium';
 
         // User login
         $data['user'] = $this->db->get_where('user', [

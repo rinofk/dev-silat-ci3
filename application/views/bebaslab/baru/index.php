@@ -16,13 +16,35 @@
     <?= $this->session->flashdata('message'); ?>
 
     <!-- CARD INFORMASI SISTEM -->
-    <div class="alert alert-info shadow-sm border-left-primary mb-4">
+    <!-- <div class="alert alert-info shadow-sm border-left-primary mb-4">
         <h5 class="text-primary"><i class="fas fa-info-circle"></i> Informasi Pengajuan Bebas Lab</h5>
         <ul class="mb-0">
             <li><b>Masa berlaku Surat Bebas Lab adalah 90 hari</b> sejak tanggal surat terbit.</li>
             <li><b>Mahasiswa dapat mengajukan kembali setelah 60 hari</b> sejak pengajuan terakhir.</li>
             <li>Pastikan data dan berkas lengkap sebelum melakukan pengajuan ulang.</li>
         </ul>
+    </div> -->
+
+    <!-- TOMBOL UNTUK BUKA/TUTUP -->
+    <button class="btn btn-info mb-2"
+        type="button"
+        data-toggle="collapse"
+        data-target="#informasiBebasLab"
+        data-bs-toggle="collapse"
+        data-bs-target="#informasiBebasLab">
+        <i class="fas fa-info-circle"></i> Informasi Pengajuan Bebas Lab
+    </button>
+
+    <!-- CARD INFORMASI (DEFAULT TERTUTUP) -->
+    <div id="informasiBebasLab" class="collapse">
+        <div class="alert alert-info shadow-sm border-left-primary mb-4">
+            <h5 class="text-primary"><i class="fas fa-info-circle"></i> Informasi Pengajuan Bebas Lab</h5>
+            <ul class="mb-0">
+                <li><b>Masa berlaku Surat Bebas Lab adalah 90 hari</b> sejak tanggal surat terbit.</li>
+                <li><b>Mahasiswa dapat mengajukan kembali setelah 60 hari</b> sejak pengajuan terakhir.</li>
+                <li>Pastikan data dan berkas lengkap sebelum melakukan pengajuan ulang.</li>
+            </ul>
+        </div>
     </div>
 
 
