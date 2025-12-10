@@ -156,6 +156,7 @@
                         <table class="table table-bordered table-sm" id="tablePengajuan" width="100%">
                             <thead class="thead-dark">
                                 <tr>
+                                    <th class="text-center" style="width: 50px;">No.</th>
                                     <th>NIM</th>
                                     <th>Nama</th>
                                     <th>Prodi</th>
@@ -164,9 +165,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if (!empty($pengajuan)): ?>
-                                    <?php foreach ($pengajuan as $p): ?>
+
+                                <?php if (!empty($pengajuan)):  ?>
+                                    <?php $no = 1;
+                                    foreach ($pengajuan as $p): ?>
                                         <tr>
+                                            <td class="text-center"><?= $no++ ?></td>
                                             <td><?= htmlspecialchars($p->nim_mahasiswa) ?></td>
                                             <td><?= htmlspecialchars($p->nama_lengkap) ?></td>
                                             <td><?= htmlspecialchars($p->nama_prodi) ?></td>
@@ -193,6 +197,7 @@
                         <table class="table table-bordered table-sm" id="tableProses" width="100%">
                             <thead class="thead-dark">
                                 <tr>
+                                    <th class="text-center" style="width: 50px;">No.</th>
                                     <th>NIM</th>
                                     <th>Nama</th>
                                     <th>Prodi</th>
@@ -201,9 +206,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if (!empty($proses)): ?>
+                                <?php if (!empty($proses)):  $no = 1 ?>
                                     <?php foreach ($proses as $pr): ?>
                                         <tr>
+                                            <td class="text-center"><?= $no++ ?></td>
                                             <td><?= htmlspecialchars($pr->nim_mahasiswa) ?></td>
                                             <td><?= htmlspecialchars($pr->nama_lengkap) ?></td>
                                             <td><?= htmlspecialchars($pr->nama_prodi) ?></td>
@@ -232,6 +238,7 @@
                         <table class="table table-bordered table-sm" id="tableSelesai" width="100%">
                             <thead class="thead-dark">
                                 <tr>
+                                    <th class="text-center" style="width: 50px;">No.</th>
                                     <th>NIM</th>
                                     <th>Nama</th>
                                     <th>Prodi</th>
@@ -241,9 +248,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if (!empty($selesai)): ?>
+                                <?php if (!empty($selesai)): $no = 1 ?>
                                     <?php foreach ($selesai as $s): ?>
                                         <tr>
+                                            <td class="text-center"><?= $no++ ?></td>
                                             <td><?= htmlspecialchars($s->nim_mahasiswa) ?></td>
                                             <td><?= htmlspecialchars($s->nama_lengkap) ?></td>
                                             <td><?= htmlspecialchars($s->nama_prodi) ?></td>
@@ -271,6 +279,7 @@
                         <table class="table table-bordered table-sm" id="tableReject" width="100%">
                             <thead class="thead-dark">
                                 <tr>
+                                    <th class="text-center" style="width: 50px;">No.</th>
                                     <th>NIM</th>
                                     <th>Nama</th>
                                     <th>Prodi</th>
@@ -280,9 +289,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if (!empty($reject)): ?>
+                                <?php if (!empty($reject)):  $no = 1 ?>
                                     <?php foreach ($reject as $r): ?>
                                         <tr>
+                                            <td class="text-center"><?= $no++ ?></td>
                                             <td><?= htmlspecialchars($r->nim_mahasiswa) ?></td>
                                             <td><?= htmlspecialchars($r->nama_lengkap) ?></td>
                                             <td><?= htmlspecialchars($r->nama_prodi) ?></td>
@@ -310,6 +320,7 @@
                         <table class="table table-bordered table-sm" id="tableBlacklist" width="100%">
                             <thead class="thead-dark">
                                 <tr>
+                                    <th class="text-center" style="width: 50px;">No.</th>
                                     <th>NIM</th>
                                     <th>Nama</th>
                                     <th>Keterangan</th>
@@ -317,9 +328,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if (!empty($blacklist)): ?>
+                                <?php if (!empty($blacklist)):  $no = 1 ?>
                                     <?php foreach ($blacklist as $b): ?>
                                         <tr>
+                                            <td class="text-center"><?= $no++ ?></td>
                                             <td><?= htmlspecialchars($b->nim_mahasiswa) ?></td>
                                             <td><?= htmlspecialchars($b->nama_lengkap) ?></td>
                                             <td><?= htmlspecialchars($b->keterangan) ?></td>
