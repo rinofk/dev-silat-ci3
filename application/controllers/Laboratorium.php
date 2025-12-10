@@ -177,9 +177,8 @@ class Laboratorium extends CI_Controller
         redirect('laboratorium');
     }
 
-    public function ajukan($id_bebaslab)
+    public function ajukanx($id_bebaslab)
     {
-
         // $data['tanggal'] = tanggal();
         // $data['judul'] = 'PDF Data Mahasiswa';
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
@@ -190,6 +189,45 @@ class Laboratorium extends CI_Controller
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berkas Anda Berhasil di KIRIM</div>');
         redirect('laboratorium');
     }
+
+    public function ajukan($id_bebaslab)
+    {
+        // Ambil NIM dari session (lebih aman daripada input post)
+        $nim = $this->session->userdata('nim');
+        if (!$nim) {
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-danger">NIM tidak ditemukan!</div>'
+            );
+            redirect('laboratorium');
+            return;
+        }
+
+        // Cek pengajuan dalam 60 hari terakhir
+        $cek = $this->Laboratorium_model->cekPengajuan60Hari($nim);
+        if ($cek > 0) {
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-danger">Anda sudah mengajukan dalam 60 hari terakhir!</div>'
+            );
+            // kembali ke halaman detail pengajuan supaya user tahu datanya
+            redirect('laboratorium');
+            return;
+        }
+
+        // Ambil data user
+        $data['user'] = $this->db->get_where('user', ['nim' => $nim])->row_array();
+        // Lolos validasi → kirim pengajuan
+        $this->Laboratorium_model->ajukanBebasLab($id_bebaslab);
+        $this->session->set_flashdata(
+            'message',
+            '<div class="alert alert-success" role="alert">Pengajuan berhasil dikirim</div>'
+        );
+        redirect('laboratorium');
+    }
+
+
+
     public function cetak($id_bebaslab)
     {
 
