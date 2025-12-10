@@ -15,6 +15,17 @@
 
     <?= $this->session->flashdata('message'); ?>
 
+    <!-- CARD INFORMASI SISTEM -->
+    <div class="alert alert-info shadow-sm border-left-primary mb-4">
+        <h5 class="text-primary"><i class="fas fa-info-circle"></i> Informasi Pengajuan Bebas Lab</h5>
+        <ul class="mb-0">
+            <li><b>Masa berlaku Surat Bebas Lab adalah 90 hari</b> sejak tanggal surat terbit.</li>
+            <li><b>Mahasiswa dapat mengajukan kembali setelah 60 hari</b> sejak pengajuan terakhir.</li>
+            <li>Pastikan data dan berkas lengkap sebelum melakukan pengajuan ulang.</li>
+        </ul>
+    </div>
+
+
     <!-- FILTER -->
     <div class="row mb-4">
         <!-- Filter Prodi -->
@@ -69,90 +80,6 @@
             </a>
         </div>
     </div>
-
-    <!-- ROW CARD STATISTIK -->
-    <!-- <div class="row mb-4"> -->
-
-    <!-- TOTAL DIAJUKAN -->
-    <!-- <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4">
-            <div class="card shadow border-0" style="background:#007bff; color:white;">
-                <div class="card-body text-center">
-                    <h6 class="card-title mb-2">Diajukan</h6>
-                    <p class="card-text" style="font-size: 26px; font-weight: 700;">
-                        <?= isset($total_pengajuan) ? (int)$total_pengajuan : 0 ?>
-                    </p>
-                </div>
-            </div>
-        </div> -->
-
-    <!-- TOTAL PROSES -->
-    <!-- <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4">
-            <div class="card shadow border-0" style="background:#17a2b8; color:white;">
-                <div class="card-body text-center">
-                    <h6 class="card-title mb-2">Proses</h6>
-                    <p class="card-text" style="font-size: 26px; font-weight: 700;">
-                        <?= isset($total_proses) ? (int)$total_proses : 0 ?>
-                    </p>
-                </div>
-            </div>
-        </div> -->
-
-    <!-- TOTAL SELESAI -->
-    <!-- <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4">
-            <div class="card shadow border-0" style="background:#28a745; color:white;">
-                <div class="card-body text-center">
-                    <h6 class="card-title mb-2">Selesai</h6>
-                    <p class="card-text" style="font-size: 26px; font-weight: 700;">
-                        <?= isset($total_selesai) ? (int)$total_selesai : 0 ?>
-                    </p>
-                </div>
-            </div>
-        </div> -->
-
-    <!-- TOTAL REJECT -->
-    <!-- <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4">
-            <div class="card shadow border-0" style="background:#dc3545; color:white;">
-                <div class="card-body text-center">
-                    <h6 class="card-title mb-2">Reject</h6>
-                    <p class="card-text" style="font-size: 26px; font-weight: 700;">
-                        <?= isset($total_ditolak) ? (int)$total_ditolak : 0 ?>
-                    </p>
-                </div>
-            </div>
-        </div> -->
-
-    <!-- TOTAL SEMUA -->
-    <!-- <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4">
-            <div class="card shadow border-0" style="background:#343a40; color:white;">
-                <div class="card-body text-center">
-                    <h6 class="card-title mb-2">Semua</h6>
-                    <p class="card-text" style="font-size: 26px; font-weight: 700;">
-                        <?= isset($total_semua) ? (int)$total_semua : 0 ?>
-                    </p>
-                </div>
-            </div>
-        </div>
-
-    </div> -->
-
-    <!-- Tabs -->
-    <!-- <ul class="nav nav-tabs mb-4" id="bebaslabTab" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#pengajuan">Pengajuan</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#proses">Proses</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#selesai">Selesai</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#reject">Reject</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#blacklist">Blacklist</a>
-        </li>
-    </ul> -->
 
     <ul class="nav nav-tabs mb-4" id="bebaslabTab" role="tablist">
 
