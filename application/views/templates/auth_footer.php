@@ -1,12 +1,12 @@
-<div class="h7 text-center text-warning mt-4">
+<!-- <div class="h7 text-center text-warning mt-4">
     Sistem Informasi Layanan Administrasi surat Terpadu
 </div>
 <div class="small text-center text-warning">
     version 28.03.2020
 </div>
-    <div class="row justify-content-center">
+<div class="row justify-content-center">
 
-<div class="card mb" style="max-width: 540px;">
+    <div class="card mb" style="max-width: 540px;">
         <div class="row no-gutters">
             <div class="col-md-8-center">
                 <div class="card-body">
@@ -16,7 +16,7 @@
             </div>
         </div>
     </div>
-    </div>
+</div> -->
 
 <!-- Bootstrap core JavaScript-->
 <script src="<?= base_url('assets/'); ?>vendor/jquery/jquery.min.js"></script>
