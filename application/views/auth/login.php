@@ -8,7 +8,7 @@
 
                 <!-- Logo Fakultas -->
                 <div class="text-center mb-4">
-                    <img src="<?= base_url('assets/img/logo2.png'); ?>"
+                    <img src="<?= base_url('assets/img/logo.png'); ?>"
                         alt="Logo Fakultas"
                         style="width: 85px; height: auto;">
                     <h5 class="mt-3 mb-0 font-weight-bold text-dark">Fakultas Kedokteran</h5>
