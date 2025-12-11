@@ -1,67 +1,127 @@
-<div class="container">
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
 
-    <div class="card o-hidden border-0 shadow-lg my-5 col-lg-7 mx-auto">
-        <div class="card-body p-0">
-            <!-- Nested Row within Card Body -->
-            <div class="row">
-                <div class="col-lg">
-                    <div class="p-5">
-                        <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
-                        </div>
-                        <form class="user" method="post" action="<?= base_url('auth/registration'); ?>">
-                            <div class="form-group">
-                                <input type="text" class="form-control form-control-user input-upper" id="nim" name="nim" onkeyup="myFunction()" placeholder="Masukkan NIM" value="<?= set_value('nim'); ?>">
-                                <?= form_error('nim', '<small class="text-danger pl-3">', '</small>'); ?>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control form-control-user datepicker" id="tgl_lahir" name="tgl_lahir" placeholder="Masukkan Tanggal Lahir" value="<?= set_value('tgl_lahir'); ?>">
-                                <?= form_error('tgl_lahir', '<small class="text-danger pl-3">', '</small>'); ?>
-                            </div>
-                            <!-- 
-                            <div class="form-group row">
-                                <label for="program_studi" class="col-sm-3 col-form-label">Program Studi</label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" id="program_studi" name="program_studi">
-                                        <?php foreach ($prodi as $p) : ?>
-                                            <?php if ($p['id_prodi'] == $mahasiswa['prodi_id']) : ?>
+    <div style="width: 450px;">
 
-                                                <option value="<?= $p['id_prodi']; ?>" selected><?= $p['nama_prodi']; ?></option>
-                                            <?php else : ?>
-                                                <option value="<?= $p['id_prodi']; ?>"><?= $p['nama_prodi']; ?></option>
-                                            <?php endif; ?>
-                                        <?php endforeach; ?>
+        <!-- Card Registration -->
+        <div class="card shadow-lg border-0" style="border-radius: 15px;">
+            <div class="card-body p-4">
 
-                                    </select>
-                                </div>
-                            </div> -->
-                            <div class="form-group row">
-                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input type="password" class="form-control form-control-user" id="password1" name="password1" placeholder="Password">
-                                    <?= form_error('password1', '<small class="text-danger pl-3">', '</small>'); ?>
-                                </div>
-                                <div class="col-sm-6">
-                                    <input type="password" class="form-control form-control-user" id="password2" name="password2" placeholder="Repeat Password">
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-user btn-block">
-                                Register Account
-                            </button>
+                <!-- LOGO + FAKULTAS -->
+                <div class="text-center mb-4">
+                    <img src="<?= base_url('assets/img/logo2.png'); ?>"
+                        alt="Logo Fakultas"
+                        style="width: 85px; height: auto;">
 
-
-                        </form>
-                        <hr>
-                        <!-- <div class="text-center">
-                            <a class="small" href="forgot-password.html">Forgot Password?</a>
-                        </div> -->
-                        <div class="text-center">
-                            <a class="small" href="<?= base_url('auth'); ?>">Already have an account? Login!</a>
-                            <!--<p>16 Oktober 2020 - Mohon Maaf, Untuk Sementara Create Account Sedang dalam Perbaikan</p>-->
-                        </div>
-                    </div>
+                    <h5 class="mt-3 mb-0 font-weight-bold text-dark">
+                        Fakultas Kedokteran
+                    </h5>
+                    <h6 class="text-dark font-weight-bold">
+                        Universitas Tanjungpura
+                    </h6>
                 </div>
+
+                <!-- HEADER -->
+                <div class="text-center mb-4">
+                    <h4 class="text-dark font-weight-bold mb-1">Create Account</h4>
+                    <p class="text-muted small mb-0">Silakan isi data dengan benar</p>
+                </div>
+
+                <!-- FORM -->
+                <form method="post" action="<?= base_url('auth/registration'); ?>">
+
+                    <!-- NIM -->
+                    <div class="form-group mb-3">
+                        <input type="text"
+                            class="form-control"
+                            id="nim"
+                            name="nim"
+                            placeholder="Masukkan NIM"
+                            value="<?= set_value('nim'); ?>"
+                            style="border-radius: 10px; height: 45px;">
+                        <?= form_error('nim', '<small class="text-danger pl-2">', '</small>'); ?>
+                    </div>
+
+                    <!-- TANGGAL LAHIR -->
+                    <div class="form-group mb-3">
+                        <input type="text"
+                            class="form-control datepicker"
+                            id="tgl_lahir"
+                            name="tgl_lahir"
+                            placeholder="Masukkan Tanggal Lahir"
+                            value="<?= set_value('tgl_lahir'); ?>"
+                            style="border-radius: 10px; height: 45px;">
+                        <?= form_error('tgl_lahir', '<small class="text-danger pl-2">', '</small>'); ?>
+                    </div>
+
+                    <!-- PASSWORD 1 -->
+                    <div class="form-group mb-3" style="position: relative;">
+                        <input type="password"
+                            class="form-control"
+                            id="password1"
+                            name="password1"
+                            placeholder="Password"
+                            style="border-radius: 10px; height: 45px;">
+                        <?= form_error('password1', '<small class="text-danger pl-2">', '</small>'); ?>
+
+                        <span id="togglePassword1"
+                            style="position: absolute; top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer; color: #6c757d;">
+                            <i class="fas fa-eye" id="iconPassword1"></i>
+                        </span>
+                    </div>
+
+                    <!-- PASSWORD 2 -->
+                    <div class="form-group mb-4" style="position: relative;">
+                        <input type="password"
+                            class="form-control"
+                            id="password2"
+                            name="password2"
+                            placeholder="Ulangi Password"
+                            style="border-radius: 10px; height: 45px;">
+
+                        <span id="togglePassword2"
+                            style="position: absolute; top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer; color: #6c757d;">
+                            <i class="fas fa-eye" id="iconPassword2"></i>
+                        </span>
+                    </div>
+
+                    <!-- SUBMIT -->
+                    <button type="submit"
+                        class="btn btn-primary btn-block"
+                        style="height: 45px; border-radius: 10px;">
+                        Register Account
+                    </button>
+
+                </form>
+
+                <div class="text-center mt-4">
+                    <a class="small text-primary" href="<?= base_url('auth'); ?>">
+                        Already have an account? Login here
+                    </a>
+                </div>
+
             </div>
         </div>
+
     </div>
 
 </div>
+
+<!-- SCRIPT SHOW/HIDE PASSWORD -->
+<script>
+    function addToggle(inputId, toggleId, iconId) {
+        const input = document.getElementById(inputId);
+        const toggle = document.getElementById(toggleId);
+        const icon = document.getElementById(iconId);
+
+        toggle.addEventListener("click", function() {
+            const type = input.getAttribute("type") === "password" ? "text" : "password";
+            input.setAttribute("type", type);
+
+            icon.classList.toggle("fa-eye");
+            icon.classList.toggle("fa-eye-slash");
+        });
+    }
+
+    addToggle("password1", "togglePassword1", "iconPassword1");
+    addToggle("password2", "togglePassword2", "iconPassword2");
+</script>
