@@ -183,7 +183,7 @@ class Laboratorium_model extends CI_model
         $this->db->where('date_created >=', $tanggal_batas);
 
         // hanya hitung pengajuan yang benar-benar dikirim
-        $this->db->where_in('status', ['di ajukan', 'proses', 'accept', 'reject']);
+        $this->db->where_in('status', ['di ajukan', 'proses', 'accept']);
 
         $query = $this->db->get('tb_bebaslab');
 
