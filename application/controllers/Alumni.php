@@ -142,11 +142,19 @@ class Alumni extends CI_Controller
 
         $upload_image = $_FILES['poto']['name'];
         if ($upload_image) {
-            $config['allowed_types'] = 'gif|jpg|png';
+            $config['allowed_types'] = 'gif|jpg|jpeg|png';
             $config['max_size']     = '6148';
             $config['upload_path'] = './assets/img/alumni/';
             $config['file_name'] = $this->input->post('nim');
             $config['overwrite'] = true;
+            // $config['detect_mime']   = true;
+
+            // FIX MIME type WhatsApp / Android
+            $config['mime_types'] = [
+                'jpg'  => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
+                'jpeg' => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
+                'png'  => ['image/png',  'image/x-png']
+            ];
 
             $this->load->library('upload', $config);
             $old_image = $data['tb_alumni']['poto'];
@@ -161,7 +169,7 @@ class Alumni extends CI_Controller
                 echo $this->upload->display_errors();
             }
         }
-        
+
         $this->db->set('alamat_sekarang', $alamat);
         $this->db->where('nim_alumni', $nim);
         $this->db->update('tb_alumni');
