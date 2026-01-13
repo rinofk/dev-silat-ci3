@@ -47,9 +47,17 @@ class Perpustakaan extends CI_Controller
 
         $nim = $this->input->post('nim');
         //cek jika ada gambar yang akan di upload
-        $config['allowed_types'] = 'jpg|png|pdf';
+        $config['allowed_types'] = 'gif|jpg|jpeg|png';
         $config['max_size']     = '2048';
         $config['upload_path'] = './assets/bebasperpus/';
+
+        // FIX MIME type WhatsApp / Android
+        $config['mime_types'] = [
+            'jpg'  => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
+            'jpeg' => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
+            'png'  => ['image/png',  'image/x-png']
+        ];
+
         $this->load->library('upload', $config);
 
         $upload_ktm = $_FILES['ktm']['name'];

@@ -55,7 +55,7 @@ class Laboratorium extends CI_Controller
         $config['allowed_types'] = 'jpg|jpeg|png';  // TAMBAH jpeg
         $config['max_size']      = 2048;
 
-        // FIX MIME type WhatsApp Web
+        // FIX MIME type WhatsApp Web 
         $config['mime_types'] = [
             'jpg'  => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
             'jpeg' => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
@@ -134,9 +134,16 @@ class Laboratorium extends CI_Controller
         }
 
         // Konfigurasi upload
-        $config['allowed_types'] = 'jpg|png';
+        $config['allowed_types'] = 'jpg|jpeg|png';  // TAMBAH jpeg
         $config['max_size']     = '2048';
         $config['upload_path']  = './assets/bebaslab/';
+
+        // FIX MIME type WhatsApp Web 
+        $config['mime_types'] = [
+            'jpg'  => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
+            'jpeg' => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
+            'png'  => ['image/png',  'image/x-png']
+        ];
         $this->load->library('upload', $config);
 
         // Jika ada upload KTM baru

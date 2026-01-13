@@ -46,12 +46,18 @@ class User extends CI_Controller
             //cek jika ada gambar yang akan di upload
             $upload_image = $_FILES['image']['name'];
             if ($upload_image) {
-                $config['allowed_types'] = 'gif|jpg|png';
+                $config['allowed_types'] = 'gif|jpg|png|jpeg';
                 $config['max_size']     = '2048';
                 $config['upload_path'] = './assets/img/profile/';
                 $config['file_name'] = $this->input->post('nim');
                 $config['overwrite'] = true;
 
+                // FIX MIME type WhatsApp Web 
+                $config['mime_types'] = [
+                    'jpg'  => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
+                    'jpeg' => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
+                    'png'  => ['image/png',  'image/x-png']
+                ];
                 $this->load->library('upload', $config);
                 $old_image = $data['user']['image'];
                 if ($old_image != 'default.jpg') {
@@ -70,11 +76,11 @@ class User extends CI_Controller
             $this->db->set('email', $email);
             $this->db->where('nim', $nim);
             $this->db->update('user');
-            
+
             $this->db->set('no_hp', $this->input->post('no_hp'));
             $this->db->where('nim', $nim);
             $this->db->update('mahasiswa');
-            
+
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Your profile has been update</div>');
             redirect('user');
         }
