@@ -3,12 +3,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Laboran extends CI_Controller
 {
-    // private $status_badge = [
-    //     'diajukan' => 'secondary',
-    //     'proses'   => 'warning',
-    //     'selesai'  => 'success'
-    // ];
-
     public function __construct()
     {
         parent::__construct();
@@ -20,7 +14,6 @@ class Laboran extends CI_Controller
     }
     public function kedokteran()
     {
-
         $tahun = $this->input->get('tahun', true) ?? date('Y'); // default ke tahun sekarang
         $status = $this->input->get('status', true) ?? 'di ajukan'; // default status
 
@@ -36,7 +29,6 @@ class Laboran extends CI_Controller
         $data['title'] = 'Lab Kedokteran';
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
         $data['bl'] = $this->Labkedokteran_model->get_AllKedokteran($tahun, $status);
-
 
         $this->form_validation->set_rules('keterangan', 'Keterangan', 'required');
         if ($this->form_validation->run() == false) {
@@ -105,6 +97,16 @@ class Laboran extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
         $data['bl'] = $this->Labkedokteran_model->get_Idbp($id_bebaslab);
 
+        //tambahan perbaikan kode nomor surat
+        $bp = $this->Labkedokteran_model->get_Idbp($id_bebaslab);
+        $data['tahun'] = date('Y', strtotime($bp['date_updated']));
+        $data['nomor_surat'] = $this->db
+            ->get_where('tb_nomorsurat', ['id_nomor' => 6])
+            ->row_array();
+        $data['nomor_otomatis'] =
+            $data['nomor_surat']['nomor'] . $data['tahun'];
+
+        // akhir perbaikan
 
         $this->load->view('templates/header_a', $data);
         $this->load->view('templates/sidebar', $data);
@@ -117,7 +119,6 @@ class Laboran extends CI_Controller
         $data['title'] = 'Bebas Lab Prodi Profesi Dokter';
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
         $data['bl'] = $this->Labkedokteran_model->get_Idbp($id_bebaslab);
-
 
         $this->load->view('templates/header_a', $data);
         $this->load->view('templates/sidebar', $data);

@@ -110,13 +110,13 @@
                                     <a href="<?= base_url(); ?>laboran/kedokteran" class="btn btn-primary"><i class="fas fa-fw fa-arrow-left"></i>Kembali</a>
                                     <a href="" class="btn btn-primary" data-toggle="modal" data-target="#newRoleModalAccept"> <i class="fas fa-check"></i> Accept</a>
                                     <a href="" class="btn btn-danger" data-toggle="modal" data-target="#newRoleModal"> <i class="fas fa-times"></i> Reject</a>
-                                   <?php
+                                    <?php
                                     if ($bl['status'] == 'di ajukan') {; ?>
                                         <a href="<?= base_url(); ?>laboran/kedokteranproses/<?= $bl['id_bebaslab']; ?>" class="btn btn-outline-primary" target="blank"> Proses </a>
                                     <?php } else {; ?>
                                         <a href="<?= base_url(); ?>laboran/kedokterancetak/<?= $bl['id_bebaslab']; ?>" class="btn btn-outline-primary" target="blank"> Cetak </a>
                                     <?php }; ?>
-  
+
                                 </div>
                             </div>
                             </form>

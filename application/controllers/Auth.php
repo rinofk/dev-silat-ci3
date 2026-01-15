@@ -11,7 +11,6 @@ class Auth extends CI_Controller
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->model('Visitor_model');
-
     }
     public function index()
     {
@@ -29,7 +28,6 @@ class Auth extends CI_Controller
         } else {
             // validasi succes
             $this->_login();
-
         }
     }
 
@@ -56,7 +54,7 @@ class Auth extends CI_Controller
                         // redirect('admin');
                         redirect('operator');
                     } elseif (in_array($user['role_id'], [3, 5, 7, 8, 9])) {
-                    redirect('operator');
+                        redirect('operator');
                     } else {
                         redirect('user');
                     }
@@ -102,46 +100,23 @@ class Auth extends CI_Controller
             $this->load->view('templates/auth_footer');
         } else {
 
-            // // start service
-            // $curl = curl_init();
-            // curl_setopt($curl, CURLOPT_URL, 'http://servicedpna.untan.ac.id/kedokteran/getmhsbynim/' . $_POST['nim']);
-            // curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-            // $result = curl_exec($curl);
-            // curl_close($curl);
-
-            // $result = json_decode($result, true);
-            // $nimservice = $result[0]['nim'];
-            // $nama = $result[0]['nama'];
-            // $email = $result[0]['email_mhs'];
-            // $tmplahir = $result[0]['tmplahir'];
-            // $progdi = $result[0]['progdi'];
-            // $alamat = $result[0]['alamat_mhs'];
-            // $hp = $result[0]['hp'];
-            // $agama = $result[0]['agama'];
-            // $jk = $result[0]['kelamin'];
-            // $ayah = $result[0]['namaayah'];
-            // $ibu = $result[0]['namaibu'];
-            // $program = $result[0]['program'];
-            // $tahun_angkatan = $result[0]['thnakt'];
-            // $tgllahirservice = $result[0]['tgllahir'];
-            // $tglservice = date('d-m-Y', strtotime($tgllahirservice));
-            // // end service
-
             //Guzzle
             $client = new Client();
             //service siakad.untan.ac.id
             // $response = $client->request('GET', 'http://servicedpna.untan.ac.id/kedokteran/getmhsbynim/' . $_POST['nim']);
-            
+
             // service ke satu.untan.ac.id
-            $response = $client->request('GET', 'http://172.16.40.165:3000/api/v1/kedokteran/mahasiswa/' . $_POST['nim'], 
+            $response = $client->request(
+                'GET',
+                'http://172.16.40.165:3000/api/v1/kedokteran/mahasiswa/' . $_POST['nim'],
+                [
+                    'headers' =>
                     [
-                        'headers' => 
-                            [
-                              'X-App-Key' => 'DE2CD1332496931EBA9D53E0F28EC72D',
-                              'X-Secret-Key' => '6D5E5FC7222C86F6DFE40346B6EE493927CE3052576172415B475B5700457C1D',
-                            ],
-                    ]
-                );
+                        'X-App-Key' => 'DE2CD1332496931EBA9D53E0F28EC72D',
+                        'X-Secret-Key' => '6D5E5FC7222C86F6DFE40346B6EE493927CE3052576172415B475B5700457C1D',
+                    ],
+                ]
+            );
             $result = json_decode($response->getBody()->getContents(), true);
             //var_dump($result);
 
@@ -228,6 +203,174 @@ class Auth extends CI_Controller
             }
         }
     }
+
+    // tambahan update terbaru 2026.01.15 by rino
+    private function get_reset_count_today($nim)
+    {
+        $today = date('Y-m-d');
+        return $this->db
+            ->where('nim', $nim)
+            ->where('DATE(created_at)', $today)
+            ->count_all_results('reset_account_log');
+    }
+
+    public function reset_account()
+    {
+        $this->form_validation->set_rules('nim', 'NIM', 'required|trim');
+        $this->form_validation->set_rules('tgl_lahir', 'Tanggal Lahir', 'required|trim');
+        $this->form_validation->set_rules(
+            'password1',
+            'Password',
+            'required|trim|min_length[3]|matches[password2]'
+        );
+        $this->form_validation->set_rules(
+            'password2',
+            'Password',
+            'required|trim|matches[password1]'
+        );
+
+        if ($this->form_validation->run() == false) {
+
+            $data['title'] = 'Reset Account';
+
+            // sisa reset hari ini
+            // $nim = set_value('nim');
+            // AMBIL NIM DARI SESSION
+            $nim = $this->session->userdata('reset_nim');
+            $data['reset_today'] = $nim ? $this->get_reset_count_today($nim) : 0;
+
+            $this->load->view('templates/auth_header', $data);
+            $this->load->view('auth/reset_account', $data);
+            $this->load->view('templates/auth_footer');
+        } else {
+            $this->_process_reset();
+        }
+    }
+
+
+    private function _process_reset()
+    {
+        $nim = $this->input->post('nim');
+        // JIKA NIM BERUBAH, RESET SESSION
+        if ($this->session->userdata('reset_nim') !== $nim) {
+            $this->session->set_userdata('reset_nim', $nim);
+        }
+
+        $tgl_lahir_input = $this->input->post('tgl_lahir');
+
+        // CEK LIMIT RESET
+        $total_reset = $this->get_reset_count_today($nim);
+        if ($total_reset >= 3) {
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-danger">Reset password maksimal 3 kali per hari</div>'
+            );
+            redirect('auth/reset_account');
+        }
+
+
+        $user = $this->db->get_where('user', ['nim' => $nim])->row_array();
+        if (!$user) {
+            $this->_log_reset($nim, 'failed', 'NIM tidak terdaftar');
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-danger">NIM tidak terdaftar</div>'
+            );
+            redirect('auth/reset_account');
+        }
+
+        try {
+            $client = new Client([
+                'timeout' => 5
+            ]);
+
+            $response = $client->request(
+                'GET',
+                'http://services.satu.untan.ac.id/api/v1/kedokteran/mahasiswa/' . $nim,
+                // 'http://172.16.40.165:3000/api/v1/kedokteran/mahasiswa/' . $nim,
+                [
+                    'headers' => [
+                        'X-App-Key' => 'DE2CD1332496931EBA9D53E0F28EC72D',
+                        'X-Secret-Key' => '6D5E5FC7222C86F6DFE40346B6EE493927CE3052576172415B475B5700457C1D',
+                    ],
+                    'http_errors' => false // PENTING
+                ]
+            );
+
+            // CEK STATUS HTTP
+            if ($response->getStatusCode() !== 200) {
+                $this->_log_reset($nim, 'failed', 'NIM tidak terdaftar di server');
+                $this->session->set_flashdata(
+                    'message',
+                    '<div class="alert alert-danger">Data tidak terdaftar di server</div>'
+                );
+                redirect('auth/reset_account');
+            }
+
+            $result = json_decode($response->getBody()->getContents(), true);
+
+            // CEK DATA KOSONG
+            if (!$result || empty($result['nim'])) {
+                $this->_log_reset($nim, 'failed', 'NIM tidak terdaftar di server');
+                $this->session->set_flashdata(
+                    'message',
+                    '<div class="alert alert-danger">Data tidak terdaftar di server</div>'
+                );
+                redirect('auth/reset_account');
+            }
+
+            // VALIDASI TANGGAL LAHIR
+            $tgl_service = date('d-m-Y', strtotime($result['tanggal_lahir']));
+            if ($tgl_lahir_input !== $tgl_service) {
+                $this->_log_reset($nim, 'failed', 'Tanggal lahir tidak sesuai');
+                $this->session->set_flashdata(
+                    'message',
+                    '<div class="alert alert-danger">Tanggal lahir tidak sesuai</div>'
+                );
+                redirect('auth/reset_account');
+            }
+
+            // UPDATE PASSWORD
+            $this->db->where('nim', $nim)->update('user', [
+                'password' => password_hash($this->input->post('password1'), PASSWORD_DEFAULT)
+            ]);
+
+            $this->_log_reset($nim, 'success', 'Reset berhasil');
+
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success">Password berhasil direset</div>'
+            );
+            $this->session->unset_userdata('reset_nim');
+
+            redirect('auth');
+        } catch (Exception $e) {
+
+            // ERROR SERVER / TIMEOUT
+            $this->_log_reset($nim, 'failed', 'Server API bermasalah');
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-danger">Server sedang bermasalah</div>'
+            );
+            redirect('auth/reset_account');
+        }
+    }
+
+    private function _log_reset($nim, $status, $reason = null)
+    {
+        $this->db->insert('reset_account_log', [
+            'nim' => $nim,
+            'status' => $status,
+            'reason' => $reason,
+            'ip_address' => $this->input->ip_address(),
+            'user_agent' => $this->input->user_agent(),
+            'created_at' => date('Y-m-d H:i:s')
+        ]);
+    }
+
+
+    // end update terbaru 2026.01.15 by rino
+
 
     public function logout()
     {

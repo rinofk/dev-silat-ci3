@@ -100,6 +100,66 @@
         $('#datatableMahasiswa').DataTable();
     });
 </script>
+<!-- START UPDATE JS UNTUK STATISTIK RESET -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('resetChart').getContext('2d');
+
+    const resetChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: <?= json_encode($chart_labels); ?>,
+            datasets: [{
+                    label: 'Total Reset',
+                    data: <?= json_encode($chart_total); ?>,
+                    borderWidth: 2,
+                    tension: 0.4
+                },
+                {
+                    label: 'Reset Berhasil',
+                    data: <?= json_encode($chart_success); ?>,
+                    borderWidth: 2,
+                    tension: 0.4
+                },
+                {
+                    label: 'Reset Gagal',
+                    data: <?= json_encode($chart_failed); ?>,
+                    borderWidth: 2,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top'
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                }
+            },
+            interaction: {
+                mode: 'nearest',
+                intersect: false
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        precision: 0
+                    }
+                }
+            }
+        }
+    });
+</script>
+<!-- END UPDATE JS UNTUK STATISTIK RESET -->
+<script>
+    Chart.defaults.font.family = "'Poppins', sans-serif";
+    Chart.defaults.font.size = 12;
+</script>
 
 </body>
 

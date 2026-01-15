@@ -56,6 +56,39 @@
     })
 </script>
 
+
+<!-- START js untuk halaman reset account -->
+<script>
+    function addToggle(inputId, toggleId, iconId) {
+        const input = document.getElementById(inputId);
+        const toggle = document.getElementById(toggleId);
+        const icon = document.getElementById(iconId);
+
+        toggle.addEventListener("click", function() {
+            const type = input.getAttribute("type") === "password" ? "text" : "password";
+            input.setAttribute("type", type);
+
+            icon.classList.toggle("fa-eye");
+            icon.classList.toggle("fa-eye-slash");
+        });
+    }
+
+    addToggle("password1", "togglePassword1", "iconPassword1");
+    addToggle("password2", "togglePassword2", "iconPassword2");
+</script>
+<script>
+    $(function() {
+        $(".datepicker").datepicker({
+            dateFormat: "dd-mm-yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "1970:<?= date('Y'); ?>"
+        });
+    });
+</script>
+
+<!-- END js untuk halaman reset account -->
+
 </body>
 
 </html>
