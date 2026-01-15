@@ -8,9 +8,9 @@ class Statistikreset extends CI_Controller
         parent::__construct();
 
         // PROTEKSI ADMIN
-        if (!$this->session->userdata('role_id') || $this->session->userdata('role_id') != 1) {
-            redirect('auth/blocked');
-        }
+        // if (!$this->session->userdata('role_id') || $this->session->userdata('role_id') != 1) {
+        //     redirect('auth/blocked');
+        // }
     }
 
     public function index()

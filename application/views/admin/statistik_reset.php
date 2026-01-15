@@ -1,6 +1,6 @@
 <div class="container-fluid mt-4">
 
-    <h4 class="mb-4">📊 Statistik Reset Akun</h4>
+    <h4 class="mb-4">📊 Statistik Reset Akun Mahasiswa</h4>
     <form method="get" class="card mb-4">
         <div class="card-body row">
             <div class="col-md-4">
