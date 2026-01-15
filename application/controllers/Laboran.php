@@ -6,6 +6,8 @@ class Laboran extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        date_default_timezone_set('Asia/Jakarta');
+
         cek_login();
         $this->load->model('Labkedokteran_model');
         $this->load->model('Labkeperawatan_model');
@@ -105,7 +107,6 @@ class Laboran extends CI_Controller
             ->row_array();
         $data['nomor_otomatis'] =
             $data['nomor_surat']['nomor'] . $data['tahun'];
-
         // akhir perbaikan
 
         $this->load->view('templates/header_a', $data);

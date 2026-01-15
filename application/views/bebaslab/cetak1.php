@@ -61,6 +61,7 @@ $pdf->Cell(160, 5, $nomor['surat'], 0, 1, 'C');
 
 $pdf->SetFont('times', '', 12);
 $pdf->Cell($margin_kiri, 5, '', 0, 0);
+// $pdf->Cell(160, 5, 'Nomor : ' . $bp['nomor'] . ' ' . $nomor['nomor'], 0, 1, 'C');
 $pdf->Cell(160, 5, 'Nomor : ' . $bp['nomor'] . ' ' . $nomor['nomor'], 0, 1, 'C');
 
 

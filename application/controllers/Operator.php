@@ -6,19 +6,21 @@ class Operator extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        date_default_timezone_set('Asia/Jakarta');
+
         // is_logged_in();  saya ganti menjadi cek_login();
         cek_login();
-    } 
+    }
 
 
     public function index()
     {
         $data['title'] = 'Dashboard Operator';
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
-        
+
         $this->load->model('Visitor_model');
 
-         // ambil data visitor per hari
+        // ambil data visitor per hari
         $visitors = $this->Visitor_model->get_visitors_per_day();
         // $visitors = $this->Visitor_model->get_visitors_by_date($date);
 
@@ -43,7 +45,7 @@ class Operator extends CI_Controller
         $data['daily_stats']      = $this->Visitor_model->daily_stats(14); // 2 minggu terakhir
 
         // Statistik per prodi
-         $data['statistik_prodi'] = $this->Visitor_model->get_statistik_per_prodi();
+        $data['statistik_prodi'] = $this->Visitor_model->get_statistik_per_prodi();
         // echo 'Selamat Datang User ' . $data['user']['name'];
         $this->form_validation->set_rules('role', 'Role', 'required');
         if ($this->form_validation->run() == false) {
@@ -60,12 +62,10 @@ class Operator extends CI_Controller
     }
 
     public function get_visitors_by_date($date)
-        {
-            $this->load->model('Visitor_model');
-            $data['visitors'] = $this->Visitor_model->get_by_date($date);
+    {
+        $this->load->model('Visitor_model');
+        $data['visitors'] = $this->Visitor_model->get_by_date($date);
 
-            $this->load->view('operator/modal_visitors', $data);
-        }
-
-
+        $this->load->view('operator/modal_visitors', $data);
+    }
 }
