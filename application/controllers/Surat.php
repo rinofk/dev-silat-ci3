@@ -74,8 +74,21 @@ class Surat extends CI_Controller
             $this->load->view('templates/footer_a');
         } else {
 
-            $this->Surat_model->tambahPengajuanSurat();
+            // $this->Surat_model->tambahPengajuanSurat();
             $this->session->set_flashdata('flash', 'Ditambahkan');
+            $result = $this->Surat_model->tambahPengajuanSurat();
+
+            if ($result === false) {
+                $this->session->set_flashdata(
+                    'message',
+                    '<div class="alert alert-danger">
+                    Upload gagal. Gunakan file dari folder Download HP.
+                </div>'
+                );
+                redirect('surat/tambah');
+                return;
+            }
+
             redirect('surat');
         }
     }
@@ -303,10 +316,10 @@ class Surat extends CI_Controller
         $id = $data['user']['nim'];
         $data['np'] = $this->Surat_model->getNaspub_byid($id_naspub);
 
-        
+
         $this->form_validation->set_rules('nim', 'NIM', 'required');
         if ($this->form_validation->run() == FALSE) {
-             $this->load->view('templates/header_a', $data);
+            $this->load->view('templates/header_a', $data);
             $this->load->view('templates/sidebar', $data);
             $this->load->view('templates/topbar', $data);
             $this->load->view('surat/updatenaspub', $data);
@@ -318,8 +331,8 @@ class Surat extends CI_Controller
             redirect('surat/naskahpublikasi');
         }
     }
-    
-     public function do_updatenaspub($id_naspub)
+
+    public function do_updatenaspub($id_naspub)
     {
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
         $data['np'] = $this->Surat_model->getNaspub_byid($id_naspub);
@@ -331,7 +344,7 @@ class Surat extends CI_Controller
         $config['upload_path'] = './assets/naspub/';
         $config['file_name'] = 'jurnal_' . $this->input->post('nim');
         $config['overwrite'] = true;
-        
+
         $this->load->library('upload', $config);
 
         $upload_naspub = $_FILES['naspub']['name'];
@@ -363,7 +376,7 @@ class Surat extends CI_Controller
         // }
         date_default_timezone_set('Asia/Jakarta');
         $date = date("Y-m-d H:i:s");
-        
+
         $this->db->where('id_naspub', $id_naspub);
         $this->db->set('status', 'diajukan');
         $this->db->set('date_updated', $date);
@@ -381,8 +394,8 @@ class Surat extends CI_Controller
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berkas Anda Berhasil di UPDATE</div>');
         redirect('surat/naskahpublikasi');
     }
-    
-    
+
+
     // Studi Pendahuluan
 
     public function studipendahuluan()

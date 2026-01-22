@@ -2,8 +2,85 @@
 
 class Surat_model extends CI_model
 {
+    public function tambahPengajuanSurat() //update 2026.01.22
+    {
+        $this->load->library('upload');
 
-    public function tambahPengajuanSurat()
+        $ktm    = null;
+        $datakk = 'default.jpg';
+        $datask = 'default.jpg';
+
+        // ===== UPLOAD KTM =====
+        if (!empty($_FILES['ktm']['name'])) {
+
+            $config = [
+                'upload_path'   => './assets/aktifkuliah/',
+                'allowed_types' => 'pdf|doc|docx',
+                'max_size'      => 2048,
+                'file_name'     => 'ktm_' . time()
+            ];
+
+            $this->upload->initialize($config);
+
+            if (!$this->upload->do_upload('ktm')) {
+                log_message('error', $this->upload->display_errors());
+                return false;
+            }
+
+            $ktm = $this->upload->data('file_name');
+        }
+
+        // ===== UPLOAD KK =====
+        if (!empty($_FILES['kk']['name'])) {
+
+            $config['file_name'] = 'kk_' . time();
+            $this->upload->initialize($config);
+
+            if (!$this->upload->do_upload('kk')) {
+                log_message('error', $this->upload->display_errors());
+                return false;
+            }
+
+            $datakk = $this->upload->data('file_name');
+        }
+
+        // ===== UPLOAD SK =====
+        if (!empty($_FILES['sk']['name'])) {
+
+            $config['file_name'] = 'sk_' . time();
+            $this->upload->initialize($config);
+
+            if (!$this->upload->do_upload('sk')) {
+                log_message('error', $this->upload->display_errors());
+                return false;
+            }
+
+            $datask = $this->upload->data('file_name');
+        }
+
+        $data = [
+            "nim_mahasiswa"    => $this->input->post('nim', true),
+            "semester"         => $this->input->post('semester', true),
+            "tahun_ajaran"     => $this->input->post('tahun_ajaran'),
+            "keperluan"        => $this->input->post('keperluan'),
+            "keterangan"       => $this->input->post('keterangan'),
+            "ktm"              => $ktm,
+            "ortu"             => $this->input->post('ortu'),
+            "nip"              => $this->input->post('nip'),
+            "pangkat"          => $this->input->post('pangkat'),
+            "instansi"         => $this->input->post('instansi'),
+            "alamat_instansi"  => $this->input->post('alamat_instansi'),
+            "kk"               => $datakk,
+            "sk"               => $datask,
+            "date_create"      => time()
+        ];
+
+        $this->db->insert('tb_suratpengajuan', $data);
+
+        return true;
+    }
+
+    public function XtambahPengajuanSurat()
     {
         $config['allowed_types'] = 'pdf|docx|doc';
         $config['max_size']     = '2048';
