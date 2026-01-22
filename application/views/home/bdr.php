@@ -26,16 +26,16 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
-            <a class="navbar-brand" href="http://silat.fk.untan.ac.id/">Silat FK-UNTAN</a>
+            <a class="navbar-brand" href="http://silatfk.untan.ac.id/">Silat FK-UNTAN</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav ml-auto">
                     <a class="nav-item nav-link" href="https://www.untan.ac.id/">Untan</a>
-                    <a class="nav-item nav-link" href="https://tendik.siremun.untan.ac.id/">Tendik Siremun</a>
-                    <a class="nav-item nav-link active" href="https://pm.fkuntan.com">Penjamin Mutu <span class="sr-only">(current)</span></a>
-                    <a class="nav-item nav-link" href="http://fk.untan.ac.id/ppid/">PPID</a>
+                    <a class="nav-item nav-link" href="https://ultra.untan.ac.id/">Siremun</a>
+                    <!-- <a class="nav-item nav-link active" href="https://pm.fkuntan.com">Penjamin Mutu <span class="sr-only">(current)</span></a> -->
+                    <!-- <a class="nav-item nav-link" href="http://fk.untan.ac.id/ppid/">PPID</a> -->
                     <!--<a class="nav-item btn btn-primary tombol" href="https://pm.fkuntan.com" tabindex="-1" aria-disabled="true">Home</a>-->
                     <a class="nav-item btn btn-primary tombol" href="http://kedokteran.untan.ac.id/home" tabindex="-1" aria-disabled="true">FK UNTAN</a>
                 </div>
@@ -68,8 +68,8 @@
                     </div>
                     <div class="col-lg">
                         <img src="<?= base_url('assets/img/home/'); ?>/scancode.png" alt="" class="float-left">
-                        <h4>Barcode Publikasi</h4>
-                        <p>Proses publikasi ilmiah sampai diterbitkan nya barcode</p>
+                        <h4>Bebas Lab dan Perpustakaan</h4>
+                        <p>Surat Bebas Lab dan Surat Bebas Perputakaan Fakultas</p>
                     </div>
                     <div class="col-lg">
                         <img src="<?= base_url('assets/img/home/'); ?>/lulus.png" alt="" class="float-left">
@@ -102,7 +102,7 @@
         <section class="testimonial">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                <H5><a href="http://mobile.presensi.untan.ac.id/" target='blank' class="btn btn-primary"> mobile.presensi.untan.ac.id</a></H5>    
+                    <H5><a href="http://mobile.presensi.untan.ac.id/" target='blank' class="btn btn-primary"> mobile.presensi.untan.ac.id</a></H5>
                     <!--<h5>"Administrasi jadi lebih mudah dengan aplikasi online"</h5>-->
                     <h5>"Jangan lupa kawan kawan Tendik untuk mengisi Presensi mobile.presensi.untan.ac.id ini ya"</h5>
                 </div>

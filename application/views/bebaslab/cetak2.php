@@ -144,7 +144,7 @@ $pdf->MultiCell(117, 5, $bp['no_hp'], 0, 'J');
 $pdf->Cell(10, 4, '', 0, 1);
 
 $pdf->Cell($margin_kiri, 5, '', 0, 0);
-$pdf->MultiCell($width_cell, 5, 'Bahwa yang bersangkutan dinyatakan Bebas dari segala Administrasi Peminjaman Lab teknologi farmasi, Lab kimia farmasi, Lab biologi farmasi dan Lab farmakologi klinis Fakultas Kedokteran Universitas Tanjungpura Pontianak', 0, 'J');
+$pdf->MultiCell($width_cell, 5, 'Bahwa yang bersangkutan bebas dari segala administrasi peminjaman Lab Teknologi Farmasi, Lab Kimia Farmasi, Lab Biologi Farmasi, Lab Farmakologi dan Farmasi Klinis, dan Lab OSCE Farmasi Fakultas Kedokteran Universitas Tanjungpura Pontianak', 0, 'J');
 
 $pdf->Cell($margin_kiri, 5, '', 0, 1);
 
