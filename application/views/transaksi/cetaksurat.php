@@ -163,7 +163,7 @@ $pdf->MultiCell($width_cell, 5, 'Demikian surat keterangan ini dibuat sebagai pe
 $pdf->SetFont('Times', '', 12);
 $pdf->Cell(10, 20, '', 0, 1);
 $pdf->Cell(120, 5, '', 0, 0);
-$pdf->Cell(60, 5, 'Pontianak, ' , 0, 1, 'L');
+$pdf->Cell(60, 5, 'Pontianak, ', 0, 1, 'L');
 // $pdf->Cell(60, 5, 'Pontianak, ' . tgl_ind(date($surat['tgl_surat'])), 0, 1, 'L');
 // $pdf->Cell(120, 5, '', 0, 0);
 // $pdf->Cell(60, 5, 'Dekan,', 0, 1, 'L');
@@ -172,6 +172,7 @@ $pdf->Cell(60, 5, 'Wakil Dekan Bidang Kemahasiswaan', 0, 1, 'L');
 $pdf->Cell(120, 5, '', 0, 0);
 $pdf->Cell(60, 5, 'dan Alumni,', 0, 1, 'L');
 
+$pdf->Cell($margin_kiri, 5, '', 0, 1);
 $pdf->Cell($margin_kiri, 5, '', 0, 1);
 $pdf->Cell($margin_kiri, 5, '', 0, 1);
 $pdf->Cell($margin_kiri, 5, '', 0, 1);
