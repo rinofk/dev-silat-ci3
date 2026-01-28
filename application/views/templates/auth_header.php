@@ -25,4 +25,7 @@
 
 </head>
 
-<body class="bg-gradient-primary">
+
+<body style="background-color: #035885;">
+
+    <!-- <body class="bg-gradient-primary"> -->
