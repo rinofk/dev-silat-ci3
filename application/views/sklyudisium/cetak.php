@@ -16,25 +16,26 @@ $margin_kop = 28;
 $pdf->Image('assets/img/pejabat/wahyudi.png', 140, 170, 10, 28);
 $pdf->Image('assets/img/pejabat/cap.png', 115, 165, 33, 32);
 $pdf->Image('assets/img/logo.png', 18, 10, 30, 30);
+
 $pdf->SetFont('times', '', $kop['size_k']);
 $pdf->Cell($margin_kop, 5, '', 0, 0);
-$pdf->Cell(160, 5, $kop['kementerian'], 0, 1, 'C');
+$pdf->Cell(160, 5, $kop['kementerian1'], 0, 1, 'C');
 
 $pdf->SetFont('times', '', $kop['size_u']);
 $pdf->Cell($margin_kop, 5, '', 0, 0);
 $pdf->Cell(160, 5, $kop['universitas'], 0, 1, 'C');
 
+$pdf->Cell(10, 3, '', 0, 1);
+
 $pdf->SetFont('times', 'B', $kop['size_f']);
 $pdf->Cell($margin_kop, 5, '', 0, 0);
 $pdf->Cell(160, 5, $kop['fakultas'], 0, 1, 'C');
 
-$pdf->SetFont('times', '', $kop['size_j']);
-$pdf->Cell($margin_kop, 5, '', 0, 0);
-$pdf->Cell(160, 5, $kop['jalan'], 0, 1, 'C');
+$pdf->Cell(10, 3, '', 0, 1);
 
 $pdf->SetFont('times', '', $kop['size_j']);
 $pdf->Cell($margin_kop, 5, '', 0, 0);
-$pdf->Cell(160, 5, $kop['telpon'], 0, 1, 'C');
+$pdf->Cell(160, 5, $kop['jalan'], 0, 1, 'C');
 
 $pdf->SetFont('times', '', $kop['size_j']);
 $pdf->Cell($margin_kop, 5, '', 0, 0);
@@ -46,10 +47,10 @@ $pdf->Line(10, 43, 200, 43); // posisi garis
 $pdf->Cell($margin_kiri, 10, '', 0, 1);
 
 $pdf->Cell($margin_kiri, 5, '', 0, 0);
-$pdf->SetFont('times', 'u', 12);
+$pdf->SetFont('arial', 'u', 12);
 $pdf->Cell(160, 5, $nomor['surat'], 0, 1, 'C');
 
-$pdf->SetFont('times', '', 12);
+$pdf->SetFont('arial', '', 12);
 $pdf->Cell($margin_kiri, 5, '', 0, 0);
 $pdf->Cell(160, 5, 'ID : ' . $surat['id_skl'], 0, 1, 'C');
 
@@ -85,7 +86,7 @@ $pdf->Cell($margin_kiri, 5, '', 0, 0);
 $pdf->MultiCell($width_cell, 5, 'Demikian Surat Keterangan ini diberikan untuk dapat dipergunakan sebagai syarat pengambilan ijazah dan transkrip.', 0, 'J');
 
 
-$pdf->SetFont('Times', '', 12);
+$pdf->SetFont('arial', '', 12);
 $pdf->Cell(10, 20, '', 0, 1);
 $pdf->Cell(120, 5, '', 0, 0);
 $pdf->Cell(60, 5, 'Pontianak, ' . tgl_ind(date($surat['date_finish'])), 0, 1, 'L');
