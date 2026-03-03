@@ -108,7 +108,8 @@ class Auth extends CI_Controller
             // service ke satu.untan.ac.id
             $response = $client->request(
                 'GET',
-                'http://172.16.40.165:3000/api/v1/kedokteran/mahasiswa/' . $_POST['nim'],
+                'http://services.satu.untan.ac.id/api/v1/kedokteran/mahasiswa/' . $nim,
+                // 'http://172.16.40.165:3000/api/v1/kedokteran/mahasiswa/' . $_POST['nim'],
                 [
                     'headers' =>
                     [
