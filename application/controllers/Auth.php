@@ -104,6 +104,7 @@ class Auth extends CI_Controller
             $client = new Client();
             //service siakad.untan.ac.id
             // $response = $client->request('GET', 'http://servicedpna.untan.ac.id/kedokteran/getmhsbynim/' . $_POST['nim']);
+            $nim = $this->input->post('nim');
 
             // service ke satu.untan.ac.id
             $response = $client->request(
@@ -141,7 +142,6 @@ class Auth extends CI_Controller
 
             if ($email != '') {
             };
-            $nim = $this->input->post('nim');
             $password = $this->input->post('tgl_lahir');
             $prodi = substr($this->input->post('nim'), 3, 1);
 
