@@ -17,7 +17,7 @@
     <link href="https://fonts.googleapis.com/css?family=Viga&display=swap" rel="stylesheet">
 
     <!-- My CSS -->
-    <link href="<?= base_url('assets/'); ?>css/homestyle.css" rel="stylesheet">
+    <link href="<?= base_url('assets/'); ?>css/homestyle.css?v=<?= filemtime(FCPATH . 'assets/css/homestyle.css'); ?>" rel="stylesheet">
 
     <title>Silat FK-UNTAN</title>
 </head>
