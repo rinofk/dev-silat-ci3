@@ -110,7 +110,26 @@ $full_nomor = $bp['nomor'];
 if (strpos($full_nomor, '/') === false && !empty($nomor['nomor'])) {
     $doc_date = !empty($bp['date_updated']) ? $bp['date_updated'] : (!empty($bp['date_finished']) ? $bp['date_finished'] : $bp['date_created']);
     $tahun = date('Y', strtotime($doc_date));
-    $full_nomor .= ' /DST' . $nomor['nomor'] . $tahun;
+    $nomor_base = $nomor['nomor'];
+    if (stripos($nomor_base, 'DST') === false) {
+        if (substr($nomor_base, 0, 1) === '/') {
+            $nomor_base = '/DST' . $nomor_base;
+        } else {
+            $nomor_base = '/DST/' . $nomor_base;
+        }
+    } else {
+        if (substr($nomor_base, 0, 1) !== '/') {
+            $nomor_base = '/' . $nomor_base;
+        }
+    }
+    if (substr($nomor_base, -strlen($tahun)) !== $tahun) {
+        if (substr($nomor_base, -1) !== '/') {
+            $nomor_base = $nomor_base . '/' . $tahun;
+        } else {
+            $nomor_base = $nomor_base . $tahun;
+        }
+    }
+    $full_nomor .= ' ' . $nomor_base;
 }
 $pdf->Cell(160, 5, 'Nomor : ' . $full_nomor, 0, 1, 'C');
 

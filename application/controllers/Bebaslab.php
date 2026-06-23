@@ -191,7 +191,33 @@ class Bebaslab extends CI_Controller
         // Generate nomor surat otomatis
         $data['tahun'] = date('Y', strtotime($data['bl']->date_updated ? $data['bl']->date_updated : $data['bl']->date_created));
         $nomor_surat = $this->db->get_where('tb_nomorsurat', ['id_nomor' => 6])->row_array();
-        $data['nomor_otomatis'] = $nomor_surat ? '/DST' . $nomor_surat['nomor'] . $data['tahun'] : '';
+        
+        $nomor_base = $nomor_surat ? $nomor_surat['nomor'] : '';
+        if (!empty($nomor_base)) {
+            // 1. Check/Add /DST prefix safely
+            if (stripos($nomor_base, 'DST') === false) {
+                if (substr($nomor_base, 0, 1) === '/') {
+                    $nomor_base = '/DST' . $nomor_base;
+                } else {
+                    $nomor_base = '/DST/' . $nomor_base;
+                }
+            } else {
+                if (substr($nomor_base, 0, 1) !== '/') {
+                    $nomor_base = '/' . $nomor_base;
+                }
+            }
+            
+            // 2. Check/Add year suffix safely
+            $tahun_suffix = $data['tahun'];
+            if (substr($nomor_base, -strlen($tahun_suffix)) !== $tahun_suffix) {
+                if (substr($nomor_base, -1) !== '/') {
+                    $nomor_base = $nomor_base . '/' . $tahun_suffix;
+                } else {
+                    $nomor_base = $nomor_base . $tahun_suffix;
+                }
+            }
+        }
+        $data['nomor_otomatis'] = $nomor_base;
 
         $this->load->view('templates/header_a', $data);
         $this->load->view('templates/sidebar', $data);
