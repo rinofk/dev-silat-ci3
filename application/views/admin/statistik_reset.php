@@ -1,25 +1,28 @@
 <div class="container-fluid mt-4">
 
-    <h4 class="mb-4">📊 Statistik Reset Akun Mahasiswa</h4>
-    <form method="get" class="card mb-4">
-        <div class="card-body row">
-            <div class="col-md-4">
-                <label>Tanggal Mulai</label>
-                <input type="date" name="start_date"
-                    value="<?= $start_date; ?>"
-                    class="form-control" required>
+    <h4 class="mb-4 font-weight-bold text-gray-800">
+        📊 Statistik Reset Akun Mahasiswa
+        <span class="text-primary font-weight-bold" style="font-size: 1.15rem;">
+            (Bulan <?= $month_label; ?>)
+        </span>
+    </h4>
+    <form method="get" class="card mb-4 shadow-sm border-0" style="border-radius: 12px;">
+        <div class="card-body row align-items-end">
+            <div class="col-md-8 mb-3 mb-md-0">
+                <label class="font-weight-bold text-dark">Pilih Bulan & Tahun</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text bg-light"><i class="fas fa-calendar-alt text-primary"></i></span>
+                    </div>
+                    <input type="month" name="month"
+                        value="<?= $selected_month; ?>"
+                        class="form-control font-weight-bold" required>
+                </div>
             </div>
 
             <div class="col-md-4">
-                <label>Tanggal Akhir</label>
-                <input type="date" name="end_date"
-                    value="<?= $end_date; ?>"
-                    class="form-control" required>
-            </div>
-
-            <div class="col-md-4 d-flex align-items-end">
-                <button class="btn btn-primary btn-block">
-                    <i class="fas fa-filter"></i> Tampilkan
+                <button class="btn btn-primary btn-block font-weight-bold" style="height: calc(1.5em + .75rem + 2px);">
+                    <i class="fas fa-filter mr-1"></i> Tampilkan Statistik
                 </button>
             </div>
         </div>

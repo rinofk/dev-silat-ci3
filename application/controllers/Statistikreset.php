@@ -19,12 +19,25 @@ class Statistikreset extends CI_Controller
         $data['title'] = 'Statistik Reset Akun';
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
 
-        // DEFAULT RANGE (HARI INI)
-        $start = $this->input->get('start_date') ?? date('Y-m-d');
-        $end   = $this->input->get('end_date') ?? date('Y-m-d');
+        // SELECTED MONTH (DEFAULT TO CURRENT ACTIVE MONTH)
+        $selected_month = $this->input->get('month') ?? date('Y-m');
+        $data['selected_month'] = $selected_month;
+
+        // Compute start and end dates for the selected month
+        $start = $selected_month . '-01';
+        $end   = date('Y-m-t', strtotime($start));
 
         $data['start_date'] = $start;
         $data['end_date']   = $end;
+
+        // Indonesian month label
+        $months_indo = [
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+        ];
+        $month_num = (int)date('n', strtotime($start));
+        $data['month_label'] = ($months_indo[$month_num] ?? date('F', strtotime($start))) . ' ' . date('Y', strtotime($start));
 
 
         // DATA GRAFIK RESET PER HARI
