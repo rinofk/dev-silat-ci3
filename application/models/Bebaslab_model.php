@@ -40,13 +40,18 @@ class Bebaslab_model extends CI_Model
         $this->db->select('
             tb_bebaslab.*,
             mahasiswa.nama_lengkap,
+            mahasiswa.tempat_lahir,
+            mahasiswa.tgl_lahir,
+            mahasiswa.alamat,
+            mahasiswa.no_hp,
+            user.email,
             prodi.nama_prodi,
             prodi.slug
-
         ');
         $this->db->from('tb_bebaslab');
         $this->db->join('mahasiswa', 'mahasiswa.nim = tb_bebaslab.nim_mahasiswa');
         $this->db->join('prodi', 'prodi.id_prodi = mahasiswa.prodi_id');
+        $this->db->join('user', 'user.nim = mahasiswa.nim', 'left');
         $this->db->where('tb_bebaslab.id_bebaslab', $id);
 
         return $this->db->get()->row();

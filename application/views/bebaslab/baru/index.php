@@ -171,7 +171,11 @@
                                     foreach ($pengajuan as $p): ?>
                                         <tr>
                                             <td class="text-center"><?= $no++ ?></td>
-                                            <td><?= htmlspecialchars($p->nim_mahasiswa) ?></td>
+                                            <td>
+                                                <a href="<?= base_url('bebaslab/detail/' . $p->id_bebaslab) ?>">
+                                                    <?= htmlspecialchars($p->nim_mahasiswa) ?>
+                                                </a>
+                                            </td>
                                             <td><?= htmlspecialchars($p->nama_lengkap) ?></td>
                                             <td><?= htmlspecialchars($p->nama_prodi) ?></td>
                                             <td><?= date('d-m-Y', strtotime($p->date_created)) ?></td>
@@ -210,11 +214,15 @@
                                     <?php foreach ($proses as $pr): ?>
                                         <tr>
                                             <td class="text-center"><?= $no++ ?></td>
-                                            <td><?= htmlspecialchars($pr->nim_mahasiswa) ?></td>
+                                            <td>
+                                                <a href="<?= base_url('bebaslab/detail/' . $pr->id_bebaslab) ?>">
+                                                    <?= htmlspecialchars($pr->nim_mahasiswa) ?>
+                                                </a>
+                                            </td>
                                             <td><?= htmlspecialchars($pr->nama_lengkap) ?></td>
                                             <td><?= htmlspecialchars($pr->nama_prodi) ?></td>
                                             <td>
-                                                <?= !empty($pr->updated_at) ? date('d-m-Y', strtotime($pr->updated_at)) : '-' ?>
+                                                <?= !empty($pr->date_updated) ? date('d-m-Y', strtotime($pr->date_updated)) : '-' ?>
                                             </td>
                                             <td><span class="badge badge-info">Proses</span></td>
                                         </tr>
@@ -252,7 +260,11 @@
                                     <?php foreach ($selesai as $s): ?>
                                         <tr>
                                             <td class="text-center"><?= $no++ ?></td>
-                                            <td><?= htmlspecialchars($s->nim_mahasiswa) ?></td>
+                                            <td>
+                                                <a href="<?= base_url('bebaslab/detail/' . $s->id_bebaslab) ?>">
+                                                    <?= htmlspecialchars($s->nim_mahasiswa) ?>
+                                                </a>
+                                            </td>
                                             <td><?= htmlspecialchars($s->nama_lengkap) ?></td>
                                             <td><?= htmlspecialchars($s->nama_prodi) ?></td>
                                             <td><?= !empty($s->date_finished) ? date('d-m-Y', strtotime($s->date_finished)) : '-' ?></td>
@@ -293,11 +305,15 @@
                                     <?php foreach ($reject as $r): ?>
                                         <tr>
                                             <td class="text-center"><?= $no++ ?></td>
-                                            <td><?= htmlspecialchars($r->nim_mahasiswa) ?></td>
+                                            <td>
+                                                <a href="<?= base_url('bebaslab/detail/' . $r->id_bebaslab) ?>">
+                                                    <?= htmlspecialchars($r->nim_mahasiswa) ?>
+                                                </a>
+                                            </td>
                                             <td><?= htmlspecialchars($r->nama_lengkap) ?></td>
                                             <td><?= htmlspecialchars($r->nama_prodi) ?></td>
                                             <td><?= htmlspecialchars($r->keterangan) ?></td>
-                                            <td><?= !empty($r->date_reject) ? date('d-m-Y', strtotime($r->date_reject)) : '-' ?></td>
+                                            <td><?= !empty($r->date_updated) ? date('d-m-Y', strtotime($r->date_updated)) : '-' ?></td>
                                             <td><span class="badge badge-danger">Reject</span></td>
                                         </tr>
                                     <?php endforeach; ?>

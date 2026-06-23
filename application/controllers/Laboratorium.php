@@ -245,6 +245,16 @@ class Laboratorium extends CI_Controller
         $data['kop'] = $this->db->get_where('tb_kop', ['id_kop' => '1'])->row_array();
         $data['nomor'] = $this->db->get_where('tb_nomorsurat', ['id_nomor' => '6'])->row_array();
 
+        // Generate QR code for TTE
+        $verification_url = base_url('verify/bebaslab/' . $id_bebaslab);
+        include_once APPPATH . '../assets/phpqrcode/qrlib.php';
+        $qr_path = 'assets/qrcode/';
+        $qr_file = $qr_path . 'bebaslab_' . $id_bebaslab . '.png';
+        if (!file_exists($qr_file)) {
+            QRcode::png($verification_url, $qr_file, QR_ECLEVEL_H, 4);
+        }
+        $data['qr_file'] = $qr_file;
+
         $this->form_validation->set_rules('nim', 'NIM', 'required');
         if ($this->form_validation->run() == FALSE) {
             if ($prodi['prodi_id'] == '1') {

@@ -82,6 +82,9 @@ class Bebaslab extends CI_Controller
             $filter_tahun
         );
 
+        $data['blacklist'] = [];
+        $data['total_blacklist'] = 0;
+
         // Load view
         $this->load->view('templates/header_a', $data);
         $this->load->view('templates/sidebar', $data);
@@ -173,6 +176,52 @@ class Bebaslab extends CI_Controller
     }
 
     // ===============================
+    // DETAIL VERIFIKASI
+    // ===============================
+    public function detail($id)
+    {
+        $data['title'] = 'Detail Bebas Laboratorium';
+        $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
+        $data['bl'] = $this->Bebaslab_model->getById($id);
+
+        if (!$data['bl']) {
+            show_404();
+        }
+
+        // Generate nomor surat otomatis
+        $data['tahun'] = date('Y', strtotime($data['bl']->date_updated ? $data['bl']->date_updated : $data['bl']->date_created));
+        $nomor_surat = $this->db->get_where('tb_nomorsurat', ['id_nomor' => 6])->row_array();
+        $data['nomor_otomatis'] = $nomor_surat ? '/DST' . $nomor_surat['nomor'] . $data['tahun'] : '';
+
+        $this->load->view('templates/header_a', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('bebaslab/baru/detail', $data);
+        $this->load->view('templates/footer_a');
+    }
+
+    // ===============================
+    // VALIDASI PROSES
+    // ===============================
+    public function proses($id)
+    {
+        date_default_timezone_set('Asia/Jakarta');
+        $update = [
+            'status'       => 'proses',
+            'date_updated' => date("Y-m-d H:i:s")
+        ];
+
+        $this->db->where('id_bebaslab', $id)->update('tb_bebaslab', $update);
+
+        $this->session->set_flashdata(
+            'message',
+            '<div class="alert alert-success">Status berhasil diubah menjadi Proses!</div>'
+        );
+
+        redirect('bebaslab/detail/' . $id);
+    }
+
+    // ===============================
     // VALIDASI ACCEPT
     // ===============================
     public function accept($id)
@@ -180,21 +229,45 @@ class Bebaslab extends CI_Controller
         date_default_timezone_set('Asia/Jakarta');
 
         $update = [
-            'status'        => 'accept',
-            'nomor_surat'   => $this->input->post('nomor'),
-            'tanggal_surat' => date("Y-m-d"),
-            'masa_berlaku'  => date("Y-m-d", strtotime("+90 days")),
-            'validated_by'  => $this->session->userdata('name'),
+            'status'         => 'accept',
+            'nomor'          => $this->input->post('nomor', true),
+            'keterangan'     => 'Validasi Lengkap',
+            'date_finished'  => date("Y-m-d H:i:s"),
+            'berlaku_sampai' => date("Y-m-d", strtotime("+90 days")),
+            'lab1_admin'     => $this->session->userdata('name')
         ];
 
         $this->db->where('id_bebaslab', $id)->update('tb_bebaslab', $update);
 
         $this->session->set_flashdata(
             'message',
-            '<div class="alert alert-success">Validasi selesai!</div>'
+            '<div class="alert alert-success">Validasi selesai! Status diterima.</div>'
         );
 
-        redirect($_SERVER['HTTP_REFERER']);
+        redirect('bebaslab/detail/' . $id);
+    }
+
+    // ===============================
+    // VALIDASI REJECT
+    // ===============================
+    public function reject($id)
+    {
+        date_default_timezone_set('Asia/Jakarta');
+
+        $update = [
+            'status'       => 'reject',
+            'keterangan'   => $this->input->post('keterangan', true),
+            'date_updated' => date("Y-m-d H:i:s")
+        ];
+
+        $this->db->where('id_bebaslab', $id)->update('tb_bebaslab', $update);
+
+        $this->session->set_flashdata(
+            'message',
+            '<div class="alert alert-danger">Pengajuan berhasil ditolak (Reject).</div>'
+        );
+
+        redirect('bebaslab');
     }
 
     // ===============================
@@ -202,12 +275,50 @@ class Bebaslab extends CI_Controller
     // ===============================
     public function cetak($id)
     {
-        $data['data'] = $this->Bebaslab_model->getById($id);
-
         $this->load->library('pdf');
-        $this->pdf->setPaper('A4', 'portrait');
-        $this->pdf->filename = "bebas_lab_" . $id . ".pdf";
-        $this->pdf->load_view('operator/bebaslab/cetak', $data);
+
+        $data['tanggal'] = tanggal();
+        $data['judul'] = 'PDF Data Mahasiswa';
+
+        // Ambil data bebaslab secara lengkap (menggunakan array untuk disesuaikan dengan view cetak)
+        $this->db->select('tb_bebaslab.*, mahasiswa.*, prodi.nama_prodi, prodi.slug, user.email');
+        $this->db->from('tb_bebaslab');
+        $this->db->join('mahasiswa', 'mahasiswa.nim = tb_bebaslab.nim_mahasiswa');
+        $this->db->join('prodi', 'prodi.id_prodi = mahasiswa.prodi_id');
+        $this->db->join('user', 'user.nim = mahasiswa.nim', 'left');
+        $this->db->where('tb_bebaslab.id_bebaslab', $id);
+        $data['bp'] = $this->db->get()->row_array();
+
+        if (!$data['bp']) {
+            show_404();
+        }
+
+        $data['kop'] = $this->db->get_where('tb_kop', ['id_kop' => '2'])->row_array();
+        $data['nomor'] = $this->db->get_where('tb_nomorsurat', ['id_nomor' => '6'])->row_array();
+
+        // Generate QR code for TTE
+        $verification_url = base_url('verify/bebaslab/' . $id);
+        include_once APPPATH . '../assets/phpqrcode/qrlib.php';
+        $qr_path = 'assets/qrcode/';
+        $qr_file = $qr_path . 'bebaslab_' . $id . '.png';
+        if (!file_exists($qr_file)) {
+            QRcode::png($verification_url, $qr_file, QR_ECLEVEL_H, 4);
+        }
+        $data['qr_file'] = $qr_file;
+
+        $prodi_id = $data['bp']['prodi_id'];
+
+        if ($prodi_id == '1' || $prodi_id == '6') {
+            $this->load->view('bebaslab/cetak1', $data);
+        } elseif ($prodi_id == '2') {
+            $this->load->view('bebaslab/cetak2', $data);
+        } elseif ($prodi_id == '3') {
+            $this->load->view('bebaslab/cetak3', $data);
+        } elseif ($prodi_id == '5') {
+            $this->load->view('bebaslab/cetak4', $data);
+        } else {
+            show_404();
+        }
     }
 
     // ===============================

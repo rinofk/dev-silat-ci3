@@ -52,6 +52,10 @@ $pdf->Image('assets/img/pejabat/wahyudi.png', 40, 175, 10, 28);
 $pdf->Image('assets/img/pejabat/sumolestari.png', 127, 169, 33, 27);
 $pdf->Image('assets/img/pejabat/cap2025.png', 15, 170, 33, 32);
 
+if (!empty($qr_file) && file_exists($qr_file)) {
+    $pdf->Image($qr_file, 85, 170, 22, 22);
+}
+
 $pdf->SetFont('times', '', 12);
 $pdf->Cell($margin_kiri, 15, '', 0, 1);
 
@@ -62,7 +66,13 @@ $pdf->Cell(160, 5, $nomor['surat'], 0, 1, 'C');
 $pdf->SetFont('times', '', 12);
 $pdf->Cell($margin_kiri, 5, '', 0, 0);
 // $pdf->Cell(160, 5, 'Nomor : ' . $bp['nomor'] . ' ' . $nomor['nomor'], 0, 1, 'C');
-$pdf->Cell(160, 5, 'Nomor : ' . $bp['nomor'] . ' ' . $nomor['nomor'], 0, 1, 'C');
+$full_nomor = $bp['nomor'];
+if (strpos($full_nomor, '/') === false && !empty($nomor['nomor'])) {
+    $doc_date = !empty($bp['date_updated']) ? $bp['date_updated'] : (!empty($bp['date_finished']) ? $bp['date_finished'] : $bp['date_created']);
+    $tahun = date('Y', strtotime($doc_date));
+    $full_nomor .= ' /DST' . $nomor['nomor'] . $tahun;
+}
+$pdf->Cell(160, 5, 'Nomor : ' . $full_nomor, 0, 1, 'C');
 
 
 //$bp = $this->db->get('mahasiswa')->row_array();
