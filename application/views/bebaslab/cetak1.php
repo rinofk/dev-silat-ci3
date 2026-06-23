@@ -52,10 +52,6 @@ $pdf->Image('assets/img/pejabat/wahyudi.png', 40, 175, 10, 28);
 $pdf->Image('assets/img/pejabat/sumolestari.png', 127, 169, 33, 27);
 $pdf->Image('assets/img/pejabat/cap2025.png', 15, 170, 33, 32);
 
-if (!empty($qr_file) && file_exists($qr_file)) {
-    $pdf->Image($qr_file, 85, 170, 22, 22);
-}
-
 $pdf->SetFont('times', '', 12);
 $pdf->Cell($margin_kiri, 15, '', 0, 1);
 
@@ -175,6 +171,12 @@ $pdf->Cell($margin_kiri, 5, '', 0, 0);
 $pdf->Cell(120, 5, 'Laboratorium FK UNTAN', 0, 1);
 $pdf->Cell($margin_kiri, 5, '', 0, 0);
 $pdf->Cell(120, 5, '[ ' . $bp['id_bebaslab'] . ' ] ID surat elektronik silatfk.untan.ac.id', 0, 1);
+
+if (!empty($qr_file) && file_exists($qr_file)) {
+    $pdf->Cell($margin_kiri, 2, '', 0, 1);
+    $pdf->Cell($margin_kiri, 5, '', 0, 0);
+    $pdf->Image($qr_file, $pdf->GetX(), $pdf->GetY(), 22, 22);
+}
 
 
 $pdf->Output($dest = 'I', $name = $nomor['keterangan'] . ' ' . $bp['nama_lengkap'] . '.pdf', $isUTF8 = true);
