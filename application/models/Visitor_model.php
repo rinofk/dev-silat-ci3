@@ -139,13 +139,17 @@ class Visitor_model extends CI_Model
                     (SELECT COUNT(*) FROM tb_skl sk WHERE (sk.admin = u.name OR sk.admin = v.nim) AND sk.status = 'selesai' AND DATE(sk.date_finish) = '{$escaped_date}') +
                     (SELECT COUNT(*) FROM tb_bebasperpus bp WHERE (bp.admin = u.name OR bp.admin = v.nim) AND bp.status = 'accept' AND DATE(bp.date_updated) = '{$escaped_date}')
                 ) AS admin_selesai
-            FROM visitor_logs v
-            LEFT JOIN mahasiswa m ON v.nim = m.nim
-            LEFT JOIN user u ON v.nim = u.nim
-            LEFT JOIN user_role ur ON u.role_id = ur.id
-            LEFT JOIN prodi p ON m.prodi_id = p.id_prodi
-            WHERE v.visit_date = ?
-            ORDER BY v.login_at DESC
+             FROM visitor_logs v
+             LEFT JOIN mahasiswa m ON v.nim = m.nim
+             LEFT JOIN (
+                 SELECT nim, MAX(name) AS name, MIN(role_id) AS role_id
+                 FROM user
+                 GROUP BY nim
+             ) u ON v.nim = u.nim
+             LEFT JOIN user_role ur ON u.role_id = ur.id
+             LEFT JOIN prodi p ON m.prodi_id = p.id_prodi
+             WHERE v.visit_date = ?
+             ORDER BY v.login_at DESC
         ", array($date));
         return $query->result();
     }
