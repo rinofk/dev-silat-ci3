@@ -598,6 +598,24 @@
     .visitor-card-badges .badge-secondary { background-color: #f1f5f9; color: #475569; }
     .visitor-card-badges .badge-danger { background-color: #fee2e2; color: #b91c1c; }
 
+    /* Group headers styling */
+    .visitor-group-header {
+        font-family: var(--font-title);
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: #475569;
+        margin-top: 24px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        grid-column: 1 / -1;
+        border-bottom: 1.5px dashed #cbd5e1;
+        padding-bottom: 8px;
+        letter-spacing: 0.5px;
+    }
+
     #noVisitorResults {
         grid-column: 1 / -1;
         width: 100%;
@@ -1247,6 +1265,17 @@
                 var prodi = $(this).find('.visitor-card-prodi-val').text().toLowerCase();
                 
                 if (name.indexOf(query) !== -1 || nim.indexOf(query) !== -1 || prodi.indexOf(query) !== -1) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            
+            // Show/hide group headers based on visible cards inside their group
+            $('.visitor-group-header').each(function(){
+                var groupId = $(this).data('group-id');
+                var visibleInGroup = $('.visitor-drawer-card[data-group-id="' + groupId + '"]:visible').length;
+                if (visibleInGroup > 0) {
                     $(this).show();
                 } else {
                     $(this).hide();

