@@ -122,22 +122,21 @@ class Visitor_model extends CI_Model
                 (SELECT COUNT(*) FROM tb_skl sk WHERE sk.nim = v.nim AND DATE(sk.date_create) = '{$escaped_date}') as jml_skl,
                 (SELECT COUNT(*) FROM tb_bebasperpus bp WHERE bp.nim_mahasiswa = v.nim AND DATE(bp.date_created) = '{$escaped_date}') as jml_bebas_perpus,
                 (
-                    (SELECT COUNT(*) FROM tb_suratpengajuan s WHERE (s.admin = u.name OR s.admin = v.nim) AND (s.status = 'proses' OR s.status = 'diajukan') AND FROM_UNIXTIME(s.date_create, '%Y-%m-%d') = '{$escaped_date}') +
-                    (SELECT COUNT(*) FROM tb_bebaslab l WHERE (l.lab1_admin = u.name OR l.lab1_admin = v.nim) AND (l.status = 'di ajukan' OR l.status = 'pending' OR l.status = 'proses') AND DATE(l.date_created) = '{$escaped_date}') +
-                    (SELECT COUNT(*) FROM tb_skl sk WHERE (sk.admin = u.name OR sk.admin = v.nim) AND (sk.status = 'proses' OR sk.status = 'diajukan') AND DATE(sk.date_create) = '{$escaped_date}') +
-                    (SELECT COUNT(*) FROM tb_bebasperpus bp WHERE (bp.admin = u.name OR bp.admin = v.nim) AND (bp.status = 'pending' OR bp.status = 'di ajukan') AND DATE(bp.date_created) = '{$escaped_date}')
+                    (SELECT COUNT(*) FROM tb_suratpengajuan s WHERE (s.admin = u.name OR s.admin = v.nim OR s.admin LIKE CONCAT(SUBSTRING_INDEX(u.name, ' ', 1), '%') OR s.admin LIKE CONCAT(v.nim, '%')) AND s.status = 'proses' AND FROM_UNIXTIME(s.date_finish, '%Y-%m-%d') = '{$escaped_date}') +
+                    (SELECT COUNT(*) FROM tb_bebaslab l WHERE (l.lab1_admin = u.name OR l.lab1_admin = v.nim OR l.lab1_admin LIKE CONCAT(SUBSTRING_INDEX(u.name, ' ', 1), '%') OR l.lab1_admin LIKE CONCAT(v.nim, '%')) AND l.status = 'proses' AND DATE(l.date_updated) = '{$escaped_date}') +
+                    (SELECT COUNT(*) FROM tb_skl sk WHERE (sk.admin = u.name OR sk.admin = v.nim OR sk.admin LIKE CONCAT(SUBSTRING_INDEX(u.name, ' ', 1), '%') OR sk.admin LIKE CONCAT(v.nim, '%')) AND sk.status = 'proses' AND DATE(sk.date_finish) = '{$escaped_date}')
                 ) AS admin_proses,
                 (
-                    (SELECT COUNT(*) FROM tb_suratpengajuan s WHERE (s.admin = u.name OR s.admin = v.nim) AND (s.status = 'ditolak' OR s.status LIKE 'ditolak%') AND FROM_UNIXTIME(s.date_finish, '%Y-%m-%d') = '{$escaped_date}') +
-                    (SELECT COUNT(*) FROM tb_bebaslab l WHERE (l.lab1_admin = u.name OR l.lab1_admin = v.nim) AND (l.status = 'reject' OR l.status = 'rejected') AND DATE(l.date_updated) = '{$escaped_date}') +
-                    (SELECT COUNT(*) FROM tb_skl sk WHERE (sk.admin = u.name OR sk.admin = v.nim) AND (sk.status = 'tolak' OR sk.status = 'reject') AND DATE(sk.date_finish) = '{$escaped_date}') +
-                    (SELECT COUNT(*) FROM tb_bebasperpus bp WHERE (bp.admin = u.name OR bp.admin = v.nim) AND (bp.status = 'reject' OR bp.status = 'rejected') AND DATE(bp.date_updated) = '{$escaped_date}')
+                    (SELECT COUNT(*) FROM tb_suratpengajuan s WHERE (s.admin = u.name OR s.admin = v.nim OR s.admin LIKE CONCAT(SUBSTRING_INDEX(u.name, ' ', 1), '%') OR s.admin LIKE CONCAT(v.nim, '%')) AND s.status LIKE 'ditolak%' AND FROM_UNIXTIME(s.date_finish, '%Y-%m-%d') = '{$escaped_date}') +
+                    (SELECT COUNT(*) FROM tb_bebaslab l WHERE (l.lab1_admin = u.name OR l.lab1_admin = v.nim OR l.lab1_admin LIKE CONCAT(SUBSTRING_INDEX(u.name, ' ', 1), '%') OR l.lab1_admin LIKE CONCAT(v.nim, '%')) AND l.status = 'reject' AND DATE(l.date_updated) = '{$escaped_date}') +
+                    (SELECT COUNT(*) FROM tb_skl sk WHERE (sk.admin = u.name OR sk.admin = v.nim OR sk.admin LIKE CONCAT(SUBSTRING_INDEX(u.name, ' ', 1), '%') OR sk.admin LIKE CONCAT(v.nim, '%')) AND (sk.status = 'tolak' OR sk.status = 'reject') AND DATE(sk.date_finish) = '{$escaped_date}') +
+                    (SELECT COUNT(*) FROM tb_bebasperpus bp WHERE (bp.admin = u.name OR bp.admin = v.nim OR bp.admin LIKE CONCAT(SUBSTRING_INDEX(u.name, ' ', 1), '%') OR bp.admin LIKE CONCAT(v.nim, '%')) AND bp.status = 'reject' AND DATE(bp.date_updated) = '{$escaped_date}')
                 ) AS admin_reject,
                 (
-                    (SELECT COUNT(*) FROM tb_suratpengajuan s WHERE (s.admin = u.name OR s.admin = v.nim) AND s.status = 'selesai' AND FROM_UNIXTIME(s.date_finish, '%Y-%m-%d') = '{$escaped_date}') +
-                    (SELECT COUNT(*) FROM tb_bebaslab l WHERE (l.lab1_admin = u.name OR l.lab1_admin = v.nim) AND l.status = 'accept' AND DATE(l.date_updated) = '{$escaped_date}') +
-                    (SELECT COUNT(*) FROM tb_skl sk WHERE (sk.admin = u.name OR sk.admin = v.nim) AND sk.status = 'selesai' AND DATE(sk.date_finish) = '{$escaped_date}') +
-                    (SELECT COUNT(*) FROM tb_bebasperpus bp WHERE (bp.admin = u.name OR bp.admin = v.nim) AND bp.status = 'accept' AND DATE(bp.date_updated) = '{$escaped_date}')
+                    (SELECT COUNT(*) FROM tb_suratpengajuan s WHERE (s.admin = u.name OR s.admin = v.nim OR s.admin LIKE CONCAT(SUBSTRING_INDEX(u.name, ' ', 1), '%') OR s.admin LIKE CONCAT(v.nim, '%')) AND s.status = 'selesai' AND FROM_UNIXTIME(s.date_finish, '%Y-%m-%d') = '{$escaped_date}') +
+                    (SELECT COUNT(*) FROM tb_bebaslab l WHERE (l.lab1_admin = u.name OR l.lab1_admin = v.nim OR l.lab1_admin LIKE CONCAT(SUBSTRING_INDEX(u.name, ' ', 1), '%') OR l.lab1_admin LIKE CONCAT(v.nim, '%')) AND l.status = 'accept' AND DATE(l.date_finished) = '{$escaped_date}') +
+                    (SELECT COUNT(*) FROM tb_skl sk WHERE (sk.admin = u.name OR sk.admin = v.nim OR sk.admin LIKE CONCAT(SUBSTRING_INDEX(u.name, ' ', 1), '%') OR sk.admin LIKE CONCAT(v.nim, '%')) AND sk.status = 'selesai' AND DATE(sk.date_finish) = '{$escaped_date}') +
+                    (SELECT COUNT(*) FROM tb_bebasperpus bp WHERE (bp.admin = u.name OR bp.admin = v.nim OR bp.admin LIKE CONCAT(SUBSTRING_INDEX(u.name, ' ', 1), '%') OR bp.admin LIKE CONCAT(v.nim, '%')) AND bp.status = 'accept' AND DATE(bp.date_updated) = '{$escaped_date}')
                 ) AS admin_selesai
              FROM visitor_logs v
              LEFT JOIN mahasiswa m ON v.nim = m.nim

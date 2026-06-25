@@ -140,7 +140,8 @@ class Labkedokteran_model extends CI_model
         $data = [
             'status' => $proses,
             'keterangan' => $this->input->post('keterangan'),
-            'date_updated' => $date
+            'date_updated' => $date,
+            'lab1_admin' => $this->session->userdata('name')
 
         ];
         $this->db->where('id_bebaslab', $id_bebaslab);
@@ -154,7 +155,8 @@ class Labkedokteran_model extends CI_model
 
         $data = [
             'status' => $proses,
-            'date_updated' => $date
+            'date_updated' => $date,
+            'lab1_admin' => $this->session->userdata('name')
 
         ];
         $this->db->where('id_bebaslab', $id_bebaslab);

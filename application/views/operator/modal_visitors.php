@@ -33,6 +33,15 @@
                 $admins[] = $v;
             }
         }
+
+        // Sort students/members: those who have submissions (jml_xxx > 0) go to the top
+        usort($members, function($a, $b) {
+            $has_a = ($a->jml_aktif_kuliah > 0 || $a->jml_bebas_lab > 0 || $a->jml_skl > 0 || $a->jml_bebas_perpus > 0);
+            $has_b = ($b->jml_aktif_kuliah > 0 || $b->jml_bebas_lab > 0 || $b->jml_skl > 0 || $b->jml_bebas_perpus > 0);
+            if ($has_a && !$has_b) return -1;
+            if (!$has_a && $has_b) return 1;
+            return strcmp($b->login_at, $a->login_at);
+        });
         
         // Helper function to render a card
         function renderVisitorCard($v, $groupId) {

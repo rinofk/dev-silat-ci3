@@ -234,7 +234,8 @@ class Bebaslab extends CI_Controller
         date_default_timezone_set('Asia/Jakarta');
         $update = [
             'status'       => 'proses',
-            'date_updated' => date("Y-m-d H:i:s")
+            'date_updated' => date("Y-m-d H:i:s"),
+            'lab1_admin'   => $this->session->userdata('name')
         ];
 
         $this->db->where('id_bebaslab', $id)->update('tb_bebaslab', $update);
@@ -283,7 +284,8 @@ class Bebaslab extends CI_Controller
         $update = [
             'status'       => 'reject',
             'keterangan'   => $this->input->post('keterangan', true),
-            'date_updated' => date("Y-m-d H:i:s")
+            'date_updated' => date("Y-m-d H:i:s"),
+            'lab1_admin'   => $this->session->userdata('name')
         ];
 
         $this->db->where('id_bebaslab', $id)->update('tb_bebaslab', $update);
