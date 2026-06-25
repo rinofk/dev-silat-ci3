@@ -52,14 +52,15 @@ class Operator extends CI_Controller
             SELECT 
                 tahun,
                 SUM(CASE WHEN tipe = 'aktif_kuliah' THEN jumlah ELSE 0 END) AS aktif_kuliah,
+                SUM(CASE WHEN tipe = 'bebas_perpus' THEN jumlah ELSE 0 END) AS bebas_perpus,
+                SUM(CASE WHEN tipe = 'skl_yudisium' THEN jumlah ELSE 0 END) AS skl_yudisium,
+                SUM(CASE WHEN tipe = 'skl' THEN jumlah ELSE 0 END) AS skl,
                 SUM(CASE WHEN tipe = 'bebas_lab_kedokteran' THEN jumlah ELSE 0 END) AS bebas_lab_kedokteran,
-                SUM(CASE WHEN tipe = 'bebas_lab_keperawatan' THEN jumlah ELSE 0 END) AS bebas_lab_keperawatan,
                 SUM(CASE WHEN tipe = 'bebas_lab_farmasi' THEN jumlah ELSE 0 END) AS bebas_lab_farmasi,
+                SUM(CASE WHEN tipe = 'bebas_lab_keperawatan' THEN jumlah ELSE 0 END) AS bebas_lab_keperawatan,
                 SUM(CASE WHEN tipe = 'bebas_lab_ners' THEN jumlah ELSE 0 END) AS bebas_lab_ners,
                 SUM(CASE WHEN tipe = 'bebas_lab_dokter' THEN jumlah ELSE 0 END) AS bebas_lab_dokter,
-                SUM(CASE WHEN tipe = 'skl' THEN jumlah ELSE 0 END) AS skl,
-                SUM(CASE WHEN tipe = 'skl_yudisium' THEN jumlah ELSE 0 END) AS skl_yudisium,
-                SUM(CASE WHEN tipe = 'bebas_perpus' THEN jumlah ELSE 0 END) AS bebas_perpus
+                SUM(CASE WHEN tipe = 'bebas_lab_apoteker' THEN jumlah ELSE 0 END) AS bebas_lab_apoteker
             FROM (
                 SELECT YEAR(FROM_UNIXTIME(date_finish)) AS tahun, 'aktif_kuliah' AS tipe, COUNT(*) AS jumlah
                 FROM tb_suratpengajuan
@@ -75,6 +76,7 @@ class Operator extends CI_Controller
                            WHEN m.prodi_id = 2 THEN 'bebas_lab_farmasi'
                            WHEN m.prodi_id = 5 THEN 'bebas_lab_ners'
                            WHEN m.prodi_id = 6 THEN 'bebas_lab_dokter'
+                           WHEN m.prodi_id = 4 THEN 'bebas_lab_apoteker'
                            ELSE 'bebas_lab_lain'
                        END AS tipe,
                        COUNT(*) AS jumlah

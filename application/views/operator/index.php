@@ -308,7 +308,302 @@
         padding: 4px 8px;
         outline: none;
     }
+
+    /* ========================================== */
+    /* LEFT SLIDING DRAWER STYLING                */
+    /* ========================================== */
+    .visitor-drawer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2000;
+        visibility: hidden;
+        transition: visibility 0.4s ease;
+    }
+
+    .visitor-drawer.open {
+        visibility: visible;
+    }
+
+    .visitor-drawer-backdrop {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(15, 23, 42, 0.4);
+        backdrop-filter: blur(4px);
+        opacity: 0;
+        transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .visitor-drawer.open .visitor-drawer-backdrop {
+        opacity: 1;
+    }
+
+    .visitor-drawer-content {
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background-color: #ffffff;
+        box-shadow: 10px 0 40px rgba(15, 23, 42, 0.15);
+        transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    @media (min-width: 768px) {
+        .visitor-drawer-content {
+            left: -66.666667%;
+            width: 66.666667%;
+        }
+    }
+
+    .visitor-drawer.open .visitor-drawer-content {
+        left: 0;
+    }
+
+    /* Drawer Header */
+    .visitor-drawer-header {
+        padding: 24px;
+        border-bottom: 1px solid #f1f5f9;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #ffffff;
+    }
+
+    .visitor-drawer-title-box {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .visitor-drawer-title {
+        font-family: var(--font-title);
+        font-size: 16px;
+        font-weight: 800;
+        color: #1e293b;
+        margin: 0;
+    }
+
+    .visitor-drawer-subtitle {
+        font-family: var(--font-body);
+        font-size: 13px;
+        color: #64748b;
+        margin-top: 4px;
+    }
+
+    .visitor-drawer-close {
+        border: none;
+        background: #f1f5f9;
+        color: #64748b;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 16px;
+        line-height: 1;
+    }
+
+    .visitor-drawer-close:hover {
+        background: #e2e8f0;
+        color: #0f172a;
+    }
+
+    /* Drawer Search Area */
+    .visitor-drawer-search-container {
+        padding: 16px 24px;
+        background-color: #ffffff;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .visitor-drawer-search-wrapper {
+        position: relative;
+    }
+
+    .visitor-drawer-search-input {
+        width: 100%;
+        padding: 10px 16px 10px 38px;
+        font-size: 13px;
+        border: 1.5px solid var(--border);
+        border-radius: 12px;
+        outline: none;
+        transition: all 0.2s ease;
+        font-family: var(--font-body);
+    }
+
+    .visitor-drawer-search-input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
+    }
+
+    .visitor-drawer-search-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 14px;
+        pointer-events: none;
+    }
+
+    /* Drawer Body / Scrollable Area */
+    .visitor-drawer-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 24px;
+        background-color: #f8fafc;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+        align-content: start;
+    }
+
+    @media (min-width: 992px) {
+        .visitor-drawer-body {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (min-width: 1400px) {
+        .visitor-drawer-body {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    /* Scrollbar Styling */
+    .visitor-drawer-body::-webkit-scrollbar {
+        width: 6px;
+    }
+    .visitor-drawer-body::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .visitor-drawer-body::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+    }
+    .visitor-drawer-body::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+    }
+
+    /* Visitor Card styling */
+    .visitor-drawer-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 18px;
+        border: 1px solid #f1f5f9;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
+        display: flex;
+        gap: 16px;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .visitor-drawer-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+        border-color: #e2e8f0;
+    }
+
+    .visitor-card-avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-title);
+        font-weight: 800;
+        font-size: 14px;
+        flex-shrink: 0;
+    }
+
+    .visitor-card-avatar.bg-student {
+        background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+        color: #0284c7;
+    }
+
+    .visitor-card-avatar.bg-admin {
+        background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
+        color: #8b5cf6;
+    }
+
+    .visitor-card-details {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .visitor-card-name {
+        font-family: var(--font-title);
+        font-size: 14px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 3px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .visitor-card-sub {
+        font-family: var(--font-body);
+        font-size: 12px;
+        color: #64748b;
+        margin-bottom: 2px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .visitor-card-sub strong {
+        color: #334155;
+    }
+
+    .visitor-card-time {
+        font-family: var(--font-body);
+        font-size: 11px;
+        color: #94a3b8;
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .visitor-card-badges {
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .visitor-card-badges .badge {
+        font-family: var(--font-body);
+        font-size: 11px;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-weight: 600;
+    }
+
+    .visitor-card-badges .badge-primary { background-color: #e0f2fe; color: #0369a1; }
+    .visitor-card-badges .badge-warning { background-color: #fef3c7; color: #b45309; }
+    .visitor-card-badges .badge-info { background-color: #ecfeff; color: #097d8e; }
+    .visitor-card-badges .badge-success { background-color: #d1fae5; color: #047857; }
+    .visitor-card-badges .badge-secondary { background-color: #f1f5f9; color: #475569; }
+    .visitor-card-badges .badge-danger { background-color: #fee2e2; color: #b91c1c; }
+
+    #noVisitorResults {
+        grid-column: 1 / -1;
+        width: 100%;
+    }
 </style>
+
 
 <div class="container-fluid">
     <!-- Judul Header -->
@@ -475,14 +770,15 @@
         $statistik_layanan_reversed = array_reverse($statistik_layanan);
         $tahun_labels = json_encode(array_column($statistik_layanan_reversed, 'tahun'));
         $aktif_kuliah_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'aktif_kuliah')));
+        $bebas_perpus_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'bebas_perpus')));
+        $skl_yudisium_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'skl_yudisium')));
+        $skl_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'skl')));
         $bebas_lab_kedokteran_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'bebas_lab_kedokteran')));
-        $bebas_lab_keperawatan_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'bebas_lab_keperawatan')));
         $bebas_lab_farmasi_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'bebas_lab_farmasi')));
+        $bebas_lab_keperawatan_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'bebas_lab_keperawatan')));
         $bebas_lab_ners_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'bebas_lab_ners')));
         $bebas_lab_dokter_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'bebas_lab_dokter')));
-        $skl_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'skl')));
-        $skl_yudisium_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'skl_yudisium')));
-        $bebas_perpus_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'bebas_perpus')));
+        $bebas_lab_apoteker_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'bebas_lab_apoteker')));
     ?>
     <div class="dashboard-section-title">Statistik Layanan Selesai Diproses</div>
     <div class="card custom-table-card mb-4">
@@ -502,32 +798,34 @@
                         <tr>
                             <th>Tahun</th>
                             <th>Aktif Kuliah</th>
+                            <th>Bebas Perpustakaan</th>
+                            <th>SKL Yudisium</th>
+                            <th>SKL</th>
                             <th>Bebas Lab Kedokteran</th>
-                            <th>Bebas Lab Keperawatan</th>
                             <th>Bebas Lab Farmasi</th>
+                            <th>Bebas Lab Keperawatan</th>
                             <th>Bebas Lab Ners</th>
                             <th>Bebas Lab Dokter</th>
-                            <th>SKL</th>
-                            <th>SKL Yudisium</th>
-                            <th>Bebas Perpus</th>
+                            <th>Bebas Lab Apoteker</th>
                             <th class="bg-primary text-white">Total</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach($statistik_layanan as $row): 
-                            $row_total = $row['aktif_kuliah'] + $row['bebas_lab_kedokteran'] + $row['bebas_lab_keperawatan'] + $row['bebas_lab_farmasi'] + $row['bebas_lab_ners'] + $row['bebas_lab_dokter'] + $row['skl'] + $row['skl_yudisium'] + $row['bebas_perpus'];
+                            $row_total = $row['aktif_kuliah'] + $row['bebas_perpus'] + $row['skl_yudisium'] + $row['skl'] + $row['bebas_lab_kedokteran'] + $row['bebas_lab_farmasi'] + $row['bebas_lab_keperawatan'] + $row['bebas_lab_ners'] + $row['bebas_lab_dokter'] + $row['bebas_lab_apoteker'];
                         ?>
                             <tr>
                                 <td class="font-weight-bold text-center"><?= $row['tahun']; ?></td>
                                 <td class="text-center"><?= number_format($row['aktif_kuliah']); ?></td>
+                                <td class="text-center"><?= number_format($row['bebas_perpus']); ?></td>
+                                <td class="text-center"><?= number_format($row['skl_yudisium']); ?></td>
+                                <td class="text-center"><?= number_format($row['skl']); ?></td>
                                 <td class="text-center"><?= number_format($row['bebas_lab_kedokteran']); ?></td>
-                                <td class="text-center"><?= number_format($row['bebas_lab_keperawatan']); ?></td>
                                 <td class="text-center"><?= number_format($row['bebas_lab_farmasi']); ?></td>
+                                <td class="text-center"><?= number_format($row['bebas_lab_keperawatan']); ?></td>
                                 <td class="text-center"><?= number_format($row['bebas_lab_ners']); ?></td>
                                 <td class="text-center"><?= number_format($row['bebas_lab_dokter']); ?></td>
-                                <td class="text-center"><?= number_format($row['skl']); ?></td>
-                                <td class="text-center"><?= number_format($row['skl_yudisium']); ?></td>
-                                <td class="text-center"><?= number_format($row['bebas_perpus']); ?></td>
+                                <td class="text-center"><?= number_format($row['bebas_lab_apoteker']); ?></td>
                                 <td class="font-weight-bold text-center text-primary"><?= number_format($row_total); ?></td>
                             </tr>
                         <?php endforeach; ?>
@@ -640,14 +938,14 @@
     </div>
 </div>
 
-<!-- Modal Detail Pengunjung -->
-<div class="modal fade" id="visitorModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content" id="modalContent" style="border-radius: 20px; overflow: hidden; border: none; box-shadow: 0 20px 40px rgba(0,0,0,0.2);">
-            <!-- konten dari AJAX -->
-        </div>
+<!-- Drawer Detail Pengunjung -->
+<div id="visitorDrawer" class="visitor-drawer">
+    <div class="visitor-drawer-backdrop" id="visitorDrawerBackdrop"></div>
+    <div class="visitor-drawer-content" id="drawerContent">
+        <!-- konten dari AJAX -->
     </div>
 </div>
+
 
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -702,19 +1000,34 @@
                         backgroundColor: '#0284c7'
                     },
                     {
+                        label: 'Bebas Perpustakaan',
+                        data: <?= $bebas_perpus_data; ?>,
+                        backgroundColor: '#64748b'
+                    },
+                    {
+                        label: 'SKL Yudisium',
+                        data: <?= $skl_yudisium_data; ?>,
+                        backgroundColor: '#6366f1'
+                    },
+                    {
+                        label: 'SKL',
+                        data: <?= $skl_data; ?>,
+                        backgroundColor: '#06b6d4'
+                    },
+                    {
                         label: 'Bebas Lab Kedokteran',
                         data: <?= $bebas_lab_kedokteran_data; ?>,
                         backgroundColor: '#10b981'
                     },
                     {
-                        label: 'Bebas Lab Keperawatan',
-                        data: <?= $bebas_lab_keperawatan_data; ?>,
-                        backgroundColor: '#0d9488'
-                    },
-                    {
                         label: 'Bebas Lab Farmasi',
                         data: <?= $bebas_lab_farmasi_data; ?>,
                         backgroundColor: '#f59e0b'
+                    },
+                    {
+                        label: 'Bebas Lab Keperawatan',
+                        data: <?= $bebas_lab_keperawatan_data; ?>,
+                        backgroundColor: '#0d9488'
                     },
                     {
                         label: 'Bebas Lab Ners',
@@ -727,19 +1040,9 @@
                         backgroundColor: '#ec4899'
                     },
                     {
-                        label: 'SKL',
-                        data: <?= $skl_data; ?>,
-                        backgroundColor: '#06b6d4'
-                    },
-                    {
-                        label: 'SKL Yudisium',
-                        data: <?= $skl_yudisium_data; ?>,
-                        backgroundColor: '#6366f1'
-                    },
-                    {
-                        label: 'Bebas Perpus',
-                        data: <?= $bebas_perpus_data; ?>,
-                        backgroundColor: '#a8a29e'
+                        label: 'Bebas Lab Apoteker',
+                        data: <?= $bebas_lab_apoteker_data; ?>,
+                        backgroundColor: '#f97316'
                     }
                 ]
             },
@@ -904,18 +1207,63 @@
             }
         });
 
-        // Modal AJAX Visitor Detail
+        // Drawer AJAX Visitor Detail
         $(document).on('click', '.show-visitors', function(){
             var date = $(this).data('date');
             $.ajax({
                 url: "<?= base_url('operator/get_visitors_by_date/'); ?>" + date,
                 type: "GET",
                 success: function(res){
-                    $('#modalContent').html(res);
-                    $('#visitorModal').modal('show');
+                    $('#drawerContent').html(res);
+                    $('#visitorDrawer').addClass('open');
+                    $('body').css('overflow', 'hidden'); // prevent background scrolling
                 }
             });
         });
+
+        // Close Drawer Function
+        function closeVisitorDrawer() {
+            $('#visitorDrawer').removeClass('open');
+            $('body').css('overflow', '');
+        }
+
+        $(document).on('click', '#visitorDrawerBackdrop, .visitor-drawer-close', function(){
+            closeVisitorDrawer();
+        });
+
+        // Handle Escape Key to close drawer
+        $(document).keyup(function(e) {
+            if (e.key === "Escape") {
+                closeVisitorDrawer();
+            }
+        });
+
+        // Client-side search filtering inside the drawer
+        $(document).on('input', '#visitorSearchInput', function(){
+            var query = $(this).val().toLowerCase().trim();
+            $('.visitor-drawer-card').each(function(){
+                var name = $(this).find('.visitor-card-name').text().toLowerCase();
+                var nim = $(this).find('.visitor-card-nim-val').text().toLowerCase();
+                var prodi = $(this).find('.visitor-card-prodi-val').text().toLowerCase();
+                
+                if (name.indexOf(query) !== -1 || nim.indexOf(query) !== -1 || prodi.indexOf(query) !== -1) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            
+            // Show "no results found" message if all hidden
+            var visibleCards = $('.visitor-drawer-card:visible').length;
+            if (visibleCards === 0) {
+                if ($('#noVisitorResults').length === 0) {
+                    $('.visitor-drawer-body').append('<div id="noVisitorResults" class="text-center py-4 text-muted font-weight-bold" style="font-family: var(--font-body); font-size: 13px;">Tidak ada hasil pencarian yang cocok</div>');
+                }
+            } else {
+                $('#noVisitorResults').remove();
+            }
+        });
+
 
     });
 </script>

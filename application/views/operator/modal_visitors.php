@@ -1,57 +1,116 @@
-<div class="modal-header">
-    <h5 class="modal-title">Daftar Visitor Tanggal <?= isset($selected_date) ? $selected_date : ''; ?></h5>
-    <button type="button" class="close" data-dismiss="modal">&times;</button>
-</div>
-<div class="modal-body">
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped" style="width:100%;">
-            <thead>
-                <tr>
-                    <th style="width:5%;">#</th>
-                    <th style="width:12%;">NIM</th>
-                    <th style="width:25%;">Nama Lengkap</th>
-                    <th style="width:20%;">Program Studi</th>
-                    <th style="width:23%;">Pengajuan Surat</th>
-                    <th style="width:15%;">Login At</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (!empty($visitors)): $no=1; foreach($visitors as $v): ?>
-                    <tr>
-                        <td><?= $no++; ?></td>
-                        <td class="font-weight-bold"><?= $v->nim; ?></td>
-                        <td><?= $v->nama_lengkap ? $v->nama_lengkap : '<em class="text-muted">Bukan Mahasiswa/Admin</em>'; ?></td>
-                        <td><?= $v->nama_prodi ? $v->nama_prodi : '-'; ?></td>
-                        <td>
-                            <?php 
-                                $has_letter = false;
-                                if ($v->jml_aktif_kuliah > 0) {
-                                    echo '<span class="badge badge-primary mr-1 mb-1">Aktif Kuliah (' . $v->jml_aktif_kuliah . ')</span>';
-                                    $has_letter = true;
-                                }
-                                if ($v->jml_bebas_lab > 0) {
-                                    echo '<span class="badge badge-warning text-dark mr-1 mb-1">Bebas Lab (' . $v->jml_bebas_lab . ')</span>';
-                                    $has_letter = true;
-                                }
-                                if ($v->jml_skl > 0) {
-                                    echo '<span class="badge badge-info mr-1 mb-1">SKL (' . $v->jml_skl . ')</span>';
-                                    $has_letter = true;
-                                }
-                                if ($v->jml_bebas_perpus > 0) {
-                                    echo '<span class="badge badge-success mr-1 mb-1">Bebas Perpus (' . $v->jml_bebas_perpus . ')</span>';
-                                    $has_letter = true;
-                                }
-                                if (!$has_letter) {
-                                    echo '<span class="badge badge-secondary">Tidak ada pengajuan</span>';
-                                }
-                            ?>
-                        </td>
-                        <td><?= date('d-m-Y H:i:s', strtotime($v->login_at)); ?></td>
-                    </tr>
-                <?php endforeach; else: ?>
-                    <tr><td colspan="6" class="text-center">Tidak ada visitor</td></tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+<div class="visitor-drawer-header">
+    <div class="visitor-drawer-title-box">
+        <h5 class="visitor-drawer-title">Daftar Visitor</h5>
+        <span class="visitor-drawer-subtitle">
+            Tanggal: <strong><?= isset($selected_date) ? date('d-m-Y', strtotime($selected_date)) : ''; ?></strong> 
+            (<?= count($visitors); ?> Pengunjung)
+        </span>
     </div>
+    <button type="button" class="visitor-drawer-close">&times;</button>
+</div>
+
+<div class="visitor-drawer-search-container">
+    <div class="visitor-drawer-search-wrapper">
+        <i class="fas fa-search visitor-drawer-search-icon"></i>
+        <input type="text" id="visitorSearchInput" class="visitor-drawer-search-input" placeholder="Cari nama, NIM, atau prodi..." autocomplete="off">
+    </div>
+</div>
+
+<div class="visitor-drawer-body">
+    <?php if (!empty($visitors)): foreach($visitors as $v): 
+        // Generate initials-based avatar
+        $name = trim($v->nama_lengkap);
+        $initials = '';
+        $bg_class = 'bg-student';
+        $is_admin = false;
+        
+        if ($name) {
+            $words = explode(' ', $name);
+            if (count($words) >= 2) {
+                $initials = strtoupper(substr($words[0], 0, 1) . substr($words[1], 0, 1));
+            } else {
+                $initials = strtoupper(substr($name, 0, 2));
+            }
+        } elseif ($v->nama_admin) {
+            $is_admin = true;
+            $name = trim($v->nama_admin);
+            $words = explode(' ', $name);
+            if (count($words) >= 2) {
+                $initials = strtoupper(substr($words[0], 0, 1) . substr($words[1], 0, 1));
+            } else {
+                $initials = strtoupper(substr($name, 0, 2));
+            }
+            $bg_class = 'bg-admin';
+        } else {
+            $name = "Bukan Mahasiswa/Admin";
+            $initials = "ADM";
+            $bg_class = 'bg-admin';
+        }
+    ?>
+        <div class="visitor-drawer-card">
+            <div class="visitor-card-avatar <?= $bg_class; ?>">
+                <?= $initials; ?>
+            </div>
+            <div class="visitor-card-details">
+                <div class="visitor-card-name" title="<?= htmlspecialchars($name); ?>"><?= htmlspecialchars($name); ?></div>
+                
+                <div class="visitor-card-sub">
+                    <i class="fas fa-id-card text-muted mr-1" style="font-size: 11px;"></i> 
+                    NIM: <strong class="visitor-card-nim-val"><?= htmlspecialchars($v->nim); ?></strong>
+                </div>
+                
+                <?php if ($is_admin): ?>
+                    <div class="visitor-card-sub">
+                        <i class="fas fa-user-shield text-muted mr-1" style="font-size: 11px;"></i> 
+                        Role: <span class="visitor-card-prodi-val font-weight-bold text-primary"><?= $v->nama_role ? htmlspecialchars($v->nama_role) : 'Admin / Staff'; ?></span>
+                    </div>
+                <?php else: ?>
+                    <div class="visitor-card-sub">
+                        <i class="fas fa-graduation-cap text-muted mr-1" style="font-size: 11px;"></i> 
+                        Prodi: <span class="visitor-card-prodi-val"><?= $v->nama_prodi ? htmlspecialchars($v->nama_prodi) : '-'; ?></span>
+                    </div>
+                <?php endif; ?>
+                
+                <div class="visitor-card-time">
+                    <i class="far fa-clock"></i>
+                    <span>Login: <?= date('d-m-Y H:i:s', strtotime($v->login_at)); ?></span>
+                </div>
+                
+                <div class="visitor-card-badges">
+                    <?php if ($is_admin): ?>
+                        <span class="badge badge-info">Diproses (<?= $v->admin_proses; ?>)</span>
+                        <span class="badge badge-danger">Ditolak/Reject (<?= $v->admin_reject; ?>)</span>
+                        <span class="badge badge-success">Selesai (<?= $v->admin_selesai; ?>)</span>
+                    <?php else: ?>
+                        <?php 
+                            $has_letter = false;
+                            if ($v->jml_aktif_kuliah > 0) {
+                                echo '<span class="badge badge-primary">Aktif Kuliah (' . $v->jml_aktif_kuliah . ')</span>';
+                                $has_letter = true;
+                            }
+                            if ($v->jml_bebas_lab > 0) {
+                                echo '<span class="badge badge-warning text-dark">Bebas Lab (' . $v->jml_bebas_lab . ')</span>';
+                                $has_letter = true;
+                            }
+                            if ($v->jml_skl > 0) {
+                                echo '<span class="badge badge-info">SKL (' . $v->jml_skl . ')</span>';
+                                $has_letter = true;
+                            }
+                            if ($v->jml_bebas_perpus > 0) {
+                                echo '<span class="badge badge-success">Bebas Perpus (' . $v->jml_bebas_perpus . ')</span>';
+                                $has_letter = true;
+                            }
+                            if (!$has_letter) {
+                                echo '<span class="badge badge-secondary">Tidak ada pengajuan</span>';
+                            }
+                        ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    <?php endforeach; else: ?>
+        <div class="text-center py-5 text-muted font-weight-bold" style="font-family: var(--font-body); font-size: 13px;">
+            Tidak ada visitor pada tanggal ini
+        </div>
+    <?php endif; ?>
 </div>
