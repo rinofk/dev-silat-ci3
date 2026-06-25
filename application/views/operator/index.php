@@ -833,18 +833,44 @@
                             $row_total = $row['aktif_kuliah'] + $row['bebas_perpus'] + $row['skl_yudisium'] + $row['skl'] + $row['bebas_lab_kedokteran'] + $row['bebas_lab_farmasi'] + $row['bebas_lab_keperawatan'] + $row['bebas_lab_ners'] + $row['bebas_lab_dokter'] + $row['bebas_lab_apoteker'];
                         ?>
                             <tr>
-                                <td class="font-weight-bold text-center"><?= $row['tahun']; ?></td>
-                                <td class="text-center"><?= number_format($row['aktif_kuliah']); ?></td>
-                                <td class="text-center"><?= number_format($row['bebas_perpus']); ?></td>
-                                <td class="text-center"><?= number_format($row['skl_yudisium']); ?></td>
-                                <td class="text-center"><?= number_format($row['skl']); ?></td>
-                                <td class="text-center"><?= number_format($row['bebas_lab_kedokteran']); ?></td>
-                                <td class="text-center"><?= number_format($row['bebas_lab_farmasi']); ?></td>
-                                <td class="text-center"><?= number_format($row['bebas_lab_keperawatan']); ?></td>
-                                <td class="text-center"><?= number_format($row['bebas_lab_ners']); ?></td>
-                                <td class="text-center"><?= number_format($row['bebas_lab_dokter']); ?></td>
-                                <td class="text-center"><?= number_format($row['bebas_lab_apoteker']); ?></td>
-                                <td class="font-weight-bold text-center text-primary"><?= number_format($row_total); ?></td>
+                                <td class="font-weight-bold text-center">
+                                    <a href="<?= base_url('operator/detail_layanan?tahun=' . $row['tahun'] . '&tipe=all'); ?>" class="text-dark">
+                                        <?= $row['tahun']; ?>
+                                    </a>
+                                </td>
+                                <td class="text-center">
+                                    <?= $row['aktif_kuliah'] > 0 ? '<a href="' . base_url('operator/detail_layanan?tahun=' . $row['tahun'] . '&tipe=aktif_kuliah') . '" class="font-weight-bold text-primary">' . number_format($row['aktif_kuliah']) . '</a>' : '0'; ?>
+                                </td>
+                                <td class="text-center">
+                                    <?= $row['bebas_perpus'] > 0 ? '<a href="' . base_url('operator/detail_layanan?tahun=' . $row['tahun'] . '&tipe=bebas_perpus') . '" class="font-weight-bold text-primary">' . number_format($row['bebas_perpus']) . '</a>' : '0'; ?>
+                                </td>
+                                <td class="text-center">
+                                    <?= $row['skl_yudisium'] > 0 ? '<a href="' . base_url('operator/detail_layanan?tahun=' . $row['tahun'] . '&tipe=skl_yudisium') . '" class="font-weight-bold text-primary">' . number_format($row['skl_yudisium']) . '</a>' : '0'; ?>
+                                </td>
+                                <td class="text-center">
+                                    <?= $row['skl'] > 0 ? '<a href="' . base_url('operator/detail_layanan?tahun=' . $row['tahun'] . '&tipe=skl') . '" class="font-weight-bold text-primary">' . number_format($row['skl']) . '</a>' : '0'; ?>
+                                </td>
+                                <td class="text-center">
+                                    <?= $row['bebas_lab_kedokteran'] > 0 ? '<a href="' . base_url('operator/detail_layanan?tahun=' . $row['tahun'] . '&tipe=bebas_lab_kedokteran') . '" class="font-weight-bold text-primary">' . number_format($row['bebas_lab_kedokteran']) . '</a>' : '0'; ?>
+                                </td>
+                                <td class="text-center">
+                                    <?= $row['bebas_lab_farmasi'] > 0 ? '<a href="' . base_url('operator/detail_layanan?tahun=' . $row['tahun'] . '&tipe=bebas_lab_farmasi') . '" class="font-weight-bold text-primary">' . number_format($row['bebas_lab_farmasi']) . '</a>' : '0'; ?>
+                                </td>
+                                <td class="text-center">
+                                    <?= $row['bebas_lab_keperawatan'] > 0 ? '<a href="' . base_url('operator/detail_layanan?tahun=' . $row['tahun'] . '&tipe=bebas_lab_keperawatan') . '" class="font-weight-bold text-primary">' . number_format($row['bebas_lab_keperawatan']) . '</a>' : '0'; ?>
+                                </td>
+                                <td class="text-center">
+                                    <?= $row['bebas_lab_ners'] > 0 ? '<a href="' . base_url('operator/detail_layanan?tahun=' . $row['tahun'] . '&tipe=bebas_lab_ners') . '" class="font-weight-bold text-primary">' . number_format($row['bebas_lab_ners']) . '</a>' : '0'; ?>
+                                </td>
+                                <td class="text-center">
+                                    <?= $row['bebas_lab_dokter'] > 0 ? '<a href="' . base_url('operator/detail_layanan?tahun=' . $row['tahun'] . '&tipe=bebas_lab_dokter') . '" class="font-weight-bold text-primary">' . number_format($row['bebas_lab_dokter']) . '</a>' : '0'; ?>
+                                </td>
+                                <td class="text-center">
+                                    <?= $row['bebas_lab_apoteker'] > 0 ? '<a href="' . base_url('operator/detail_layanan?tahun=' . $row['tahun'] . '&tipe=bebas_lab_apoteker') . '" class="font-weight-bold text-primary">' . number_format($row['bebas_lab_apoteker']) . '</a>' : '0'; ?>
+                                </td>
+                                <td class="font-weight-bold text-center text-primary">
+                                    <?= $row_total > 0 ? '<a href="' . base_url('operator/detail_layanan?tahun=' . $row['tahun'] . '&tipe=all') . '" class="font-weight-bold text-primary">' . number_format($row_total) . '</a>' : '0'; ?>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
