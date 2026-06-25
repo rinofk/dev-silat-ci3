@@ -104,7 +104,25 @@ class Visitor_model extends CI_Model
         return $this->db->get()->result();
     }
 
-
-
-
+    public function get_visitors_with_letters_by_date($date)
+    {
+        $query = $this->db->query("
+            SELECT 
+                v.nim, 
+                m.nama_lengkap, 
+                p.nama_prodi, 
+                v.session_id, 
+                v.login_at,
+                (SELECT COUNT(*) FROM tb_suratpengajuan s WHERE s.nim_mahasiswa = v.nim) as jml_aktif_kuliah,
+                (SELECT COUNT(*) FROM tb_bebaslab l WHERE l.nim_mahasiswa = v.nim) as jml_bebas_lab,
+                (SELECT COUNT(*) FROM tb_skl sk WHERE sk.nim = v.nim) as jml_skl,
+                (SELECT COUNT(*) FROM tb_bebasperpus bp WHERE bp.nim_mahasiswa = v.nim) as jml_bebas_perpus
+            FROM visitor_logs v
+            LEFT JOIN mahasiswa m ON v.nim = m.nim
+            LEFT JOIN prodi p ON m.prodi_id = p.id_prodi
+            WHERE v.visit_date = ?
+            ORDER BY v.login_at DESC
+        ", array($date));
+        return $query->result();
+    }
 }

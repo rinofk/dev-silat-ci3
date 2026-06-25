@@ -201,14 +201,14 @@ $pdf->Cell(105, 5, 'Wahyudi, MM', 0, 0);
 $pdf->Cell(60, 5, 'Nurul Hamsiah, S.Si', 0, 1);
 $pdf->Cell($margin_kiri, 5, '', 0, 0);
 $pdf->Cell(105, 5, 'NIP. 197509232006041001', 0, 0);
-$pdf->Cell(60, 5, 'NIH. 19940701201801012', 0, 1);
+$pdf->Cell(60, 5, 'NIP. 199407012025212079', 0, 1);
 
 
 $pdf->Cell($margin_kiri, 15, '', 0, 1);
 $pdf->Cell($margin_kiri, 5, '', 0, 0);
 $pdf->Cell(120, 5, 'Laboratorium FK UNTAN', 0, 1);
 $pdf->Cell($margin_kiri, 5, '', 0, 0);
-$pdf->Cell(120, 5, '[ ' . $bp['id_bebaslab'] . ' ] ID surat elektronik silat.fk.untan.ac.id', 0, 1);
+$pdf->Cell(120, 5, '[ ' . $bp['id_bebaslab'] . ' ] ID surat elektronik silatfk.untan.ac.id', 0, 1);
 
 if (!empty($qr_file) && file_exists($qr_file)) {
     $pdf->Cell($margin_kiri, 2, '', 0, 1);

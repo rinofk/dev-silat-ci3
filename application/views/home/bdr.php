@@ -26,6 +26,7 @@
                 <div class="navbar-nav ml-auto">
                     <a class="nav-item nav-link" href="https://www.untan.ac.id/" target="_blank">Untan</a>
                     <a class="nav-item nav-link" href="https://siremun.untan.ac.id/" target="_blank">Siremun</a>
+                    <a class="nav-item nav-link" href="http://203.24.51.238:8015/" target="_blank">Reservasi Ruang Sidang</a>
                     <?php if ($this->session->userdata('email')) : ?>
                         <?php 
                             $role_id = $this->session->userdata('role_id');
@@ -33,9 +34,9 @@
                         ?>
                         <a class="nav-item nav-link" href="<?= $dashboard_url; ?>">Dashboard</a>
                     <?php else: ?>
-                        <a class="nav-item nav-link" href="<?= base_url('auth'); ?>">Dashboard</a>
+                        <a class="nav-item nav-link" href="<?= base_url('auth'); ?>">Login</a>
                     <?php endif; ?>
-                    <a class="nav-item btn btn-primary btn-nav-action" href="http://kedokteran.untan.ac.id/home" target="_blank">FK UNTAN</a>
+                    <a class="nav-item btn btn-primary btn-nav-action" href="http://kedokteran.untan.ac.id/home" target="_blank">Website FK UNTAN</a>
                 </div>
             </div>
         </nav>
@@ -59,7 +60,7 @@
                     </p>
                     <div class="hero-btn-container">
                         <a href="<?= base_url(); ?>auth" class="btn btn-hero-login">
-                            LOGIN SISTEM
+                            LOGIN
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                         </a>
                     </div>

@@ -470,12 +470,79 @@
         </div>
     </div>
 
-    <!-- Section: Grafik Analisis -->
-    <div class="dashboard-section-title">Grafik & Analitik Pengunjung</div>
+    <!-- Section: Statistik Layanan Selesai Diproses -->
+    <?php
+        $statistik_layanan_reversed = array_reverse($statistik_layanan);
+        $tahun_labels = json_encode(array_column($statistik_layanan_reversed, 'tahun'));
+        $aktif_kuliah_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'aktif_kuliah')));
+        $bebas_lab_kedokteran_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'bebas_lab_kedokteran')));
+        $bebas_lab_keperawatan_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'bebas_lab_keperawatan')));
+        $bebas_lab_farmasi_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'bebas_lab_farmasi')));
+        $bebas_lab_ners_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'bebas_lab_ners')));
+        $bebas_lab_dokter_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'bebas_lab_dokter')));
+        $skl_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'skl')));
+        $skl_yudisium_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'skl_yudisium')));
+        $bebas_perpus_data = json_encode(array_map('intval', array_column($statistik_layanan_reversed, 'bebas_perpus')));
+    ?>
+    <div class="dashboard-section-title">Statistik Layanan Selesai Diproses</div>
+    <div class="card custom-table-card mb-4">
+        <div class="card-header">
+            <h6 class="chart-card-title">Grafik & Tabel Akumulasi Surat & Bebas Lab Selesai Diproses (Pertahun)</h6>
+        </div>
+        <div class="card-body">
+            <!-- Chart Layanan Selesai -->
+            <div class="mb-4" style="height: 350px; position: relative;">
+                <canvas id="layananSelesaiChart"></canvas>
+            </div>
+            
+            <!-- Table Layanan Selesai -->
+            <div class="table-responsive">
+                <table class="table custom-table table-bordered table-striped" id="layananSelesaiTable" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>Tahun</th>
+                            <th>Aktif Kuliah</th>
+                            <th>Bebas Lab Kedokteran</th>
+                            <th>Bebas Lab Keperawatan</th>
+                            <th>Bebas Lab Farmasi</th>
+                            <th>Bebas Lab Ners</th>
+                            <th>Bebas Lab Dokter</th>
+                            <th>SKL</th>
+                            <th>SKL Yudisium</th>
+                            <th>Bebas Perpus</th>
+                            <th class="bg-primary text-white">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($statistik_layanan as $row): 
+                            $row_total = $row['aktif_kuliah'] + $row['bebas_lab_kedokteran'] + $row['bebas_lab_keperawatan'] + $row['bebas_lab_farmasi'] + $row['bebas_lab_ners'] + $row['bebas_lab_dokter'] + $row['skl'] + $row['skl_yudisium'] + $row['bebas_perpus'];
+                        ?>
+                            <tr>
+                                <td class="font-weight-bold text-center"><?= $row['tahun']; ?></td>
+                                <td class="text-center"><?= number_format($row['aktif_kuliah']); ?></td>
+                                <td class="text-center"><?= number_format($row['bebas_lab_kedokteran']); ?></td>
+                                <td class="text-center"><?= number_format($row['bebas_lab_keperawatan']); ?></td>
+                                <td class="text-center"><?= number_format($row['bebas_lab_farmasi']); ?></td>
+                                <td class="text-center"><?= number_format($row['bebas_lab_ners']); ?></td>
+                                <td class="text-center"><?= number_format($row['bebas_lab_dokter']); ?></td>
+                                <td class="text-center"><?= number_format($row['skl']); ?></td>
+                                <td class="text-center"><?= number_format($row['skl_yudisium']); ?></td>
+                                <td class="text-center"><?= number_format($row['bebas_perpus']); ?></td>
+                                <td class="font-weight-bold text-center text-primary"><?= number_format($row_total); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section: Analitik & Rincian Kunjungan Visitor -->
+    <div class="dashboard-section-title">Analitik & Rincian Kunjungan Visitor</div>
     <div class="row">
         <!-- Grafik Jumlah Visitor per Hari -->
         <div class="col-lg-8 mb-4">
-            <div class="card chart-card">
+            <div class="card chart-card h-100">
                 <div class="chart-card-header d-flex align-items-center">
                     <h6 class="chart-card-title">Grafik Jumlah Visitor per Hari (Scrollable)</h6>
                 </div>
@@ -490,53 +557,38 @@
             </div>
         </div>
 
-        <!-- Pie Visitor per Prodi -->
+        <!-- Tabel Rincian Visitor -->
         <div class="col-lg-4 mb-4">
-            <div class="card chart-card">
-                <div class="chart-card-header d-flex align-items-center">
-                    <h6 class="chart-card-title">Proporsi Visitor per Prodi</h6>
+            <div class="card custom-table-card h-100">
+                <div class="card-header">
+                    <h6 class="chart-card-title">Tabel Statistik Visitor Harian</h6>
                 </div>
-                <div class="card-body d-flex align-items-center justify-content-center" style="height: 382px;">
-                    <div style="width: 100%; max-width: 280px;">
-                        <canvas id="chartVisitorProdi"></canvas>
+                <div class="card-body p-0">
+                    <div class="table-responsive" style="padding: 20px; max-height: 380px; overflow-y: auto;">
+                        <table class="table custom-table" id="visitorTable" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>Tanggal Kunjungan</th>
+                                    <th>Jumlah Visitor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach($visitors as $row): ?>
+                                    <tr>
+                                        <td>
+                                            <a href="javascript:void(0);" class="show-visitors" data-date="<?= $row->visit_date; ?>">
+                                                <i class="far fa-calendar-alt mr-2"></i><?= $row->visit_date; ?>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <strong><?= $row->total; ?></strong> pengunjung
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Section: Tabel Rincian Data -->
-    <div class="dashboard-section-title">Tabel Rincian Visitor</div>
-    
-    <!-- Card Tabel Statistik Visitor -->
-    <div class="card custom-table-card mb-4">
-        <div class="card-header">
-            <h6 class="chart-card-title">Tabel Statistik Visitor Harian</h6>
-        </div>
-        <div class="card-body p-0">
-            <div class="table-responsive" style="padding: 20px;">
-                <table class="table custom-table" id="visitorTable">
-                    <thead>
-                        <tr>
-                            <th>Tanggal Kunjungan</th>
-                            <th>Jumlah Visitor</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach($visitors as $row): ?>
-                            <tr>
-                                <td>
-                                    <a href="javascript:void(0);" class="show-visitors" data-date="<?= $row->visit_date; ?>">
-                                        <i class="far fa-calendar-alt mr-2"></i><?= $row->visit_date; ?>
-                                    </a>
-                                </td>
-                                <td>
-                                    <strong><?= $row->total; ?></strong> pengunjung
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
@@ -544,20 +596,28 @@
     <!-- Card Visitor Per Prodi (Chart + Table) -->
     <div class="card custom-table-card mb-4">
         <div class="card-header">
-            <h6 class="chart-card-title">Perbandingan Visitor per Program Studi</h6>
+            <h6 class="chart-card-title">Perbandingan & Proporsi Visitor per Program Studi</h6>
         </div>
         <div class="card-body">
             <div class="row align-items-center" style="padding: 10px;">
-                <!-- Chart Bar prodi -->
-                <div class="col-lg-6 mb-4 mb-lg-0">
-                    <div style="height: 280px; position: relative;">
+                <!-- Proporsi (Pie Chart) -->
+                <div class="col-lg-4 mb-4 mb-lg-0 text-center">
+                    <h6 class="text-xs font-weight-bold text-uppercase text-muted mb-2">Proporsi Visitor</h6>
+                    <div style="max-width: 250px; margin: 0 auto;">
+                        <canvas id="chartVisitorProdi" style="max-height: 250px;"></canvas>
+                    </div>
+                </div>
+                <!-- Perbandingan (Bar Chart) -->
+                <div class="col-lg-4 mb-4 mb-lg-0 text-center">
+                    <h6 class="text-xs font-weight-bold text-uppercase text-muted mb-2">Jumlah Visitor</h6>
+                    <div style="height: 250px; position: relative;">
                         <canvas id="visitorPerProdiChart"></canvas>
                     </div>
                 </div>
                 <!-- Table prodi -->
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                     <div class="table-responsive">
-                        <table class="table custom-table table-sm" id="visitorProdiTable">
+                        <table class="table custom-table table-sm" id="visitorProdiTable" style="width: 100%;">
                             <thead>
                                 <tr>
                                     <th>Program Studi</th>
@@ -608,6 +668,17 @@
             }
         });
 
+        // Inisialisasi DataTables untuk Tabel Statistik Layanan Selesai
+        $('#layananSelesaiTable').DataTable({
+            paging: false,
+            searching: false,
+            info: false,
+            order: [[0, 'desc']],
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/id.json"
+            }
+        });
+
         // Inisialisasi DataTables untuk Tabel Visitor Per Prodi
         $('#visitorProdiTable').DataTable({
             paging: false,
@@ -615,6 +686,99 @@
             info: false,
             language: {
                 url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/id.json"
+            }
+        });
+
+        // Chart Layanan Selesai Diproses (Stacked Bar Chart)
+        var ctxLayanan = document.getElementById("layananSelesaiChart").getContext('2d');
+        new Chart(ctxLayanan, {
+            type: 'bar',
+            data: {
+                labels: <?= $tahun_labels; ?>,
+                datasets: [
+                    {
+                        label: 'Aktif Kuliah',
+                        data: <?= $aktif_kuliah_data; ?>,
+                        backgroundColor: '#0284c7'
+                    },
+                    {
+                        label: 'Bebas Lab Kedokteran',
+                        data: <?= $bebas_lab_kedokteran_data; ?>,
+                        backgroundColor: '#10b981'
+                    },
+                    {
+                        label: 'Bebas Lab Keperawatan',
+                        data: <?= $bebas_lab_keperawatan_data; ?>,
+                        backgroundColor: '#0d9488'
+                    },
+                    {
+                        label: 'Bebas Lab Farmasi',
+                        data: <?= $bebas_lab_farmasi_data; ?>,
+                        backgroundColor: '#f59e0b'
+                    },
+                    {
+                        label: 'Bebas Lab Ners',
+                        data: <?= $bebas_lab_ners_data; ?>,
+                        backgroundColor: '#8b5cf6'
+                    },
+                    {
+                        label: 'Bebas Lab Dokter',
+                        data: <?= $bebas_lab_dokter_data; ?>,
+                        backgroundColor: '#ec4899'
+                    },
+                    {
+                        label: 'SKL',
+                        data: <?= $skl_data; ?>,
+                        backgroundColor: '#06b6d4'
+                    },
+                    {
+                        label: 'SKL Yudisium',
+                        data: <?= $skl_yudisium_data; ?>,
+                        backgroundColor: '#6366f1'
+                    },
+                    {
+                        label: 'Bebas Perpus',
+                        data: <?= $bebas_perpus_data; ?>,
+                        backgroundColor: '#a8a29e'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 12,
+                            padding: 15,
+                            font: { family: 'Inter', size: 11 }
+                        }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: false,
+                        grid: { display: false },
+                        ticks: {
+                            color: '#64748b',
+                            font: { family: 'Inter', size: 11 }
+                        }
+                    },
+                    y: {
+                        stacked: false,
+                        grid: { color: '#f1f5f9' },
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#64748b',
+                            font: { family: 'Inter', size: 11 }
+                        }
+                    }
+                }
             }
         });
 
