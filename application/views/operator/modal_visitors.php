@@ -110,9 +110,24 @@
                     
                     <div class="visitor-card-badges">
                         <?php if ($is_admin): ?>
-                            <span class="badge badge-info">Diproses (<?= $v->admin_proses; ?>)</span>
-                            <span class="badge badge-danger">Ditolak/Reject (<?= $v->admin_reject; ?>)</span>
-                            <span class="badge badge-success">Selesai (<?= $v->admin_selesai; ?>)</span>
+                            <?php 
+                                $has_action = false;
+                                if ($v->admin_proses > 0) {
+                                    echo '<span class="badge badge-info">Diproses (' . $v->admin_proses . ')</span> ';
+                                    $has_action = true;
+                                }
+                                if ($v->admin_reject > 0) {
+                                    echo '<span class="badge badge-danger">Ditolak/Reject (' . $v->admin_reject . ')</span> ';
+                                    $has_action = true;
+                                }
+                                if ($v->admin_selesai > 0) {
+                                    echo '<span class="badge badge-success">Selesai (' . $v->admin_selesai . ')</span> ';
+                                    $has_action = true;
+                                }
+                                if (!$has_action) {
+                                    echo '<span class="badge badge-secondary">Tidak ada tindakan</span>';
+                                }
+                            ?>
                         <?php else: ?>
                             <?php 
                                 $has_letter = false;
