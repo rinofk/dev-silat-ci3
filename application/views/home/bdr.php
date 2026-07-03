@@ -27,6 +27,7 @@
                     <a class="nav-item nav-link" href="https://www.untan.ac.id/" target="_blank">Untan</a>
                     <a class="nav-item nav-link" href="https://siremun.untan.ac.id/" target="_blank">Siremun</a>
                     <a class="nav-item nav-link" href="http://203.24.51.238:8015/" target="_blank">Reservasi Ruang Sidang</a>
+                    <a class="nav-item nav-link" href="https://script.google.com/macros/s/AKfycbzLxqaPQQBLNFzYHFjXFwZjaUr1UKj7XCtt37zhr8umegRjdbioG15iRecWtmN_dDPMMA/exec" target="_blank">Pengumpulan Softfile Skripsi</a>
                     <?php if ($this->session->userdata('email')) : ?>
                         <?php 
                             $role_id = $this->session->userdata('role_id');
@@ -253,6 +254,7 @@
                         <li><a href="https://siremun.untan.ac.id/" target="_blank">Siremun UNTAN</a></li>
                         <li><a href="http://kedokteran.untan.ac.id/" target="_blank">Fakultas Kedokteran UNTAN</a></li>
                         <li><a href="http://wfh.untan.ac.id/" target="_blank">Presensi WFH Tendik</a></li>
+                        <li><a href="https://script.google.com/macros/s/AKfycbzLxqaPQQBLNFzYHFjXFwZjaUr1UKj7XCtt37zhr8umegRjdbioG15iRecWtmN_dDPMMA/exec" target="_blank">Pengumpulan Softfile Skripsi</a></li>
                     </ul>
                 </div>
             </div>
