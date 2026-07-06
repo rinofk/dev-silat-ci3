@@ -55,6 +55,22 @@ class Surat extends CI_Controller
         $data['title'] = 'Form Tambah Data Pengajuan Surat';
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
         $id = $data['user']['nim'];
+
+        // Enforce 60-day rule after alumni registration
+        $status = $this->db->get_where('tb_alumni', ['nim_alumni' => $id])->row_array();
+        if (!empty($status['id_alumni'])) {
+            $tgl_daftar = strtotime($status['tanggal_daftar']);
+            if ($tgl_daftar) {
+                $diff = time() - $tgl_daftar;
+                $days = $diff / (60 * 60 * 24);
+                if ($days > 60) {
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Batas waktu pengajuan surat aktif kuliah (60 hari setelah mendaftar alumni) telah habis.</div>');
+                    redirect('surat');
+                    return;
+                }
+            }
+        }
+
         $data['surat'] = $this->Surat_model->getSuratById($id);
         $data['keperluan'] = $this->db->get('keperluan')->result_array();
         //  $data['prodi'] = $this->db->get('prodi')->result_array();

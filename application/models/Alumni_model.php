@@ -203,4 +203,51 @@ class Alumni_model extends CI_model
         $query = $this->db->get();
         return $query->row_array();
     }
+
+    public function getAllAlumni()
+    {
+        $this->db->select('tb_alumni.*, mahasiswa.nama_lengkap, prodi.nama_prodi');
+        $this->db->from('tb_alumni');
+        $this->db->join('mahasiswa', 'mahasiswa.nim = tb_alumni.nim_alumni', 'left');
+        $this->db->join('prodi', 'prodi.id_prodi = mahasiswa.prodi_id', 'left');
+        $this->db->order_by('tb_alumni.id_alumni', 'DESC');
+        return $this->db->get()->result_array();
+    }
+
+    public function getStudentsNotAlumni()
+    {
+        $this->db->select('mahasiswa.nim, mahasiswa.nama_lengkap');
+        $this->db->from('mahasiswa');
+        $this->db->where('mahasiswa.nim NOT IN (SELECT nim_alumni FROM tb_alumni WHERE nim_alumni IS NOT NULL)');
+        $this->db->order_by('mahasiswa.nama_lengkap', 'ASC');
+        return $this->db->get()->result_array();
+    }
+
+    public function getAlumniById($id_alumni)
+    {
+        $this->db->select('tb_alumni.*, mahasiswa.nama_lengkap, prodi.nama_prodi, user.email, user.name as user_name');
+        $this->db->from('tb_alumni');
+        $this->db->join('mahasiswa', 'mahasiswa.nim = tb_alumni.nim_alumni', 'left');
+        $this->db->join('prodi', 'prodi.id_prodi = mahasiswa.prodi_id', 'left');
+        $this->db->join('user', 'user.nim = tb_alumni.nim_alumni', 'left');
+        $this->db->where('tb_alumni.id_alumni', $id_alumni);
+        return $this->db->get()->row_array();
+    }
+
+    public function tambahAlumniAdmin($data)
+    {
+        $this->db->insert('tb_alumni', $data);
+    }
+
+    public function ubahAlumniAdmin($id_alumni, $data)
+    {
+        $this->db->where('id_alumni', $id_alumni);
+        $this->db->update('tb_alumni', $data);
+    }
+
+    public function hapusAlumni($id_alumni)
+    {
+        $this->db->where('id_alumni', $id_alumni);
+        $this->db->delete('tb_alumni');
+    }
 }

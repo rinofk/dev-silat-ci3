@@ -21,7 +21,20 @@
     <?php endif; ?>
 
     <?php
-    if (empty($status['id_alumni'])) {; ?>
+    $allow_tambah = false;
+    if (empty($status['id_alumni'])) {
+        $allow_tambah = true;
+    } else {
+        $tgl_daftar = strtotime($status['tanggal_daftar']);
+        if ($tgl_daftar) {
+            $diff = time() - $tgl_daftar;
+            $days = $diff / (60 * 60 * 24);
+            if ($days <= 60) {
+                $allow_tambah = true;
+            }
+        }
+    }
+    if ($allow_tambah) : ?>
         <!-- <div class="container"> -->
         <div class="row mt-3">
             <div class="col-md-6">
@@ -32,7 +45,7 @@
             </div>
         </div>
         <!-- </div> -->
-    <?php }; ?>
+    <?php endif; ?>
 
 
     <!-- DATA TABLES TAMBAHAN-->

@@ -197,4 +197,198 @@ class Admin extends CI_Controller
             redirect('admin/create');
         }
     }
+
+    public function alumni()
+    {
+        $this->load->model('Alumni_model');
+        $data['title'] = 'Data Alumni';
+        $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
+        $data['alumni'] = $this->Alumni_model->getAllAlumni();
+
+        $this->load->view('templates/header_a', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('admin/alumni_index', $data);
+        $this->load->view('templates/footer_a');
+    }
+
+    public function alumni_tambah()
+    {
+        $this->load->model('Alumni_model');
+        $data['title'] = 'Tambah Alumni';
+        $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
+        $data['students'] = $this->Alumni_model->getStudentsNotAlumni();
+
+        $this->form_validation->set_rules('nim_alumni', 'Mahasiswa', 'required|is_unique[tb_alumni.nim_alumni]');
+        $this->form_validation->set_rules('tahun_wisuda', 'Tahun Wisuda', 'required');
+        $this->form_validation->set_rules('judul_skripsi', 'Judul Skripsi', 'required');
+        $this->form_validation->set_rules('ipk', 'IPK', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('templates/header_a', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('admin/alumni_tambah', $data);
+            $this->load->view('templates/footer_a');
+        } else {
+            $date_now = date('Y-m-d H:i:s');
+            
+            // Handle Photo Upload
+            $new_image = 'default.jpg';
+            $upload_image = $_FILES['poto']['name'];
+            if ($upload_image) {
+                $config['allowed_types'] = 'gif|jpg|jpeg|png';
+                $config['max_size']     = '6148';
+                $config['upload_path'] = './assets/img/alumni/';
+                $config['file_name'] = $this->input->post('nim_alumni');
+                $config['overwrite'] = true;
+
+                $config['mime_types'] = [
+                    'jpg'  => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
+                    'jpeg' => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
+                    'png'  => ['image/png',  'image/x-png']
+                ];
+
+                $this->load->library('upload', $config);
+                if ($this->upload->do_upload('poto')) {
+                    $new_image = $this->upload->data('file_name');
+                } else {
+                    $this->session->set_flashdata('flash_error', $this->upload->display_errors());
+                    redirect('admin/alumni_tambah');
+                }
+            }
+
+            $insertData = [
+                "nim_alumni" => $this->input->post('nim_alumni', true),
+                "thn_akademik" => $this->input->post('thn_akademik', true),
+                "ganjilgenap" => $this->input->post('ganjilgenap', true),
+                "tahun_wisuda" => $this->input->post('tahun_wisuda', true),
+                "jalur_masuk" => $this->input->post('jalur_masuk', true),
+                "judul_skripsi" => $this->input->post('judul_skripsi', true),
+                "pesan_kesan" => $this->input->post('pesan_kesan', true),
+                "alamat_sekarang" => $this->input->post('alamat_sekarang', true),
+                "tgl_lulus_sidang" => $this->input->post('tgl_lulus_sidang', true) ? $this->input->post('tgl_lulus_sidang', true) : '2020-01-01',
+                "tgl_lulus_yudisium" => $this->input->post('tgl_lulus_yudisium', true) ? $this->input->post('tgl_lulus_yudisium', true) : '2020-01-01',
+                "ipk" => $this->input->post('ipk', true),
+                "predikat" => $this->input->post('predikat', true),
+                "status_alumni" => $this->input->post('status_alumni', true),
+                "tanggal_daftar" => $date_now,
+                "tanggal_updatealumni" => $date_now,
+                "poto" => $new_image
+            ];
+
+            $this->Alumni_model->tambahAlumniAdmin($insertData);
+            $this->session->set_flashdata('flash', 'Ditambahkan');
+            redirect('admin/alumni');
+        }
+    }
+
+    public function alumni_ubah($id_alumni)
+    {
+        $this->load->model('Alumni_model');
+        $data['title'] = 'Ubah Alumni';
+        $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
+        $data['alumni'] = $this->Alumni_model->getAlumniById($id_alumni);
+
+        if (!$data['alumni']) {
+            show_404();
+        }
+
+        $this->form_validation->set_rules('tahun_wisuda', 'Tahun Wisuda', 'required');
+        $this->form_validation->set_rules('judul_skripsi', 'Judul Skripsi', 'required');
+        $this->form_validation->set_rules('ipk', 'IPK', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('templates/header_a', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('admin/alumni_ubah', $data);
+            $this->load->view('templates/footer_a');
+        } else {
+            $date_now = date('Y-m-d H:i:s');
+            
+            // Handle Photo Upload
+            $new_image = $data['alumni']['poto'];
+            $upload_image = $_FILES['poto']['name'];
+            if ($upload_image) {
+                $config['allowed_types'] = 'gif|jpg|jpeg|png';
+                $config['max_size']     = '6148';
+                $config['upload_path'] = './assets/img/alumni/';
+                $config['file_name'] = $data['alumni']['nim_alumni'];
+                $config['overwrite'] = true;
+
+                $config['mime_types'] = [
+                    'jpg'  => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
+                    'jpeg' => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
+                    'png'  => ['image/png',  'image/x-png']
+                ];
+
+                $this->load->library('upload', $config);
+                
+                if ($new_image && $new_image != 'default.jpg') {
+                    @unlink(FCPATH . 'assets/img/alumni/' . $new_image);
+                }
+
+                if ($this->upload->do_upload('poto')) {
+                    $new_image = $this->upload->data('file_name');
+                } else {
+                    $this->session->set_flashdata('flash_error', $this->upload->display_errors());
+                    redirect('admin/alumni_ubah/' . $id_alumni);
+                }
+            }
+
+            $updateData = [
+                "thn_akademik" => $this->input->post('thn_akademik', true),
+                "ganjilgenap" => $this->input->post('ganjilgenap', true),
+                "tahun_wisuda" => $this->input->post('tahun_wisuda', true),
+                "jalur_masuk" => $this->input->post('jalur_masuk', true),
+                "judul_skripsi" => $this->input->post('judul_skripsi', true),
+                "pesan_kesan" => $this->input->post('pesan_kesan', true),
+                "alamat_sekarang" => $this->input->post('alamat_sekarang', true),
+                "tgl_lulus_sidang" => $this->input->post('tgl_lulus_sidang', true) ? $this->input->post('tgl_lulus_sidang', true) : '2020-01-01',
+                "tgl_lulus_yudisium" => $this->input->post('tgl_lulus_yudisium', true) ? $this->input->post('tgl_lulus_yudisium', true) : '2020-01-01',
+                "ipk" => $this->input->post('ipk', true),
+                "predikat" => $this->input->post('predikat', true),
+                "status_alumni" => $this->input->post('status_alumni', true),
+                "tanggal_updatealumni" => $date_now,
+                "poto" => $new_image
+            ];
+
+            $this->Alumni_model->ubahAlumniAdmin($id_alumni, $updateData);
+            $this->session->set_flashdata('flash', 'Diubah');
+            redirect('admin/alumni');
+        }
+    }
+
+    public function alumni_detail($id_alumni)
+    {
+        $this->load->model('Alumni_model');
+        $data['title'] = 'Detail Alumni';
+        $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
+        $data['alumni'] = $this->Alumni_model->getAlumniById($id_alumni);
+
+        if (!$data['alumni']) {
+            show_404();
+        }
+
+        $this->load->view('templates/header_a', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('admin/alumni_detail', $data);
+        $this->load->view('templates/footer_a');
+    }
+
+    public function alumni_hapus($id_alumni)
+    {
+        $this->load->model('Alumni_model');
+        $alumni = $this->Alumni_model->getAlumniById($id_alumni);
+        if ($alumni) {
+            if ($alumni['poto'] && $alumni['poto'] != 'default.jpg') {
+                @unlink(FCPATH . 'assets/img/alumni/' . $alumni['poto']);
+            }
+            $this->Alumni_model->hapusAlumni($id_alumni);
+            $this->session->set_flashdata('flash', 'Dihapus');
+        }
+        redirect('admin/alumni');
+    }
 }
