@@ -426,4 +426,126 @@ class Admin extends CI_Controller
         }
         redirect('admin/alumni');
     }
+
+    public function setting_nav_footer()
+    {
+        $data['title'] = 'Setting Nav & Footer';
+        $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
+        $data['navbar'] = $this->db->order_by('order_no', 'ASC')->get('tb_setting_navbar')->result_array();
+        $data['footer'] = $this->db->order_by('order_no', 'ASC')->get('tb_setting_footer')->result_array();
+
+        $this->load->view('templates/header_a', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('admin/setting_nav_footer', $data);
+        $this->load->view('templates/footer_a');
+    }
+
+    public function setting_navbar_add()
+    {
+        $this->form_validation->set_rules('label', 'Label', 'required');
+        $this->form_validation->set_rules('url', 'URL', 'required');
+        $this->form_validation->set_rules('order_no', 'Order', 'required|numeric');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal menambah menu navbar! Data tidak valid.</div>');
+        } else {
+            $data = [
+                'label' => $this->input->post('label'),
+                'url' => $this->input->post('url'),
+                'order_no' => $this->input->post('order_no'),
+                'is_active' => $this->input->post('is_active') !== null ? $this->input->post('is_active') : 1,
+                'is_button' => $this->input->post('is_button') !== null ? $this->input->post('is_button') : 0
+            ];
+            $this->db->insert('tb_setting_navbar', $data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Menu navbar baru berhasil ditambahkan!</div>');
+        }
+        redirect('admin/setting_nav_footer');
+    }
+
+    public function setting_navbar_edit($id)
+    {
+        $this->form_validation->set_rules('label', 'Label', 'required');
+        $this->form_validation->set_rules('url', 'URL', 'required');
+        $this->form_validation->set_rules('order_no', 'Order', 'required|numeric');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal mengubah menu navbar! Data tidak valid.</div>');
+        } else {
+            $data = [
+                'label' => $this->input->post('label'),
+                'url' => $this->input->post('url'),
+                'order_no' => $this->input->post('order_no'),
+                'is_active' => $this->input->post('is_active') !== null ? $this->input->post('is_active') : 0,
+                'is_button' => $this->input->post('is_button') !== null ? $this->input->post('is_button') : 0
+            ];
+            $this->db->where('id', $id);
+            $this->db->update('tb_setting_navbar', $data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Menu navbar berhasil diperbaharui!</div>');
+        }
+        redirect('admin/setting_nav_footer');
+    }
+
+    public function setting_navbar_delete($id)
+    {
+        $this->db->where('id', $id);
+        $this->db->delete('tb_setting_navbar');
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Menu navbar berhasil dihapus!</div>');
+        redirect('admin/setting_nav_footer');
+    }
+
+    public function setting_footer_add()
+    {
+        $this->form_validation->set_rules('label', 'Label', 'required');
+        $this->form_validation->set_rules('url', 'URL', 'required');
+        $this->form_validation->set_rules('order_no', 'Order', 'required|numeric');
+        $this->form_validation->set_rules('section', 'Section', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal menambah menu footer! Data tidak valid.</div>');
+        } else {
+            $data = [
+                'section' => $this->input->post('section'),
+                'label' => $this->input->post('label'),
+                'url' => $this->input->post('url'),
+                'order_no' => $this->input->post('order_no'),
+                'is_active' => $this->input->post('is_active') !== null ? $this->input->post('is_active') : 1
+            ];
+            $this->db->insert('tb_setting_footer', $data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Menu footer baru berhasil ditambahkan!</div>');
+        }
+        redirect('admin/setting_nav_footer');
+    }
+
+    public function setting_footer_edit($id)
+    {
+        $this->form_validation->set_rules('label', 'Label', 'required');
+        $this->form_validation->set_rules('url', 'URL', 'required');
+        $this->form_validation->set_rules('order_no', 'Order', 'required|numeric');
+        $this->form_validation->set_rules('section', 'Section', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal mengubah menu footer! Data tidak valid.</div>');
+        } else {
+            $data = [
+                'section' => $this->input->post('section'),
+                'label' => $this->input->post('label'),
+                'url' => $this->input->post('url'),
+                'order_no' => $this->input->post('order_no'),
+                'is_active' => $this->input->post('is_active') !== null ? $this->input->post('is_active') : 0
+            ];
+            $this->db->where('id', $id);
+            $this->db->update('tb_setting_footer', $data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Menu footer berhasil diperbaharui!</div>');
+        }
+        redirect('admin/setting_nav_footer');
+    }
+
+    public function setting_footer_delete($id)
+    {
+        $this->db->where('id', $id);
+        $this->db->delete('tb_setting_footer');
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Menu footer berhasil dihapus!</div>');
+        redirect('admin/setting_nav_footer');
+    }
 }

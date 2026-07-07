@@ -24,11 +24,19 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav ml-auto">
-                    <a class="nav-item nav-link" href="https://www.untan.ac.id/" target="_blank">Untan</a>
-                    <a class="nav-item nav-link" href="https://siremun.untan.ac.id/" target="_blank">Siremun</a>
-                    <a class="nav-item nav-link" href="http://203.24.51.238:8015/" target="_blank">Reservasi Ruang Sidang</a>
-                    <a class="nav-item nav-link" href="http://203.24.51.238:8020/" target="_blank">Agenda Fakultas</a>
-                    <a class="nav-item nav-link" href="https://script.google.com/macros/s/AKfycbzLxqaPQQBLNFzYHFjXFwZjaUr1UKj7XCtt37zhr8umegRjdbioG15iRecWtmN_dDPMMA/exec" target="_blank">Pengumpulan Softfile Skripsi</a>
+                    <?php if (!empty($navbar_menu)) : ?>
+                        <?php foreach ($navbar_menu as $menu) : ?>
+                            <?php if ($menu['is_button'] == 0) : ?>
+                                <a class="nav-item nav-link" href="<?= $menu['url']; ?>" target="_blank"><?= htmlspecialchars($menu['label']); ?></a>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <a class="nav-item nav-link" href="https://www.untan.ac.id/" target="_blank">Untan</a>
+                        <a class="nav-item nav-link" href="https://siremun.untan.ac.id/" target="_blank">Siremun</a>
+                        <a class="nav-item nav-link" href="http://203.24.51.238:8015/" target="_blank">Reservasi Ruang Sidang</a>
+                        <a class="nav-item nav-link" href="http://203.24.51.238:8020/" target="_blank">Agenda Fakultas</a>
+                        <a class="nav-item nav-link" href="https://script.google.com/macros/s/AKfycbzLxqaPQQBLNFzYHFjXFwZjaUr1UKj7XCtt37zhr8umegRjdbioG15iRecWtmN_dDPMMA/exec" target="_blank">Pengumpulan Softfile Skripsi</a>
+                    <?php endif; ?>
                     <?php if ($this->session->userdata('email')) : ?>
                         <?php 
                             $role_id = $this->session->userdata('role_id');
@@ -38,7 +46,15 @@
                     <?php else: ?>
                         <a class="nav-item nav-link" href="<?= base_url('auth'); ?>">Login</a>
                     <?php endif; ?>
-                    <a class="nav-item btn btn-primary btn-nav-action" href="http://kedokteran.untan.ac.id/home" target="_blank">Website FK UNTAN</a>
+                    <?php if (!empty($navbar_menu)) : ?>
+                        <?php foreach ($navbar_menu as $menu) : ?>
+                            <?php if ($menu['is_button'] == 1) : ?>
+                                <a class="nav-item btn btn-primary btn-nav-action" href="<?= $menu['url']; ?>" target="_blank"><?= htmlspecialchars($menu['label']); ?></a>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <a class="nav-item btn btn-primary btn-nav-action" href="http://kedokteran.untan.ac.id/home" target="_blank">Website FK UNTAN</a>
+                    <?php endif; ?>
                 </div>
             </div>
         </nav>
@@ -242,21 +258,33 @@
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
                     <h5 class="text-white mb-3 font-weight-bold">Layanan Utama</h5>
                     <ul class="footer-links">
-                        <li><a href="#">Surat Keterangan Aktif Kuliah</a></li>
-                        <li><a href="#">Bebas Laboratorium</a></li>
-                        <li><a href="#">Bebas Perpustakaan Fakultas</a></li>
-                        <li><a href="#">Surat Keterangan Lulus (SKL)</a></li>
+                        <?php if (!empty($footer_layanan)) : ?>
+                            <?php foreach ($footer_layanan as $fl) : ?>
+                                <li><a href="<?= $fl['url']; ?>"><?= htmlspecialchars($fl['label']); ?></a></li>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <li><a href="#">Surat Keterangan Aktif Kuliah</a></li>
+                            <li><a href="#">Bebas Laboratorium</a></li>
+                            <li><a href="#">Bebas Perpustakaan Fakultas</a></li>
+                            <li><a href="#">Surat Keterangan Lulus (SKL)</a></li>
+                        <?php endif; ?>
                     </ul>
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <h5 class="text-white mb-3 font-weight-bold">Tautan Terkait</h5>
                     <ul class="footer-links">
-                        <li><a href="https://www.untan.ac.id/" target="_blank">Universitas Tanjungpura</a></li>
-                        <li><a href="https://siremun.untan.ac.id/" target="_blank">Siremun UNTAN</a></li>
-                        <li><a href="http://kedokteran.untan.ac.id/" target="_blank">Fakultas Kedokteran UNTAN</a></li>
-                        <li><a href="http://wfh.untan.ac.id/" target="_blank">Presensi WFH Tendik</a></li>
-                        <li><a href="http://203.24.51.238:8020/" target="_blank">Agenda Fakultas</a></li>
-                        <li><a href="https://script.google.com/macros/s/AKfycbzLxqaPQQBLNFzYHFjXFwZjaUr1UKj7XCtt37zhr8umegRjdbioG15iRecWtmN_dDPMMA/exec" target="_blank">Pengumpulan Softfile Skripsi</a></li>
+                        <?php if (!empty($footer_tautan)) : ?>
+                            <?php foreach ($footer_tautan as $ft) : ?>
+                                <li><a href="<?= $ft['url']; ?>" target="_blank"><?= htmlspecialchars($ft['label']); ?></a></li>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <li><a href="https://www.untan.ac.id/" target="_blank">Universitas Tanjungpura</a></li>
+                            <li><a href="https://siremun.untan.ac.id/" target="_blank">Siremun UNTAN</a></li>
+                            <li><a href="http://kedokteran.untan.ac.id/" target="_blank">Fakultas Kedokteran UNTAN</a></li>
+                            <li><a href="http://wfh.untan.ac.id/" target="_blank">Presensi WFH Tendik</a></li>
+                            <li><a href="http://203.24.51.238:8020/" target="_blank">Agenda Fakultas</a></li>
+                            <li><a href="https://script.google.com/macros/s/AKfycbzLxqaPQQBLNFzYHFjXFwZjaUr1UKj7XCtt37zhr8umegRjdbioG15iRecWtmN_dDPMMA/exec" target="_blank">Pengumpulan Softfile Skripsi</a></li>
+                        <?php endif; ?>
                     </ul>
                 </div>
             </div>

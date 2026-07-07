@@ -101,6 +101,7 @@
     });
 </script>
 <!-- START UPDATE JS UNTUK STATISTIK RESET -->
+<?php if (isset($chart_labels)) : ?>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById('resetChart').getContext('2d');
@@ -155,6 +156,7 @@
         }
     });
 </script>
+<?php endif; ?>
 <!-- END UPDATE JS UNTUK STATISTIK RESET -->
 <script>
     Chart.defaults.font.family = "'Poppins', sans-serif";

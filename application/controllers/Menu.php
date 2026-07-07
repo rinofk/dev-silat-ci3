@@ -80,4 +80,41 @@ class Menu extends CI_Controller
             redirect('menu/submenu');
         }
     }
+
+    public function editmenu($id)
+    {
+        $this->form_validation->set_rules('menu', 'Menu', 'required');
+        if ($this->form_validation->run() == false) {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Menu name is required!</div>');
+        } else {
+            $this->db->where('id', $id);
+            $this->db->update('user_menu', ['menu' => $this->input->post('menu')]);
+            $this->session->set_flashdata('flash', 'diubah');
+        }
+        redirect('menu');
+    }
+
+    public function editSubMenu($id)
+    {
+        $this->form_validation->set_rules('title', 'Title', 'required');
+        $this->form_validation->set_rules('menu_id', 'Menu', 'required');
+        $this->form_validation->set_rules('url', 'URL', 'required');
+        $this->form_validation->set_rules('icon', 'Icon', 'required');
+
+        if ($this->form_validation->run() == false) {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">All fields are required!</div>');
+        } else {
+            $data = [
+                'title' => $this->input->post('title'),
+                'menu_id' => $this->input->post('menu_id'),
+                'url' => $this->input->post('url'),
+                'icon' => $this->input->post('icon'),
+                'is_active' => $this->input->post('is_active') !== null ? $this->input->post('is_active') : 0
+            ];
+            $this->db->where('id', $id);
+            $this->db->update('user_sub_menu', $data);
+            $this->session->set_flashdata('flash', 'diubah');
+        }
+        redirect('menu/submenu');
+    }
 }
