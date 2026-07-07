@@ -60,9 +60,8 @@ class Alumni extends CI_Controller
         $data['title'] = 'Edit Alumni';
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
         $data['alumni'] = $this->Alumni_model->getNimAlumni($nim_alumni);
-
-
         $this->form_validation->set_rules('nim_alumni', 'NIM', 'required');
+        $this->form_validation->set_rules('tahun_wisuda', 'Tahun Wisuda', 'required|numeric|exact_length[4]');
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('templates/header_a', $data);
             $this->load->view('templates/sidebar', $data);
@@ -81,9 +80,7 @@ class Alumni extends CI_Controller
     {
         $data['title'] = 'Alumni';
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
-        $id = $data['user']['nim'];
-
-        $this->form_validation->set_rules('tahun_wisuda', 'Tahun Wisuda', 'required');
+        $this->form_validation->set_rules('tahun_wisuda', 'Tahun Wisuda', 'required|numeric|exact_length[4]');
         $this->form_validation->set_rules('judul_skripsi', 'Judul Skripsi', 'required');
         $this->form_validation->set_rules('pesan_kesan', 'Pesan dan Kesan', 'required');
         if ($this->form_validation->run() == FALSE) {

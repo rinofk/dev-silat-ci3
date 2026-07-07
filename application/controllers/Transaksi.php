@@ -37,14 +37,13 @@ class Transaksi extends CI_Controller
         $data['list_tahun'] = $this->Transaksi_model->getTahunSuratAktif();
 
         // Ambil tahun dari input jika ada
-        $data['tahun_selected'] = $this->input->get('tahun') ?? $data['list_tahun'][0]; // default tahun terbaru
+        $data['tahun_selected'] = $this->input->get('tahun') ?? (!empty($data['list_tahun']) ? $data['list_tahun'][0] : date('Y')); // default tahun terbaru
 
-        $tahun_filter = $this->input->get('tahun') ?? date('Y');
+        $tahun_filter = $data['tahun_selected'];
         $data['statistik'] = $this->Transaksi_model->getStatistikSuratAktif($tahun_filter);
 
 
         $data['title'] = 'Surat Aktif Kuliah';
-        $status = $this->input->get('status');
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
         $data['surat'] = $this->Transaksi_model->getSuratAktifKuliah();
         $data['total_surat'] = $this->Transaksi_model->hitungJumlahSurat();

@@ -15,28 +15,33 @@ class Transaksi_model extends CI_model
 
   public function getSuratAktifKuliah()
   {
+    // Get selected year or default to the latest year
+    $tahun = $this->input->get('tahun');
+    if (empty($tahun)) {
+        $list_tahun = $this->getTahunSuratAktif();
+        if (!empty($list_tahun)) {
+            $tahun = $list_tahun[0];
+        }
+    }
 
     $this->db->select('*');
     $this->db->from('tb_suratpengajuan');
     $this->db->join('keperluan', 'keperluan.id_keperluan=tb_suratpengajuan.keperluan');
     $this->db->join('mahasiswa', 'mahasiswa.nim=tb_suratpengajuan.nim_mahasiswa');
 
-
-     if ($this->input->get('status')) {
-        $this->db->where('tb_suratpengajuan.status', $this->input->get('status'));
-    }
-
-    
-
-    // Urutkan berdasarkan tahun terbaru dari date_create (UNIX timestamp)
-    $this->db->order_by('YEAR(FROM_UNIXTIME(date_create))', 'DESC');
-
-    $tahun = $this->input->get('tahun');
-
     if (!empty($tahun)) {
         $this->db->where('YEAR(FROM_UNIXTIME(date_create))', $tahun);
     }
 
+    // Get status filter
+    $status = $this->input->get('status');
+    if (!empty($status) && $status !== 'total') {
+        if ($status === 'ditolak') {
+            $this->db->like('tb_suratpengajuan.status', 'ditolak');
+        } else {
+            $this->db->where('tb_suratpengajuan.status', $status);
+        }
+    }
 
     $this->db->order_by('date_create', 'desc');
 

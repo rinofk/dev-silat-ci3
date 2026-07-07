@@ -1,3 +1,12 @@
+<?php
+$current_year = date('Y');
+$current_month = date('n');
+if ($current_month >= 8) {
+    $now_ta = $current_year . '/' . ($current_year + 1);
+} else {
+    $now_ta = ($current_year - 1) . '/' . $current_year;
+}
+?>
 <div class="container">
     <div class="row mt-3">
         <div class="col-md-8">
@@ -38,7 +47,7 @@
                         </div>
                         <div class="form-group row">
                             <label for="tahun_ajaran" class="col-sm-3 col-form-label">Tahun Ajaran</label>
-                            <div class="col-sm-9"> <input type="text" name="tahun_ajaran" class="form-control" id="tahun_ajaran" value="<?= set_value('tahun_ajaran'); ?>">
+                            <div class="col-sm-9"> <input type="text" name="tahun_ajaran" class="form-control" id="tahun_ajaran" value="<?= set_value('tahun_ajaran') ? set_value('tahun_ajaran') : $now_ta; ?>">
                             </div>
                         </div>
                         <div class="form-group row">

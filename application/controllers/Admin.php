@@ -203,7 +203,42 @@ class Admin extends CI_Controller
         $this->load->model('Alumni_model');
         $data['title'] = 'Data Alumni';
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
-        $data['alumni'] = $this->Alumni_model->getAllAlumni();
+
+        // 1. Get all unique tahun_wisuda values
+        $all_years_db = $this->db->select('tahun_wisuda')->distinct()->from('tb_alumni')->get()->result_array();
+        $years = array_map(function($y) { return trim($y['tahun_wisuda']); }, $all_years_db);
+        $years = array_filter($years);
+        $years = array_unique($years);
+
+        // 2. Custom sort DESC (latest years first)
+        usort($years, function($a, $b) {
+            $get_year = function($str) {
+                if (preg_match_all('/\b(19|20)\d{2}\b/', $str, $matches)) {
+                    return max(array_map('intval', $matches[0]));
+                }
+                return 0;
+            };
+            $ya = $get_year($a);
+            $yb = $get_year($b);
+            if ($ya === $yb) {
+                return strcmp($b, $a);
+            }
+            return $yb - $ya;
+        });
+
+        $data['years'] = $years;
+
+        // 3. Set default and selected year
+        $default_year = !empty($years) ? $years[0] : '';
+        $selected_year = $this->input->get('tahun') !== NULL ? $this->input->get('tahun') : $default_year;
+        $data['selected_year'] = $selected_year;
+
+        // 4. Retrieve filtered alumni list
+        if ($selected_year === 'Semua') {
+            $data['alumni'] = $this->Alumni_model->getAllAlumni();
+        } else {
+            $data['alumni'] = $this->Alumni_model->getAllAlumniByYear($selected_year);
+        }
 
         $this->load->view('templates/header_a', $data);
         $this->load->view('templates/sidebar', $data);
@@ -220,7 +255,7 @@ class Admin extends CI_Controller
         $data['students'] = $this->Alumni_model->getStudentsNotAlumni();
 
         $this->form_validation->set_rules('nim_alumni', 'Mahasiswa', 'required|is_unique[tb_alumni.nim_alumni]');
-        $this->form_validation->set_rules('tahun_wisuda', 'Tahun Wisuda', 'required');
+        $this->form_validation->set_rules('tahun_wisuda', 'Tahun Wisuda', 'required|numeric|exact_length[4]');
         $this->form_validation->set_rules('judul_skripsi', 'Judul Skripsi', 'required');
         $this->form_validation->set_rules('ipk', 'IPK', 'required');
 
@@ -294,7 +329,7 @@ class Admin extends CI_Controller
             show_404();
         }
 
-        $this->form_validation->set_rules('tahun_wisuda', 'Tahun Wisuda', 'required');
+        $this->form_validation->set_rules('tahun_wisuda', 'Tahun Wisuda', 'required|numeric|exact_length[4]');
         $this->form_validation->set_rules('judul_skripsi', 'Judul Skripsi', 'required');
         $this->form_validation->set_rules('ipk', 'IPK', 'required');
 

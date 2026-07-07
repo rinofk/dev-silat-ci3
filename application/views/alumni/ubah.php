@@ -21,7 +21,7 @@
                         </div>
                         <div class="form-group row">
                             <label for="tahun_wisuda" class="col-sm-3 col-form-label">Tahun Wisuda</label>
-                            <div class="col-sm-9"> <input type="text" name="tahun_wisuda" class="form-control" id="tahun_wisuda" value="<?= $alumni['tahun_wisuda']; ?>"></div>
+                            <div class="col-sm-9"> <input type="text" name="tahun_wisuda" class="form-control" id="tahun_wisuda" value="<?= $alumni['tahun_wisuda']; ?>" maxlength="4" placeholder="Contoh: 2026" oninput="this.value = this.value.replace(/[^0-9]/g, '')"></div>
                         </div>
                         <div class="form-group row">
                             <label for="jalur_masuk" class="col-sm-3 col-form-label">Jalur Masuk</label>

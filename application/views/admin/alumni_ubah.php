@@ -47,7 +47,7 @@
                     <div class="form-group row">
                         <label for="tahun_wisuda" class="col-sm-3 col-form-label font-weight-bold">Tahun Wisuda <span class="text-danger">*</span></label>
                         <div class="col-sm-9">
-                            <input type="text" name="tahun_wisuda" class="form-control" id="tahun_wisuda" placeholder="Contoh: 2026" value="<?= set_value('tahun_wisuda', $alumni['tahun_wisuda']); ?>" required>
+                            <input type="text" name="tahun_wisuda" class="form-control" id="tahun_wisuda" placeholder="Contoh: 2026" value="<?= set_value('tahun_wisuda', $alumni['tahun_wisuda']); ?>" maxlength="4" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
                         </div>
                     </div>
 

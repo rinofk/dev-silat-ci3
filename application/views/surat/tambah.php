@@ -1,32 +1,51 @@
+<?php
+$current_year = date('Y');
+$current_month = date('n');
+if ($current_month >= 8) {
+    $now_ta = $current_year . '/' . ($current_year + 1);
+} else {
+    $now_ta = ($current_year - 1) . '/' . $current_year;
+}
+
+$years_list = [];
+$start_year = date('Y') + 1; 
+for ($i = 0; $i < 3; $i++) {
+    $y = $start_year - $i;
+    $years_list[] = ($y - 1) . '/' . $y;
+}
+?>
 <div class="container-fluid">
     <div class="row mt-3">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    Pengajuan Surat Baru
+        <div class="col-xl-8 col-lg-10">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 bg-gradient-primary text-white">
+                    <h6 class="m-0 font-weight-bold">Pengajuan Surat Baru</h6>
                 </div>
                 <div class="card-body">
                     <?php if (validation_errors()) : ?>
-                        <div class="alert alert-danger" role="alert">
+                        <div class="alert alert-danger shadow-sm" role="alert">
                             <?= validation_errors(); ?>
                         </div>
                     <?php endif; ?>
 
                     <?= form_open_multipart('surat/tambah'); ?>
 
-                    <!-- <form action="" method="post"> -->
                     <div class="form-group row">
-                        <label for="nim" class="col-sm-3 col-form-label">NIM</label>
-                        <div class="col-sm-9"> <input type="text" name="nim" class="form-control" id="nim" value="<?= $user['nim']; ?>" readonly>
+                        <label for="nim" class="col-sm-3 col-form-label font-weight-bold text-gray-800">NIM</label>
+                        <div class="col-sm-9"> 
+                            <input type="text" name="nim" class="form-control bg-light" id="nim" value="<?= $user['nim']; ?>" readonly>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="nama_lengkap" class="col-sm-3 col-form-label">Nama Lengkap</label>
-                        <div class="col-sm-9"> <input type="text" name="nama_lengkap" class="form-control" id="nama_lengkap" value="<?= $user['name']; ?>" readonly></div>
                     </div>
 
                     <div class="form-group row">
-                        <label for="semester" class="col-sm-3 col-form-label">semester</label>
+                        <label for="nama_lengkap" class="col-sm-3 col-form-label font-weight-bold text-gray-800">Nama Lengkap</label>
+                        <div class="col-sm-9"> 
+                            <input type="text" name="nama_lengkap" class="form-control bg-light" id="nama_lengkap" value="<?= $user['name']; ?>" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="semester" class="col-sm-3 col-form-label font-weight-bold text-gray-800">Semester</label>
                         <div class="col-sm-9">
                             <select id="semester" name="semester" class="form-control" value="<?= set_value('semester'); ?>">
                                 <option value="">Silakan Pilih</option>
@@ -47,23 +66,21 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="tahun_ajaran" class="col-sm-3 col-form-label">Tahun ajaran</label>
+                        <label for="tahun_ajaran" class="col-sm-3 col-form-label font-weight-bold text-gray-800">Tahun Ajaran</label>
                         <div class="col-sm-9">
-                            <select id="tahun_ajaran" name="tahun_ajaran" class="form-control" value="<?= set_value('tahun_ajaran'); ?>">>
+                            <select id="tahun_ajaran" name="tahun_ajaran" class="form-control">
                                 <option value="">Silakan Pilih</option>
-                                <option value="2025/2026" selected>2025/2026</option>
-                                <option value="2024/2025" >2024/2025</option>
-                                <option value="2023/2024" >2023/2024</option>
-                                <option value="2022/2023" >2022/2023</option>
-                                <option value="2021/2022">2021/2022</option>
-                                <option value="2020/2021">2020/2021</option>
-                                <option value="2019/2020">2019/2020</option>
+                                <?php foreach ($years_list as $ta): ?>
+                                    <option value="<?= $ta; ?>" <?= ($ta === $now_ta) ? 'selected' : ''; ?>>
+                                        <?= $ta; ?><?= ($ta === $now_ta) ? ' (Tahun Sekarang)' : ''; ?>
+                                    </option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label for="keperluan" class="col-sm-3 col-form-label">Keperluan</label>
+                        <label for="keperluan" class="col-sm-3 col-form-label font-weight-bold text-gray-800">Keperluan</label>
                         <div class="col-sm-9">
                             <select id="keperluan" name="keperluan" class="form-control" value="<?= set_value('keperluan'); ?>">
                                 <option value="">Silakan Pilih</option>
@@ -79,113 +96,120 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="ktm" class="col-sm-3 col-form-label">KTM</label>
+                        <label for="ktm" class="col-sm-3 col-form-label font-weight-bold text-gray-800">KTM (PDF)</label>
                         <div class="col-sm-9">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="ktm" name="ktm">
-                                        <label class="custom-file-label" for="ktm">upload ktm</label>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    format filename "nim-ktm.pdf"
-                                </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="ktm" name="ktm" accept="application/pdf">
+                                <label class="custom-file-label" for="ktm">Upload KTM (format filename "nim-ktm.pdf")</label>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-group row" id="keterangan" value="" hidden>
-                        <label for="keterangan" class="col-sm-3 col-form-label">Keterangan</label>
-                        <div class="col-sm-9">
-                            <div class="col-sm-9">
-                                <input type="text" name="keterangan" class="form-control" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row" id="lainnya" value="" hidden>
-                        <label for="lainnya" class="col-sm-3 col-form-label">lainnya</label>
-                        <div class="col-sm-9">
-                            <div class="col-sm-9">
-                                <input type="text" name="lainnya" class="form-control" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group row" id="id_keperluan" value="" hidden>
-                        <label for="ortu" class="col-sm-3 col-form-label">Nama Orang Tua</label>
-                        <div class="col-sm-9">
-                            <div class="col-sm-9">
-                                <input type="text" name="ortu" class="form-control" />
-                            </div>
-
-                        </div>
-                        <label for="nip" class="col-sm-3 col-form-label">NIP / NRP / NPS</label>
-                        <div class="col-sm-9">
-                            <div class="col-sm-9">
-                                <input type="text" name="nip" class="form-control" />
-                            </div>
-                        </div>
-                        <label for="pangkat" class="col-sm-3 col-form-label">Pangkat / Golongan</label>
-                        <div class="col-sm-9">
-                            <div class="col-sm-9">
-                                <input type="text" name="pangkat" class="form-control" />
-                            </div>
-                        </div>
-                        <label for="instansi" class="col-sm-3 col-form-label">Instansi</label>
-                        <div class="col-sm-9">
-                            <div class="col-sm-9">
-                                <input type="text" name="instansi" class="form-control" />
-                            </div>
-                        </div>
-                        <label for="alamat_instansi" class="col-sm-3 col-form-label">Alamat Instansi</label>
-                        <div class="col-sm-9">
-                            <div class="col-sm-9">
-                                <input type="text" name="alamat_instansi" class="form-control" />
-                            </div>
-                        </div>
+                    <!-- Keterangan (id="keterangan") -->
+                    <div id="keterangan" hidden>
                         <div class="form-group row">
-                            <label for="kk" class="col-sm-3 col-form-label">Kartu Keluarga</label>
+                            <label for="keterangan_input" class="col-sm-3 col-form-label font-weight-bold text-gray-800">Keterangan</label>
                             <div class="col-sm-9">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="kk" name="kk">
-                                            <label class="custom-file-label" for="kk">upload KK</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        format filename "nim-kk.pdf"
-                                    </div>
+                                <input type="text" name="keterangan" id="keterangan_input" class="form-control" placeholder="Masukkan keterangan keperluan..." />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lainnya (id="lainnya") -->
+                    <div id="lainnya" hidden>
+                        <div class="form-group row">
+                            <label for="lainnya_input" class="col-sm-3 col-form-label font-weight-bold text-gray-800">Keperluan Lainnya</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="lainnya" id="lainnya_input" class="form-control" placeholder="Tuliskan keperluan lainnya..." />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detail Orang Tua & Berkas tambahan (id="id_keperluan") -->
+                    <div id="id_keperluan" hidden>
+                        <hr class="my-4">
+                        <h5 class="text-gray-800 font-weight-bold mb-3"><i class="fas fa-user-friends mr-1"></i> Data Orang Tua / Wali</h5>
+                        
+                        <div class="form-group row">
+                            <label for="ortu" class="col-sm-3 col-form-label font-weight-bold text-gray-800">Nama Orang Tua</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="ortu" id="ortu" class="form-control" placeholder="Nama Ayah/Ibu/Wali" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label for="nip" class="col-sm-3 col-form-label font-weight-bold text-gray-800">NIP / NRP / NPS</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="nip" id="nip" class="form-control" placeholder="NIP/NRP/NPS Orang Tua" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label for="pangkat" class="col-sm-3 col-form-label font-weight-bold text-gray-800">Pangkat / Golongan</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="pangkat" id="pangkat" class="form-control" placeholder="Pangkat dan Golongan PNS/TNI/Polri" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label for="instansi" class="col-sm-3 col-form-label font-weight-bold text-gray-800">Instansi</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="instansi" id="instansi" class="form-control" placeholder="Nama instansi tempat bekerja" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label for="alamat_instansi" class="col-sm-3 col-form-label font-weight-bold text-gray-800">Alamat Instansi</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="alamat_instansi" id="alamat_instansi" class="form-control" placeholder="Alamat lengkap instansi tempat bekerja" />
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="kk" class="col-sm-3 col-form-label font-weight-bold text-gray-800">Kartu Keluarga (PDF)</label>
+                            <div class="col-sm-9">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="kk" name="kk" accept="application/pdf">
+                                    <label class="custom-file-label" for="kk">Upload KK (format filename "nim-kk.pdf")</label>
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-group row">
-                            <label for="sk" class="col-sm-3 col-form-label">SK Terakhir Orang Tua</label>
+                            <label for="sk" class="col-sm-3 col-form-label font-weight-bold text-gray-800">SK Orang Tua (PDF)</label>
                             <div class="col-sm-9">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="sk" name="sk">
-                                            <label class="custom-file-label" for="sk">upload sk</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        format filename "nim-sk.pdf"
-                                    </div>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="sk" name="sk" accept="application/pdf">
+                                    <label class="custom-file-label" for="sk">Upload SK (format filename "nim-sk.pdf")</label>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary float-right">ADD NEW</button>
-                    <!-- <button type="submit" class="btn btn-primary">UPLOAD</button> -->
 
-                    </!-->
+                    <div class="form-group row mt-4">
+                        <div class="col-sm-12 text-right">
+                            <a href="<?= base_url('surat'); ?>" class="btn btn-secondary mr-2">Batal</a>
+                            <button type="submit" class="btn btn-primary btn-icon-split">
+                                <span class="icon text-white-50"><i class="fas fa-paper-plane"></i></span>
+                                <span class="text">Kirim Pengajuan</span>
+                            </button>
+                        </div>
+                    </div>
 
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
+</div>
 
-</div>
-</div>
+<!-- jQuery script to handle Bootstrap file input label updating -->
+<script>
+    $(document).ready(function() {
+        $('.custom-file-input').on('change', function() {
+            var fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').addClass("selected").html(fileName);
+        });
+    });
+</script>

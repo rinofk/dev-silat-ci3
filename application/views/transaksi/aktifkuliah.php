@@ -8,32 +8,24 @@
   <div class="card shadow mb-4">
     <div class="card-body">
       <!-- Filter Form -->
+      <?php $current_status = $this->input->get('status') ? strtolower($this->input->get('status')) : 'total'; ?>
       <form method="get" class="mb-3">
-  <div class="row">
-    <div class="col-md-3">
-      <label for="status">Status</label>
-      <select name="status" class="form-control" id="status">
-        <option value="">-- Semua Status --</option>
-        <option value="diajukan" <?= ($this->input->get('status') == 'diajukan') ? 'selected' : '' ?>>Diajukan</option>
-        <option value="proses" <?= ($this->input->get('status') == 'proses') ? 'selected' : '' ?>>Diproses</option>
-        <option value="selesai" <?= ($this->input->get('status') == 'selesai') ? 'selected' : '' ?>>Selesai</option>
-        <option value="ditolak, data tidak lengkap" <?= ($this->input->get('status') == 'ditolak, data tidak lengkap') ? 'selected' : '' ?>>Ditolak</option>
-      </select>
-    </div>
-    <div class="col-md-3">
-      <label for="tahun">Tahun</label>
-      <select name="tahun" id="tahun" class="form-control">
-        <?php foreach ($list_tahun as $tahun): ?>
-          <option value="<?= $tahun ?>" <?= ($tahun_selected == $tahun) ? 'selected' : '' ?>><?= $tahun ?></option>
-        <?php endforeach; ?>
-      </select>
-    </div>
-    <div class="col-md-3 align-self-end">
-      <button type="submit" class="btn btn-primary">Filter</button>
-      <a href="<?= base_url('transaksi/aktifkuliah'); ?>" class="btn btn-secondary">Reset</a>
-    </div>
-  </div>
-</form>
+        <input type="hidden" name="status" value="<?= htmlspecialchars($current_status); ?>">
+        <div class="row">
+          <div class="col-md-4">
+            <label for="tahun" class="font-weight-bold text-gray-700">Tahun:</label>
+            <select name="tahun" id="tahun" class="form-control" onchange="this.form.submit()">
+              <?php foreach ($list_tahun as $tahun): ?>
+                <option value="<?= $tahun ?>" <?= ($tahun_selected == $tahun) ? 'selected' : '' ?>><?= $tahun ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <div class="col-md-4 align-self-end">
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <a href="<?= base_url('transaksi/aktifkuliah'); ?>" class="btn btn-secondary">Reset</a>
+          </div>
+        </div>
+      </form>
 
 <div class="row">
   <?php 
@@ -48,10 +40,11 @@
     foreach ($statistik as $status => $jumlah):
       $url_status = strtolower($status);
       $url = base_url('transaksi/aktifkuliah?status=' . urlencode($url_status) . '&tahun=' . $tahun_selected);
+      $is_active = ($url_status === $current_status);
   ?>
     <div class="col mb-3">
       <a href="<?= $url ?>" class="text-decoration-none">
-        <div class="card border-left-<?= $warna[$status] ?> shadow h-100 py-2">
+        <div class="card border-left-<?= $warna[$status] ?> shadow h-100 py-2 <?= $is_active ? 'bg-light border-3 border-' . $warna[$status] : '' ?>" style="<?= $is_active ? 'box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important; transform: scale(1.03);' : '' ?> transition: all 0.2s ease-in-out;">
           <div class="card-body">
             <div class="text-xs font-weight-bold text-<?= $warna[$status] ?> text-uppercase mb-1">
               <?= $status ?>

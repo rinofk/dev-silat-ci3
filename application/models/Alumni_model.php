@@ -214,6 +214,17 @@ class Alumni_model extends CI_model
         return $this->db->get()->result_array();
     }
 
+    public function getAllAlumniByYear($year)
+    {
+        $this->db->select('tb_alumni.*, mahasiswa.nama_lengkap, prodi.nama_prodi');
+        $this->db->from('tb_alumni');
+        $this->db->join('mahasiswa', 'mahasiswa.nim = tb_alumni.nim_alumni', 'left');
+        $this->db->join('prodi', 'prodi.id_prodi = mahasiswa.prodi_id', 'left');
+        $this->db->where('tb_alumni.tahun_wisuda', $year);
+        $this->db->order_by('tb_alumni.id_alumni', 'DESC');
+        return $this->db->get()->result_array();
+    }
+
     public function getStudentsNotAlumni()
     {
         $this->db->select('mahasiswa.nim, mahasiswa.nama_lengkap');
