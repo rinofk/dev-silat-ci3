@@ -548,4 +548,63 @@ class Admin extends CI_Controller
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Menu footer berhasil dihapus!</div>');
         redirect('admin/setting_nav_footer');
     }
+
+    public function setting_navbar_move($direction, $id)
+    {
+        $current = $this->db->get_where('tb_setting_navbar', ['id' => $id])->row_array();
+        if ($current) {
+            $current_order = $current['order_no'];
+            
+            if ($direction == 'up') {
+                $target = $this->db->where('order_no <', $current_order)
+                                   ->order_by('order_no', 'DESC')
+                                   ->limit(1)
+                                   ->get('tb_setting_navbar')
+                                   ->row_array();
+            } else {
+                $target = $this->db->where('order_no >', $current_order)
+                                   ->order_by('order_no', 'ASC')
+                                   ->limit(1)
+                                   ->get('tb_setting_navbar')
+                                   ->row_array();
+            }
+            
+            if ($target) {
+                $this->db->where('id', $current['id'])->update('tb_setting_navbar', ['order_no' => $target['order_no']]);
+                $this->db->where('id', $target['id'])->update('tb_setting_navbar', ['order_no' => $current_order]);
+            }
+        }
+        redirect('admin/setting_nav_footer');
+    }
+
+    public function setting_footer_move($direction, $id)
+    {
+        $current = $this->db->get_where('tb_setting_footer', ['id' => $id])->row_array();
+        if ($current) {
+            $current_order = $current['order_no'];
+            $section = $current['section'];
+            
+            if ($direction == 'up') {
+                $target = $this->db->where('section', $section)
+                                   ->where('order_no <', $current_order)
+                                   ->order_by('order_no', 'DESC')
+                                   ->limit(1)
+                                   ->get('tb_setting_footer')
+                                   ->row_array();
+            } else {
+                $target = $this->db->where('section', $section)
+                                   ->where('order_no >', $current_order)
+                                   ->order_by('order_no', 'ASC')
+                                   ->limit(1)
+                                   ->get('tb_setting_footer')
+                                   ->row_array();
+            }
+            
+            if ($target) {
+                $this->db->where('id', $current['id'])->update('tb_setting_footer', ['order_no' => $target['order_no']]);
+                $this->db->where('id', $target['id'])->update('tb_setting_footer', ['order_no' => $current_order]);
+            }
+        }
+        redirect('admin/setting_nav_footer');
+    }
 }

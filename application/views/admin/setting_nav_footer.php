@@ -57,7 +57,13 @@
                                                 <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                                     <a href="<?= $nv['url']; ?>" target="_blank" class="text-info" title="<?= htmlspecialchars($nv['url']); ?>"><?= htmlspecialchars($nv['url']); ?></a>
                                                 </td>
-                                                <td><?= $nv['order_no']; ?></td>
+                                                <td>
+                                                    <?= $nv['order_no']; ?>
+                                                    <div class="btn-group btn-group-sm ml-2">
+                                                        <a href="<?= base_url('admin/setting_navbar_move/up/' . $nv['id']); ?>" class="btn btn-outline-secondary btn-xs py-0 px-1" title="Pindah Ke Atas"><i class="fas fa-chevron-up"></i></a>
+                                                        <a href="<?= base_url('admin/setting_navbar_move/down/' . $nv['id']); ?>" class="btn btn-outline-secondary btn-xs py-0 px-1" title="Pindah Ke Bawah"><i class="fas fa-chevron-down"></i></a>
+                                                    </div>
+                                                </td>
                                                 <td>
                                                     <?php if ($nv['is_button'] == 1) : ?>
                                                         <span class="badge badge-primary">Tombol (Aksen)</span>
@@ -107,6 +113,21 @@
                             </button>
                         </div>
                         <div class="card-body">
+                            <!-- Filter Section Dropdown -->
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-primary text-white"><i class="fas fa-filter mr-1"></i> Filter Bagian</span>
+                                        </div>
+                                        <select class="form-control" id="filter-section">
+                                            <option value="all">Semua Bagian (Section)</option>
+                                            <option value="layanan">Layanan Utama</option>
+                                            <option value="tautan">Tautan Terkait</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-hover table-bordered">
                                     <thead class="thead-light">
@@ -123,8 +144,8 @@
                                     <tbody>
                                         <?php $i = 1; ?>
                                         <?php foreach ($footer as $ft) : ?>
-                                            <tr>
-                                                <td><?= $i++; ?></td>
+                                            <tr class="footer-row" data-section="<?= $ft['section']; ?>">
+                                                <td class="row-num"><?= $i++; ?></td>
                                                 <td>
                                                     <?php if ($ft['section'] == 'layanan') : ?>
                                                         <span class="badge badge-info">Layanan Utama</span>
@@ -136,7 +157,13 @@
                                                 <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                                     <a href="<?= $ft['url']; ?>" target="_blank" class="text-info" title="<?= htmlspecialchars($ft['url']); ?>"><?= htmlspecialchars($ft['url']); ?></a>
                                                 </td>
-                                                <td><?= $ft['order_no']; ?></td>
+                                                <td>
+                                                    <?= $ft['order_no']; ?>
+                                                    <div class="btn-group btn-group-sm ml-2">
+                                                        <a href="<?= base_url('admin/setting_footer_move/up/' . $ft['id']); ?>" class="btn btn-outline-secondary btn-xs py-0 px-1" title="Pindah Ke Atas"><i class="fas fa-chevron-up"></i></a>
+                                                        <a href="<?= base_url('admin/setting_footer_move/down/' . $ft['id']); ?>" class="btn btn-outline-secondary btn-xs py-0 px-1" title="Pindah Ke Bawah"><i class="fas fa-chevron-down"></i></a>
+                                                    </div>
+                                                </td>
                                                 <td>
                                                     <?php if ($ft['is_active'] == 1) : ?>
                                                         <span class="badge badge-success">Aktif</span>
@@ -416,10 +443,25 @@
             $('#edit_foot_order').val(order_no);
             
             if (is_active == 1) {
-                $('#edit_foot_active').prop('checked', true);
-            } else {
-                $('#edit_foot_active').prop('checked', false);
-            }
-        });
-    });
-</script>
+                                $('#edit_foot_active').prop('checked', true);
+                            } else {
+                                $('#edit_foot_active').prop('checked', false);
+                            }
+                        });
+
+                        // Filter Footer Section
+                        $('#filter-section').on('change', function() {
+                            const val = $(this).val();
+                            let visibleIdx = 1;
+                            $('.footer-row').each(function() {
+                                const section = $(this).data('section');
+                                if (val === 'all' || section === val) {
+                                    $(this).show();
+                                    $(this).find('.row-num').text(visibleIdx++);
+                                } else {
+                                    $(this).hide();
+                                }
+                            });
+                        });
+                    });
+                </script>

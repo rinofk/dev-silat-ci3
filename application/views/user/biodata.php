@@ -64,7 +64,7 @@
                             <div class="col-sm-9">
                                 <select class="form-control" id="program_studi" name="program_studi">
                                     <?php foreach ($prodi as $p) : ?>
-                                        <?php if ($p['id_prodi'] == $mahasiswa['prodi_id']) : ?>
+                                        <?php if ($mahasiswa && $p['id_prodi'] == $mahasiswa['prodi_id']) : ?>
 
                                             <option value="<?= $p['id_prodi']; ?>" selected><?= $p['nama_prodi']; ?></option>
                                         <?php else : ?>

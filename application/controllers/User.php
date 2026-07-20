@@ -130,6 +130,7 @@ class User extends CI_Controller
         $data['title'] = 'Biodata';
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
         $id = $data['user']['nim'];
+        $data['mahasiswa']  = $this->db->get_where('mahasiswa', ['nim' => $id])->row_array();
         $data['prodi'] = $this->db->get('prodi')->result_array();
         $data['agama'] = $this->db->get('agama')->result_array();
 

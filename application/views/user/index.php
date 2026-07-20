@@ -11,7 +11,7 @@
 
     <?php
     if ($user['role_id'] == '2') {
-        if ($mahasiswa['status_aktif'] != '1') {; ?>
+        if (!$mahasiswa || $mahasiswa['status_aktif'] != '1') {; ?>
 
             <div class="container">
                 <div class="row mt-3">
