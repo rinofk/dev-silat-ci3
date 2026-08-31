@@ -6,19 +6,21 @@ class Surat_model extends CI_model
     {
         $this->load->library('upload');
 
-        $ktm    = null;
-        $datakk = 'default.jpg';
-        $datask = 'default.jpg';
+        // Check if files were pre-uploaded via AJAX
+        $ktm    = $this->input->post('temp_ktm') ?: null;
+        $datakk = $this->input->post('temp_kk') ?: 'default.jpg';
+        $datask = $this->input->post('temp_sk') ?: 'default.jpg';
 
-        // ===== UPLOAD KTM =====
-        if (!empty($_FILES['ktm']['name'])) {
+        $base_config = [
+            'upload_path'   => './assets/aktifkuliah/',
+            'allowed_types' => 'pdf|doc|docx',
+            'max_size'      => 2048, // 2 MB
+        ];
 
-            $config = [
-                'upload_path'   => './assets/aktifkuliah/',
-                'allowed_types' => 'pdf|doc|docx',
-                'max_size'      => 2048,
-                'file_name'     => 'ktm_' . time()
-            ];
+        // ===== UPLOAD KTM (Fallback) =====
+        if (empty($ktm) && !empty($_FILES['ktm']['name'])) {
+            $config = $base_config;
+            $config['file_name'] = 'ktm_' . time();
 
             $this->upload->initialize($config);
 
@@ -30,9 +32,9 @@ class Surat_model extends CI_model
             $ktm = $this->upload->data('file_name');
         }
 
-        // ===== UPLOAD KK =====
-        if (!empty($_FILES['kk']['name'])) {
-
+        // ===== UPLOAD KK (Fallback) =====
+        if ($datakk === 'default.jpg' && !empty($_FILES['kk']['name'])) {
+            $config = $base_config;
             $config['file_name'] = 'kk_' . time();
             $this->upload->initialize($config);
 
@@ -44,9 +46,9 @@ class Surat_model extends CI_model
             $datakk = $this->upload->data('file_name');
         }
 
-        // ===== UPLOAD SK =====
-        if (!empty($_FILES['sk']['name'])) {
-
+        // ===== UPLOAD SK (Fallback) =====
+        if ($datask === 'default.jpg' && !empty($_FILES['sk']['name'])) {
+            $config = $base_config;
             $config['file_name'] = 'sk_' . time();
             $this->upload->initialize($config);
 

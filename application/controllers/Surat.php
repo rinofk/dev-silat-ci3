@@ -108,6 +108,62 @@ class Surat extends CI_Controller
             redirect('surat');
         }
     }
+
+    public function upload_ajax()
+    {
+        $input_name = '';
+        if (!empty($_FILES['ktm']['name'])) {
+            $input_name = 'ktm';
+        } elseif (!empty($_FILES['kk']['name'])) {
+            $input_name = 'kk';
+        } elseif (!empty($_FILES['sk']['name'])) {
+            $input_name = 'sk';
+        }
+
+        if (empty($input_name)) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(400)
+                ->set_output(json_encode([
+                    'status' => 'error',
+                    'message' => 'Tidak ada berkas yang diunggah.'
+                ]));
+            return;
+        }
+
+        $config = [
+            'upload_path'   => './assets/aktifkuliah/',
+            'allowed_types' => 'pdf|doc|docx',
+            'max_size'      => 2048, // 2 MB
+            'file_name'     => $input_name . '_' . time()
+        ];
+
+        // Ensure directory exists
+        if (!is_dir($config['upload_path'])) {
+            mkdir($config['upload_path'], 0777, true);
+        }
+
+        $this->load->library('upload');
+        $this->upload->initialize($config);
+
+        if (!$this->upload->do_upload($input_name)) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode([
+                    'status' => 'error',
+                    'message' => $this->upload->display_errors('', '')
+                ]));
+        } else {
+            $upload_data = $this->upload->data();
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode([
+                    'status' => 'success',
+                    'file_name' => $upload_data['file_name']
+                ]));
+        }
+    }
+
     public function edit($id_suratpengajuan)
     {
         $data['title'] = 'Form Ubah Data Pengajuan Surat';

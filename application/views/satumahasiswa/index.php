@@ -1,6 +1,30 @@
 <div class="container-fluid">
   <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
 
+  <!-- ===== REGISTRATION SOURCE SETTING ===== -->
+  <div class="card shadow-sm mb-4 border-left-primary">
+    <div class="card-body">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h5 class="font-weight-bold text-gray-800 mb-1"><i class="fas fa-cogs"></i> Sumber Data Registrasi Mahasiswa</h5>
+          <p class="text-muted mb-0">Tentukan dari mana sistem mengambil data biodata saat mahasiswa melakukan registrasi akun baru.</p>
+        </div>
+        <div class="col-md-4 text-md-right mt-3 mt-md-0">
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-outline-primary <?= $registration_source == 'service' ? 'active' : ''; ?>" id="label-service">
+              <input type="radio" name="reg_source" id="source-service" value="service" autocomplete="off" <?= $registration_source == 'service' ? 'checked' : ''; ?>>
+              <i class="fas fa-cloud-download-alt"></i> Service API (Live)
+            </label>
+            <label class="btn btn-outline-primary <?= $registration_source == 'database' ? 'active' : ''; ?>" id="label-database">
+              <input type="radio" name="reg_source" id="source-database" value="database" autocomplete="off" <?= $registration_source == 'database' ? 'checked' : ''; ?>>
+              <i class="fas fa-database"></i> Database Lokal
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <?php
   // Hitung jumlah mahasiswa per prodi
   $count_by_prodi = [];
@@ -249,6 +273,34 @@ $(document).ready(function () {
       error: function () {
         $('#btnSync').prop('disabled', false).text('Sinkronkan Data');
         Swal.fire('Gagal!', 'Terjadi kesalahan saat sinkronisasi.', 'error');
+      }
+    });
+  });
+
+  // Mengubah sumber data registrasi
+  $('input[name="reg_source"]').change(function() {
+    let selectedSource = $(this).val();
+    
+    $.ajax({
+      url: '<?= base_url("satumahasiswa/update_setting"); ?>',
+      type: 'POST',
+      data: { registration_source: selectedSource },
+      dataType: 'json',
+      success: function(res) {
+        if(res.status === 'success') {
+          Swal.fire({
+            title: 'Berhasil!',
+            text: res.message,
+            icon: 'success',
+            timer: 2000,
+            showConfirmButton: false
+          });
+        } else {
+          Swal.fire('Gagal!', res.message, 'error');
+        }
+      },
+      error: function() {
+        Swal.fire('Gagal!', 'Terjadi kesalahan sistem saat menyimpan pengaturan.', 'error');
       }
     });
   });

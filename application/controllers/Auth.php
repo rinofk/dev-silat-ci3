@@ -99,30 +99,41 @@ class Auth extends CI_Controller
             $this->load->view('auth/registration');
             $this->load->view('templates/auth_footer');
         } else {
+            $reg_source = $this->db->get_where('tb_setting', ['setting_key' => 'registration_source'])->row_array();
+            $source = $reg_source ? $reg_source['setting_value'] : 'service';
 
-            //Guzzle
-            $client = new Client();
-            //service siakad.untan.ac.id
-            // $response = $client->request('GET', 'http://servicedpna.untan.ac.id/kedokteran/getmhsbynim/' . $_POST['nim']);
+            $result = null;
             $nim = $this->input->post('nim');
 
-            // service ke satu.untan.ac.id
-            $response = $client->request(
-                'GET',
-                'http://services.satu.untan.ac.id/api/v1/kedokteran/mahasiswa/' . $nim,
-                // 'http://172.16.40.165:3000/api/v1/kedokteran/mahasiswa/' . $_POST['nim'],
-                [
-                    'headers' =>
-                    [
-                        'X-App-Key' => 'DE2CD1332496931EBA9D53E0F28EC72D',
-                        'X-Secret-Key' => '6D5E5FC7222C86F6DFE40346B6EE493927CE3052576172415B475B5700457C1D',
-                    ],
-                ]
-            );
-            $result = json_decode($response->getBody()->getContents(), true);
-            //var_dump($result);
+            if ($source == 'database') {
+                $result = $this->db->get_where('tb_satumahasiswa', ['nim' => $nim])->row_array();
+            } else {
+                //Guzzle
+                try {
+                    $client = new Client();
+                    // service ke satu.untan.ac.id
+                    $response = $client->request(
+                        'GET',
+                        'http://services.satu.untan.ac.id/api/v1/kedokteran/mahasiswa/' . $nim,
+                        [
+                            'headers' => [
+                                'X-App-Key' => 'DE2CD1332496931EBA9D53E0F28EC72D',
+                                'X-Secret-Key' => '6D5E5FC7222C86F6DFE40346B6EE493927CE3052576172415B475B5700457C1D',
+                            ],
+                            'timeout' => 10
+                        ]
+                    );
+                    $result = json_decode($response->getBody()->getContents(), true);
+                } catch (Exception $e) {
+                    log_message('error', 'API Request failed for NIM ' . $nim . ': ' . $e->getMessage());
+                }
+            }
 
-            // return $result[0];
+            if (!$result || !isset($result['nim'])) {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">NIM tidak ditemukan</div>');
+                redirect('auth/registration');
+            }
+
             $nimservice = $result['nim'];
             $nama = $result['nama'];
             $email = $result['email'];
@@ -138,7 +149,6 @@ class Auth extends CI_Controller
             $tahun_angkatan = $result['id_periode'];
             $tgllahirservice = $result['tanggal_lahir'];
             $tglservice = date('d-m-Y', strtotime($tgllahirservice));
-            //EndGuzzle
 
             if ($email != '') {
             };

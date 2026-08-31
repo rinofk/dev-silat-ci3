@@ -10,4 +10,10 @@ class Home extends CI_Controller
 
 		$this->load->view('home/bdr', $data);
 	}
+
+	public function petunjuk_skripsi()
+	{
+		$data['navbar_menu'] = $this->db->order_by('order_no', 'ASC')->get_where('tb_setting_navbar', ['is_active' => 1])->result_array();
+		$this->load->view('home/petunjuk_skripsi', $data);
+	}
 }

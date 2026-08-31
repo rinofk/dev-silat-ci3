@@ -99,9 +99,11 @@ for ($i = 0; $i < 3; $i++) {
                         <label for="ktm" class="col-sm-3 col-form-label font-weight-bold text-gray-800">KTM (PDF)</label>
                         <div class="col-sm-9">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="ktm" name="ktm" accept="application/pdf">
+                                <input type="file" class="custom-file-input" id="ktm" name="ktm" accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
                                 <label class="custom-file-label" for="ktm">Upload KTM (format filename "nim-ktm.pdf")</label>
                             </div>
+                            <input type="hidden" name="temp_ktm" id="temp_ktm" value="">
+                            <div class="upload-status-msg mt-2 font-weight-bold" id="status-ktm" style="display:none; font-size: 0.9rem;"></div>
                         </div>
                     </div>
 
@@ -169,9 +171,11 @@ for ($i = 0; $i < 3; $i++) {
                             <label for="kk" class="col-sm-3 col-form-label font-weight-bold text-gray-800">Kartu Keluarga (PDF)</label>
                             <div class="col-sm-9">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="kk" name="kk" accept="application/pdf">
+                                    <input type="file" class="custom-file-input" id="kk" name="kk" accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
                                     <label class="custom-file-label" for="kk">Upload KK (format filename "nim-kk.pdf")</label>
                                 </div>
+                                <input type="hidden" name="temp_kk" id="temp_kk" value="">
+                                <div class="upload-status-msg mt-2 font-weight-bold" id="status-kk" style="display:none; font-size: 0.9rem;"></div>
                             </div>
                         </div>
 
@@ -179,9 +183,11 @@ for ($i = 0; $i < 3; $i++) {
                             <label for="sk" class="col-sm-3 col-form-label font-weight-bold text-gray-800">SK Orang Tua (PDF)</label>
                             <div class="col-sm-9">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="sk" name="sk" accept="application/pdf">
+                                    <input type="file" class="custom-file-input" id="sk" name="sk" accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
                                     <label class="custom-file-label" for="sk">Upload SK (format filename "nim-sk.pdf")</label>
                                 </div>
+                                <input type="hidden" name="temp_sk" id="temp_sk" value="">
+                                <div class="upload-status-msg mt-2 font-weight-bold" id="status-sk" style="display:none; font-size: 0.9rem;"></div>
                             </div>
                         </div>
                     </div>
@@ -204,12 +210,102 @@ for ($i = 0; $i < 3; $i++) {
 </div>
 </div>
 
-<!-- jQuery script to handle Bootstrap file input label updating -->
+<!-- jQuery script to handle Bootstrap file input label updating and real-time upload -->
 <script>
     $(document).ready(function() {
+        // Handle label updating
         $('.custom-file-input').on('change', function() {
             var fileName = $(this).val().split('\\').pop();
             $(this).next('.custom-file-label').addClass("selected").html(fileName);
+        });
+
+        // AJAX Real-time upload function
+        function handleRealtimeUpload(inputElement, statusElement, hiddenInput) {
+            var file = inputElement.files[0];
+            if (!file) return;
+
+            // Client-side validation: 2 MB limit (2 * 1024 * 1024 bytes)
+            var maxSize = 2 * 1024 * 1024;
+            if (file.size > maxSize) {
+                statusElement.show().removeClass('text-success text-info').addClass('text-danger').html(
+                    '<i class="fas fa-exclamation-triangle mr-1"></i> Ukuran berkas melebihi batas 2 MB (Ukuran berkas Anda: ' + (file.size / (1024 * 1024)).toFixed(2) + ' MB)'
+                );
+                // Reset input
+                $(inputElement).val('');
+                $(inputElement).next('.custom-file-label').removeClass("selected").html('Upload berkas...');
+                hiddenInput.val('');
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append(inputElement.id, file);
+
+            // Display loading indicator
+            statusElement.show().removeClass('text-success text-danger').addClass('text-info').html(
+                '<i class="fas fa-spinner fa-spin mr-1"></i> Sedang mengunggah berkas...'
+            );
+            
+            // Disable submit button during upload
+            $('button[type="submit"]').prop('disabled', true).addClass('disabled');
+
+            $.ajax({
+                url: '<?= base_url("surat/upload_ajax"); ?>',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        statusElement.removeClass('text-info text-danger').addClass('text-success').html(
+                            '<i class="fas fa-check-circle mr-1"></i> Berhasil diunggah: ' + response.file_name
+                        );
+                        hiddenInput.val(response.file_name);
+                    } else {
+                        statusElement.removeClass('text-info text-success').addClass('text-danger').html(
+                            '<i class="fas fa-times-circle mr-1"></i> Gagal: ' + response.message
+                        );
+                        $(inputElement).val('');
+                        $(inputElement).next('.custom-file-label').removeClass("selected").html('Upload berkas...');
+                        hiddenInput.val('');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    var errMsg = 'Terjadi kesalahan saat mengunggah.';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errMsg = xhr.responseJSON.message;
+                    }
+                    statusElement.removeClass('text-info text-success').addClass('text-danger').html(
+                        '<i class="fas fa-times-circle mr-1"></i> Gagal: ' + errMsg
+                    );
+                    $(inputElement).val('');
+                    $(inputElement).next('.custom-file-label').removeClass("selected").html('Upload berkas...');
+                    hiddenInput.val('');
+                },
+                complete: function() {
+                    // Re-enable submit button if no uploads are currently in-progress
+                    var activeUploads = false;
+                    $('.upload-status-msg').each(function() {
+                        if ($(this).hasClass('text-info')) {
+                            activeUploads = true;
+                        }
+                    });
+                    if (!activeUploads) {
+                        $('button[type="submit"]').prop('disabled', false).removeClass('disabled');
+                    }
+                }
+            });
+        }
+
+        // Attach listeners to file inputs
+        $('#ktm').on('change', function() {
+            handleRealtimeUpload(this, $('#status-ktm'), $('#temp_ktm'));
+        });
+        $('#kk').on('change', function() {
+            handleRealtimeUpload(this, $('#status-kk'), $('#temp_kk'));
+        });
+        $('#sk').on('change', function() {
+            handleRealtimeUpload(this, $('#status-sk'), $('#temp_sk'));
         });
     });
 </script>

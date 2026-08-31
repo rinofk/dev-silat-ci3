@@ -27,7 +27,15 @@
                     <?php if (!empty($navbar_menu)) : ?>
                         <?php foreach ($navbar_menu as $menu) : ?>
                             <?php if ($menu['is_button'] == 0) : ?>
-                                <a class="nav-item nav-link" href="<?= $menu['url']; ?>" target="_blank"><?= htmlspecialchars($menu['label']); ?></a>
+                                <?php
+                                    $href = $menu['url'];
+                                    $target = 'target="_blank"';
+                                    if (strpos(strtolower($menu['label']), 'softfile skripsi') !== false) {
+                                        $href = base_url('home/petunjuk_skripsi');
+                                        $target = ''; // Open in same window
+                                    }
+                                ?>
+                                <a class="nav-item nav-link" href="<?= $href; ?>" <?= $target; ?>><?= htmlspecialchars($menu['label']); ?></a>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     <?php else : ?>
@@ -35,7 +43,7 @@
                         <a class="nav-item nav-link" href="https://siremun.untan.ac.id/" target="_blank">Siremun</a>
                         <a class="nav-item nav-link" href="http://203.24.51.238:8015/" target="_blank">Reservasi Ruang Sidang</a>
                         <a class="nav-item nav-link" href="http://203.24.51.238:8020/" target="_blank">Agenda Fakultas</a>
-                        <a class="nav-item nav-link" href="https://script.google.com/macros/s/AKfycbzLxqaPQQBLNFzYHFjXFwZjaUr1UKj7XCtt37zhr8umegRjdbioG15iRecWtmN_dDPMMA/exec" target="_blank">Pengumpulan Softfile Skripsi</a>
+                        <a class="nav-item nav-link" href="<?= base_url('home/petunjuk_skripsi'); ?>">Pengumpulan Softfile Skripsi</a>
                     <?php endif; ?>
                     <?php if ($this->session->userdata('email')) : ?>
                         <?php 
@@ -275,7 +283,15 @@
                     <ul class="footer-links">
                         <?php if (!empty($footer_tautan)) : ?>
                             <?php foreach ($footer_tautan as $ft) : ?>
-                                <li><a href="<?= $ft['url']; ?>" target="_blank"><?= htmlspecialchars($ft['label']); ?></a></li>
+                                <?php
+                                    $href = $ft['url'];
+                                    $target = 'target="_blank"';
+                                    if (strpos(strtolower($ft['label']), 'softfile skripsi') !== false) {
+                                        $href = base_url('home/petunjuk_skripsi');
+                                        $target = ''; // Open in same window
+                                    }
+                                ?>
+                                <li><a href="<?= $href; ?>" <?= $target; ?>><?= htmlspecialchars($ft['label']); ?></a></li>
                             <?php endforeach; ?>
                         <?php else : ?>
                             <li><a href="https://www.untan.ac.id/" target="_blank">Universitas Tanjungpura</a></li>
@@ -283,7 +299,7 @@
                             <li><a href="http://kedokteran.untan.ac.id/" target="_blank">Fakultas Kedokteran UNTAN</a></li>
                             <li><a href="http://wfh.untan.ac.id/" target="_blank">Presensi WFH Tendik</a></li>
                             <li><a href="http://203.24.51.238:8020/" target="_blank">Agenda Fakultas</a></li>
-                            <li><a href="https://script.google.com/macros/s/AKfycbzLxqaPQQBLNFzYHFjXFwZjaUr1UKj7XCtt37zhr8umegRjdbioG15iRecWtmN_dDPMMA/exec" target="_blank">Pengumpulan Softfile Skripsi</a></li>
+                            <li><a href="<?= base_url('home/petunjuk_skripsi'); ?>">Pengumpulan Softfile Skripsi</a></li>
                         <?php endif; ?>
                     </ul>
                 </div>

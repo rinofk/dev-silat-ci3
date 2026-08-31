@@ -19,11 +19,43 @@ class Satumahasiswa extends CI_Controller
         $data['title'] = 'Sinkronisasi Data Mahasiswa (Satu Data)';
         $data['mahasiswa'] = $this->Satumahasiswa_model->getAll();
 
+        $reg_source = $this->db->get_where('tb_setting', ['setting_key' => 'registration_source'])->row_array();
+        $data['registration_source'] = $reg_source ? $reg_source['setting_value'] : 'service';
+
         $this->load->view('templates/header_a', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
         $this->load->view('satumahasiswa/index', $data);
         $this->load->view('templates/footer_a');
+    }
+
+    // AJAX update setting registrasi
+    public function update_setting()
+    {
+        $source = $this->input->post('registration_source');
+        if (in_array($source, ['service', 'database'])) {
+            // Check if key already exists
+            $exists = $this->db->get_where('tb_setting', ['setting_key' => 'registration_source'])->row_array();
+            if ($exists) {
+                $this->db->where('setting_key', 'registration_source');
+                $this->db->update('tb_setting', ['setting_value' => $source]);
+            } else {
+                $this->db->insert('tb_setting', [
+                    'setting_key' => 'registration_source',
+                    'setting_value' => $source
+                ]);
+            }
+
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Sumber data registrasi berhasil diperbarui!'
+            ]);
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Pilihan sumber data tidak valid.'
+            ]);
+        }
     }
 
     // AJAX sinkronisasi

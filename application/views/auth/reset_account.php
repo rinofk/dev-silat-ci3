@@ -39,16 +39,18 @@
                     <div style="width: 100%; max-width: 380px; margin: 0 auto;">
                         
                         <!-- Logo Fakultas & Kampus -->
-                        <div class="text-center mb-3">
+                        <div class="d-flex align-items-center justify-content-center mb-3 text-left">
                             <img src="<?= base_url('assets/img/logo.png'); ?>"
                                 alt="Logo Fakultas"
-                                style="width: 75px; height: auto;">
-                            <h5 class="mt-2 mb-0 font-weight-bold text-dark" style="font-size: 16px;">
-                                Fakultas Kedokteran
-                            </h5>
-                            <h6 class="text-muted font-weight-bold" style="font-size: 12px;">
-                                Universitas Tanjungpura
-                            </h6>
+                                style="width: 50px; height: auto; margin-right: 15px;">
+                            <div>
+                                <h5 class="mb-0 font-weight-bold text-dark" style="font-size: 15px; line-height: 1.2; letter-spacing: 0.5px; text-transform: uppercase; font-family: Georgia, 'Times New Roman', Times, serif;">
+                                    Fakultas Kedokteran
+                                </h5>
+                                <h6 class="text-dark font-weight-bold mb-0" style="font-size: 12px; line-height: 1.2; letter-spacing: 0.5px; text-transform: uppercase; font-family: Georgia, 'Times New Roman', Times, serif;">
+                                    Universitas Tanjungpura
+                                </h6>
+                            </div>
                         </div>
 
                         <!-- Judul Form -->
@@ -138,10 +140,13 @@
 
                         </form>
 
-                        <!-- Tautan Login -->
+                        <!-- Tautan Login & Kembali -->
                         <div class="text-center mt-3">
-                            <a class="small text-primary" href="<?= base_url('auth'); ?>">
+                            <a class="small text-primary d-block mb-2 font-weight-bold" href="<?= base_url('auth'); ?>">
                                 Kembali ke halaman Login
+                            </a>
+                            <a class="small text-muted d-inline-flex align-items-center" href="<?= base_url(); ?>">
+                                <i class="fas fa-arrow-left mr-1"></i> Kembali ke Halaman Utama
                             </a>
                         </div>
                         
