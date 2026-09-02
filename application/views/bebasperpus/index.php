@@ -291,7 +291,7 @@
 </div>
 
 <!-- AJAX Real-time Upload Script (Hanya aktif jika status ditolak/bisa diubah) -->
-<?php if ($bp['status'] == 'reject') { ?>
+<?php if (!empty($bp['status']) && $bp['status'] == 'reject') { ?>
 <script>
     $(document).ready(function() {
         // Handle label updating
