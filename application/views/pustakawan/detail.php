@@ -272,20 +272,30 @@
                     </a>
                     
                     <div class="mt-2 mt-sm-0">
-                        <?php if ($status != 'accept'): ?>
-                            <button type="button" class="btn btn-sm btn-danger px-3 font-weight-bold shadow-sm mr-2" style="border-radius: 6px;" data-toggle="modal" data-target="#modalReject">
-                                <i class="fas fa-times mr-1"></i> Tolak (Reject)
+                        <?php if ($status == 'accept'): ?>
+                            <button type="button" class="btn btn-sm btn-warning text-dark font-weight-bold shadow-sm mr-2" style="border-radius: 6px;" data-toggle="modal" data-target="#modalUbahStatus">
+                                <i class="fas fa-exchange-alt mr-1"></i> Ubah Status
                             </button>
-                            <button type="button" class="btn btn-sm btn-success px-4 font-weight-bold shadow-sm" style="border-radius: 6px;" data-toggle="modal" data-target="#modalAccept">
-                                <i class="fas fa-check mr-1"></i> Setujui (Accept)
-                            </button>
-                        <?php else: ?>
                             <button type="button" class="btn btn-sm btn-info px-3 font-weight-bold shadow-sm mr-2" style="border-radius: 6px;" data-toggle="modal" data-target="#modalTanggal">
                                 <i class="fas fa-calendar-alt mr-1"></i> Update Tanggal
                             </button>
                             <a href="<?= base_url('pustakawan/cetak/' . $perpus['id_bp']); ?>" class="btn btn-sm btn-primary px-4 font-weight-bold shadow-sm" style="border-radius: 6px;" target="_blank">
                                 <i class="fas fa-print mr-1"></i> Cetak Surat Bebas Perpus
                             </a>
+                        <?php elseif ($status == 'reject'): ?>
+                            <button type="button" class="btn btn-sm btn-warning text-dark font-weight-bold shadow-sm mr-2" style="border-radius: 6px;" data-toggle="modal" data-target="#modalUbahStatus">
+                                <i class="fas fa-exchange-alt mr-1"></i> Ubah Status
+                            </button>
+                            <button type="button" class="btn btn-sm btn-success px-4 font-weight-bold shadow-sm" style="border-radius: 6px;" data-toggle="modal" data-target="#modalAccept">
+                                <i class="fas fa-check mr-1"></i> Setujui (Accept)
+                            </button>
+                        <?php else: // di ajukan ?>
+                            <button type="button" class="btn btn-sm btn-danger px-3 font-weight-bold shadow-sm mr-2" style="border-radius: 6px;" data-toggle="modal" data-target="#modalReject">
+                                <i class="fas fa-times mr-1"></i> Tolak (Reject)
+                            </button>
+                            <button type="button" class="btn btn-sm btn-success px-4 font-weight-bold shadow-sm" style="border-radius: 6px;" data-toggle="modal" data-target="#modalAccept">
+                                <i class="fas fa-check mr-1"></i> Setujui (Accept)
+                            </button>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -359,7 +369,8 @@
                         <li class="mb-2">Periksa kejelasan berkas <b>KTM</b> dan <b>Kartu Anggota</b> yang diunggah mahasiswa.</li>
                         <li class="mb-2">Pastikan mahasiswa <b>tidak memiliki tanggungan peminjaman buku</b> atau denda perpustakaan.</li>
                         <li class="mb-2">Jika berkas lengkap dan sesuai, klik <b>Setujui (Accept)</b> dan masukkan <b>Nomor Surat</b>.</li>
-                        <li>Jika berkas salah atau belum memenuhi syarat, klik <b>Tolak (Reject)</b> serta tulis alasan penolakannya.</li>
+                        <li class="mb-2">Jika berkas salah atau belum memenuhi syarat, klik <b>Tolak (Reject)</b> serta tulis alasan penolakannya.</li>
+                        <li>Setelah berstatus <b>Selesai (Accept)</b>, mahasiswa dapat langsung <b>mengunduh surat secara mandiri</b> di akun SILAT masing-masing.</li>
                     </ol>
                 </div>
             </div>
@@ -458,6 +469,83 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Ubah Status -->
+<div class="modal fade" id="modalUbahStatus" tabindex="-1" role="dialog" aria-labelledby="modalUbahStatusLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+            <div class="modal-header bg-warning text-dark py-3">
+                <h6 class="modal-title font-weight-bold" id="modalUbahStatusLabel">
+                    <i class="fas fa-exchange-alt mr-1"></i> Ubah Status Pengajuan
+                </h6>
+                <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="<?= base_url('pustakawan/ubah_status/' . $perpus['id_bp']); ?>" method="post">
+                <div class="modal-body p-4">
+                    <p class="small text-muted mb-3">
+                        Ubah status pengajuan Bebas Perpustakaan untuk <strong><?= htmlspecialchars($perpus['nama_lengkap']); ?> (<?= htmlspecialchars($perpus['nim_mahasiswa']); ?>)</strong>:
+                    </p>
+                    
+                    <div class="form-group">
+                        <label for="select_status" class="small font-weight-bold text-gray-800">Pilih Status Baru <span class="text-danger">*</span></label>
+                        <select name="status" id="select_status" class="form-control font-weight-bold custom-select" required style="border-radius: 6px;">
+                            <option value="di ajukan" <?= ($status == 'di ajukan' || empty($status)) ? 'selected' : ''; ?>>Di Ajukan (Menunggu Validasi)</option>
+                            <option value="accept" <?= ($status == 'accept') ? 'selected' : ''; ?>>Selesai (Accept / Disetujui)</option>
+                            <option value="reject" <?= ($status == 'reject') ? 'selected' : ''; ?>>Ditolak (Reject)</option>
+                        </select>
+                    </div>
+
+                    <!-- Field Nomor Surat (Muncul jika status Accept) -->
+                    <div class="form-group" id="group_nomor" style="<?= ($status == 'accept') ? '' : 'display: none;'; ?>">
+                        <label for="nomor_ubah" class="small font-weight-bold text-gray-800">Nomor Surat Lengkap <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control font-weight-bold text-primary" id="nomor_ubah" name="nomor" value="<?= htmlspecialchars(isset($nomor_otomatis) ? $nomor_otomatis : ''); ?>" placeholder="Contoh: 1234<?= htmlspecialchars(isset($base_nomor) ? $base_nomor : ''); ?>" style="border-radius: 6px;">
+                        <small class="form-text text-muted">Format otomatis dari <strong>tb_nomorsurat</strong>: <code><?= htmlspecialchars(isset($base_nomor) ? $base_nomor : ''); ?></code></small>
+                    </div>
+
+                    <!-- Field Keterangan / Alasan -->
+                    <div class="form-group mb-0" id="group_keterangan">
+                        <label for="keterangan_ubah" class="small font-weight-bold text-gray-800" id="label_keterangan">Keterangan / Catatan</label>
+                        <textarea class="form-control" id="keterangan_ubah" name="keterangan" rows="3" placeholder="Masukkan keterangan..." style="border-radius: 6px;"><?= htmlspecialchars($perpus['keterangan'] ?: ''); ?></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer py-2 px-3 bg-light">
+                    <button type="button" class="btn btn-sm btn-secondary font-weight-bold" data-dismiss="modal" style="border-radius: 6px;">Batal</button>
+                    <button type="submit" class="btn btn-sm btn-warning text-dark font-weight-bold px-3 shadow-sm" style="border-radius: 6px;">
+                        <i class="fas fa-save mr-1"></i> Simpan Status Baru
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.jQuery) {
+            $('#select_status').on('change', function() {
+                var val = $(this).val();
+                if (val === 'accept') {
+                    $('#group_nomor').slideDown(200);
+                    $('#label_keterangan').text('Catatan (Opsional)');
+                    $('#keterangan_ubah').val('Validasi Lengkap');
+                } else if (val === 'reject') {
+                    $('#group_nomor').slideUp(200);
+                    $('#label_keterangan').html('Alasan Penolakan <span class="text-danger">*</span>');
+                    if ($('#keterangan_ubah').val() === 'Validasi Lengkap' || $('#keterangan_ubah').val() === 'menunggu proses validasi') {
+                        $('#keterangan_ubah').val('');
+                    }
+                    $('#keterangan_ubah').attr('placeholder', 'Tuliskan alasan penolakan...');
+                } else { // di ajukan
+                    $('#group_nomor').slideUp(200);
+                    $('#label_keterangan').text('Keterangan');
+                    $('#keterangan_ubah').val('menunggu proses validasi');
+                }
+            });
+        }
+    });
+</script>
 
 <!-- Modal Tanggal -->
 <div class="modal fade" id="modalTanggal" tabindex="-1" role="dialog" aria-labelledby="modalTanggalLabel" aria-hidden="true">

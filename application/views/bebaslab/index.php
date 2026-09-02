@@ -260,18 +260,24 @@
                                 <td class="text-center align-middle">
                                     <?php if ($p['status'] == 'di ajukan'): ?>
                                         <span class="badge-pill-custom badge-status-diajukan">Diajukan</span>
+                                        <div class="mt-1" style="line-height: 1.2;">
+                                            <span class="text-warning small font-italic" style="font-size: 11px;">menunggu proses validasi</span>
+                                        </div>
                                     <?php elseif ($p['status'] == 'proses'): ?>
                                         <span class="badge-pill-custom badge-status-diproses">Diproses</span>
                                     <?php elseif ($p['status'] == 'reject'): ?>
                                         <span class="badge-pill-custom badge-status-ditolak">Ditolak</span>
+                                        <?php if (!empty($p['keterangan'])): ?>
+                                            <div class="mt-1" style="line-height: 1.2;">
+                                                <span class="text-danger small font-italic" style="font-size: 11px;"><?= htmlspecialchars($p['keterangan']); ?></span>
+                                            </div>
+                                        <?php endif; ?>
                                     <?php elseif ($p['status'] == 'accept'): ?>
                                         <span class="badge-pill-custom badge-status-diterima">Diterima</span>
                                     <?php else: ?>
                                         <span class="badge-pill-custom badge-status-draft">Draft</span>
-                                    <?php endif; ?>
-                                    <?php if (!empty($p['keterangan'])): ?>
                                         <div class="mt-1" style="line-height: 1.2;">
-                                            <span class="text-danger small font-italic" style="font-size: 11px;"><?= htmlspecialchars($p['keterangan']); ?></span>
+                                            <span class="text-muted small font-italic" style="font-size: 11px;">pengajuan belum di kirim</span>
                                         </div>
                                     <?php endif; ?>
                                 </td>
@@ -304,30 +310,13 @@
                                         <span class="text-muted font-italic">-</span>
                                     <?php endif; ?>
                                 </td>
-                                <td class="align-middle">
-                                    <div class="btn-action-group">
-                                        <!-- Tombol Edit -->
-                                        <?php if ($p['status'] != 'di ajukan' && $p['status'] != 'accept'): ?>
-                                            <a href="<?= base_url('laboratorium/edit/' . $p['id_bebaslab']); ?>"
-                                                class="btn-action-custom btn-action-edit">
-                                                <i class="fas fa-edit"></i> Edit
-                                            </a>
-                                        <?php endif; ?>
-
+                                <td class="align-middle text-center">
+                                    <div class="d-inline-flex align-items-center justify-content-center" style="gap: 6px;">
                                         <!-- Tombol Ajukan -->
                                         <?php if ($p['status'] == '' || $p['status'] == 'reject'): ?>
                                             <a href="<?= base_url('laboratorium/ajukan/' . $p['id_bebaslab']); ?>"
                                                 class="btn-action-custom btn-action-ajukan">
                                                 <i class="fas fa-paper-plane"></i> Ajukan
-                                            </a>
-                                        <?php endif; ?>
-
-                                        <!-- Tombol Delete -->
-                                        <?php if ($p['status'] != 'accept' && $p['status'] != 'di ajukan' && $p['status'] != 'reject'): ?>
-                                            <a href="<?= site_url('laboratorium/delete/' . $p['id_bebaslab']); ?>"
-                                                class="btn-action-custom btn-action-hapus"
-                                                onclick="return confirm('Yakin ingin menghapus data ini?');">
-                                                <i class="fas fa-trash-alt"></i> Hapus
                                             </a>
                                         <?php endif; ?>
 
@@ -337,6 +326,35 @@
                                                 class="btn-action-custom btn-action-cetak" target="_blank">
                                                 <i class="fas fa-print"></i> Cetak
                                             </a>
+                                        <?php endif; ?>
+
+                                        <!-- Dropdown Menu Titik Tiga (Edit & Hapus) -->
+                                        <?php 
+                                            $can_edit  = ($p['status'] != 'di ajukan' && $p['status'] != 'accept');
+                                            $can_hapus = ($p['status'] != 'accept' && $p['status'] != 'di ajukan' && $p['status'] != 'reject');
+                                        ?>
+                                        <?php if ($can_edit || $can_hapus): ?>
+                                            <div class="dropdown d-inline-block">
+                                                <a href="javascript:void(0)" class="text-muted px-2 py-1 d-inline-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Menu Aksi" style="text-decoration: none; cursor: pointer;">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow-sm border py-1" style="border-radius: 8px; min-width: 120px; font-size: 13px;">
+                                                    <?php if ($can_edit): ?>
+                                                        <a class="dropdown-item py-1.5 px-3 text-gray-800" href="<?= base_url('laboratorium/edit/' . $p['id_bebaslab']); ?>">
+                                                            <i class="fas fa-edit mr-2 text-warning"></i> Edit
+                                                        </a>
+                                                    <?php endif; ?>
+                                                    <?php if ($can_hapus): ?>
+                                                        <a class="dropdown-item py-1.5 px-3 text-danger btn-hapus" href="<?= site_url('laboratorium/delete/' . $p['id_bebaslab']); ?>" data-nama="pengajuan Bebas Lab (ID: #<?= $p['id_bebaslab']; ?>)">
+                                                            <i class="fas fa-trash-alt mr-2 text-danger"></i> Hapus
+                                                        </a>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                        <?php elseif ($p['status'] == 'di ajukan'): ?>
+                                            <span class="badge badge-light border text-muted py-1 px-2" style="font-size: 11px;">
+                                                <i class="fas fa-clock mr-1 text-warning"></i> Diproses
+                                            </span>
                                         <?php endif; ?>
                                     </div>
                                 </td>
@@ -363,7 +381,8 @@
         $('#tblPengajuan').DataTable({
             scrollX: true,
             autoWidth: false,
-            pageLength: 10,
+            pageLength: 25,
+            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Semua"]],
             ordering: true,
             language: {
                 search: "Cari:",

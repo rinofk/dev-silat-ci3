@@ -101,6 +101,13 @@ class Pustakawan extends CI_Controller
         redirect('pustakawan');
     }
 
+    public function ubah_status($id_bp)
+    {
+        $this->Pustakawan_model->ubah_status_Idbp($id_bp);
+        $this->session->set_flashdata('flash', 'diubah statusnya');
+        redirect('pustakawan/detail/' . $id_bp);
+    }
+
     public function cetak($id_bp)
     {
         $data['tanggal'] = tanggal();

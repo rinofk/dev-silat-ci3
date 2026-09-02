@@ -84,13 +84,44 @@ class Pustakawan_model extends CI_model
         $this->db->where('id_bp', $id_bp);
         $this->db->update('tb_bebasperpus', $data);
     }
-     public function tanggal_Idbp($id_bp)
+    public function tanggal_Idbp($id_bp)
     {
  
         $data = [
             'date_updated' => $this->input->post('tanggal')
 
         ];
+        $this->db->where('id_bp', $id_bp);
+        $this->db->update('tb_bebasperpus', $data);
+    }
+
+    public function ubah_status_Idbp($id_bp)
+    {
+        date_default_timezone_set('Asia/Jakarta');
+        $date = date("Y-m-d H:i:s");
+        $status = $this->input->post('status', true);
+
+        $data = [
+            'status'       => $status,
+            'date_updated' => $date,
+            'admin'        => $this->session->userdata('name')
+        ];
+
+        if ($status == 'accept') {
+            $nomor = trim($this->input->post('nomor', true));
+            if (!empty($nomor) && strpos($nomor, '/') === false) {
+                $nomor_surat = $this->db->get_where('tb_nomorsurat', ['id_nomor' => '5'])->row_array();
+                $base_nomor  = $nomor_surat ? $nomor_surat['nomor'] : '/UN22.9/TA.01.02/' . date('Y');
+                $nomor       = $nomor . $base_nomor;
+            }
+            $data['nomor']      = $nomor;
+            $data['keterangan'] = 'Validasi Lengkap';
+        } elseif ($status == 'reject') {
+            $data['keterangan'] = $this->input->post('keterangan', true) ?: 'Pengajuan ditolak oleh pustakawan';
+        } else { // di ajukan
+            $data['keterangan'] = $this->input->post('keterangan', true) ?: 'menunggu proses validasi';
+        }
+
         $this->db->where('id_bp', $id_bp);
         $this->db->update('tb_bebasperpus', $data);
     }

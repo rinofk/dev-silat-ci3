@@ -88,6 +88,7 @@ class Laboratorium extends CI_Controller
             "nim_mahasiswa" => $nim,
             "semester"      => $this->input->post('semester', true),
             "status"        => '',            // status awal kosong dulu
+            "keterangan"    => 'pengajuan belum di kirim',
             "date_created"  => $date
         ];
 

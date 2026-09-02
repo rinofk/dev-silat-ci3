@@ -172,10 +172,13 @@
                                 </button>
                             <?php endif; ?>
 
-                            <!-- CETAK BUTTON (Only shown for 'accept') -->
+                            <!-- CETAK & UPDATE TANGGAL (Only shown for 'accept') -->
                             <?php if (strtolower($bl->status) == 'accept') : ?>
+                                <button type="button" class="btn btn-info mr-2" data-toggle="modal" data-target="#modalTanggal">
+                                    <i class="fas fa-calendar-alt mr-1"></i> Update Tanggal
+                                </button>
                                 <a href="<?= base_url('bebaslab/cetak/' . $bl->id_bebaslab) ?>" class="btn btn-primary" target="_blank">
-                                    <i class="fas fa-print"></i> Cetak Surat Bebas Lab
+                                    <i class="fas fa-print mr-1"></i> Cetak Surat Bebas Lab
                                 </a>
                             <?php endif; ?>
                         </div>
@@ -198,6 +201,7 @@
                         <li class="mb-2">Jika dokumen sudah valid dan lengkap, klik tombol <b>Accept & Validasi</b> kemudian masukkan Nomor Surat yang sesuai.</li>
                         <li class="mb-2">Jika ingin memproses dokumen terlebih dahulu sebelum validasi akhir, klik <b>Proses Pengajuan</b>.</li>
                         <li class="mb-2">Jika dokumen salah, buram, atau tidak sesuai syarat, klik <b>Reject</b> dan isi alasan penolakannya secara jelas.</li>
+                        <li>Gunakan tombol <b>Update Tanggal</b> jika ingin menyesuaikan kembali tanggal penerbitan surat yang disetujui.</li>
                     </ol>
                 </div>
             </div>
@@ -262,6 +266,40 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-danger">Tolak (Reject)</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Update Tanggal Surat -->
+<div class="modal fade" id="modalTanggal" tabindex="-1" role="dialog" aria-labelledby="modalTanggalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content border-left-info shadow-lg">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold text-info" id="modalTanggalLabel">
+                    <i class="fas fa-calendar-alt mr-1"></i> Update Tanggal Surat
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="<?= base_url('bebaslab/tanggal/' . $bl->id_bebaslab); ?>" method="post">
+                <div class="modal-body">
+                    <div class="form-group mb-0">
+                        <label class="font-weight-bold text-gray-800">Tanggal Surat</label>
+                        <?php 
+                            $current_date = (!empty($bl->date_finished) && $bl->date_finished != '0000-00-00 00:00:00' && $bl->date_finished != '1970-01-01 00:00:00') 
+                                ? date('Y-m-d', strtotime($bl->date_finished)) 
+                                : ((!empty($bl->date_updated) && $bl->date_updated != '0000-00-00 00:00:00') ? date('Y-m-d', strtotime($bl->date_updated)) : date('Y-m-d'));
+                        ?>
+                        <input type="text" class="form-control datepicker" id="tanggal" name="tanggal" value="<?= htmlspecialchars($current_date); ?>" required placeholder="YYYY-MM-DD">
+                        <small class="form-text text-muted mt-1">Format: YYYY-MM-DD. Masa berlaku surat otomatis dihitung 90 hari dari tanggal ini.</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-info">Simpan Tanggal</button>
                 </div>
             </form>
         </div>

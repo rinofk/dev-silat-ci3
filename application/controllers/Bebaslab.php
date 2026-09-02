@@ -275,6 +275,30 @@ class Bebaslab extends CI_Controller
     }
 
     // ===============================
+    // UPDATE TANGGAL SURAT
+    // ===============================
+    public function tanggal($id)
+    {
+        $tanggal = $this->input->post('tanggal', true);
+        if ($tanggal) {
+            $date_finished  = date('Y-m-d H:i:s', strtotime($tanggal));
+            $berlaku_sampai = date('Y-m-d', strtotime($tanggal . ' +90 days'));
+            $update = [
+                'date_finished'  => $date_finished,
+                'date_updated'   => $date_finished,
+                'berlaku_sampai' => $berlaku_sampai,
+                'lab1_admin'     => $this->session->userdata('name')
+            ];
+            $this->db->where('id_bebaslab', $id)->update('tb_bebaslab', $update);
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success">Tanggal surat berhasil diperbarui!</div>'
+            );
+        }
+        redirect('bebaslab/detail/' . $id);
+    }
+
+    // ===============================
     // VALIDASI REJECT
     // ===============================
     public function reject($id)

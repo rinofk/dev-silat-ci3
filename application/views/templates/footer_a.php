@@ -78,7 +78,12 @@
 <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
 <script>
     $(document).ready(function() {
-        $('#datatable').DataTable();
+        if ($('#datatable').length) {
+            $('#datatable').DataTable({
+                "pageLength": 25,
+                "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Semua"]]
+            });
+        }
     });
 </script>
 <!-- datepicker -->
@@ -96,8 +101,18 @@
 </script>
 <script>
     $(document).ready(function() {
-        $('#datatableAdmin').DataTable();
-        $('#datatableMahasiswa').DataTable();
+        if ($('#datatableAdmin').length) {
+            $('#datatableAdmin').DataTable({
+                "pageLength": 25,
+                "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Semua"]]
+            });
+        }
+        if ($('#datatableMahasiswa').length) {
+            $('#datatableMahasiswa').DataTable({
+                "pageLength": 25,
+                "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Semua"]]
+            });
+        }
     });
 </script>
 <!-- START UPDATE JS UNTUK STATISTIK RESET -->
