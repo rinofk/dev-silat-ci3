@@ -1,295 +1,439 @@
-<div class="container-fluid">
-    <?php if ($this->session->flashdata('flash')) : ?>
-        <div class="row mt-3">
-            <div class="col-md-6">
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    Berkas perpus <strong>berhasil</strong> <?= $this->session->flashdata('flash'); ?>.
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-        </div>
+<!-- Begin Page Content -->
+<div class="container-fluid px-3">
 
+    <!-- Flash Message -->
+    <?php if ($this->session->flashdata('flash')) : ?>
+        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm py-2 px-3 col-md-6 mb-3 small" role="alert" style="border-radius: 6px;">
+            <i class="fas fa-check-circle mr-1"></i> Berkas perpus <strong>berhasil</strong> <?= $this->session->flashdata('flash'); ?>.
+            <button type="button" class="close py-2" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
     <?php endif; ?>
 
-    <!-- Basic Card Example -->
-    <div class="row">
-        <div class="col-lg-8">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Bebas Perpustakaan</h6>
-                </div>
-
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <?= form_open_multipart('pustakawan/accept/' . $perpus['id_bp']); ?>
-                            <div class="form-group row">
-                                <label for="name" class="col-sm-2 col-form-label">Nama Lengkap</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="name" name="name" value="<?= $perpus['nama_lengkap'] ?>" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="nim" class="col-sm-2 col-form-label">NIM</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="nim" name="nim" value="<?= $perpus['nim'] ?>" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="email" class="col-sm-2 col-form-label">Email</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="email" name="email" value="<?= $perpus['email'] ?>" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="prodi" class="col-sm-2 col-form-label">Program Studi</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="prodi" name="prodi" value="<?= $perpus['nama_prodi'] ?>" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="ttl" class="col-sm-2 col-form-label">Tempat, Tanggal Lahir</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="ttl" name="ttl" value="<?= $perpus['tempat_lahir'] . ', ' . $perpus['tgl_lahir'] ?>" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="alamat" class="col-sm-2 col-form-label">Alamat</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="alamat" name="alamat" value="<?= $perpus['alamat'] ?>" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="no_hp" class="col-sm-2 col-form-label">No HP</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="no_hp" name="no_hp" value="<?= $perpus['no_hp'] ?>" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="semester" class="col-sm-2 col-form-label">Semester</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="semester" name="semester" value="<?= $perpus['semester'] ?>">
-                                </div>
-                            </div>
-
-
-                            <div class="form-group row">
-                                <div class="col-sm-2">KTM</div>
-                                <div class="col-sm-10">
-                                    <div class="row">
-                                        <div class="col-sm-8">
-                                            <div class="input-group">
-                                                <div class="input-group mb-3">
-                                                    <input type="text" class="form-control" placeholder="<?= $perpus['ktm'] ?>" aria-label="Recipient's username" aria-describedby="button-addon2">
-                                                    <div class="input-group-append">
-                                                        <a href="<?= base_url(); ?>assets/bebasperpus/<?= $perpus['ktm'] ?>" target="_blank" class="btn btn-outline-secondary">
-                                                            Preview
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            format filename "nim_ktm.jpg"
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <div class="col-sm-2">Kartu Anggota Perpustakaan</div>
-                                <div class="col-sm-10">
-                                    <div class="row">
-                                        <div class="col-sm-8">
-                                            <div class="input-group">
-                                                <div class="input-group mb-3">
-                                                    <input type="text" class="form-control" placeholder="<?= $perpus['kartuperpus'] ?>" aria-label="Recipient's username" aria-describedby="button-addon2">
-                                                    <div class="input-group-append">
-                                                        <a href="<?= base_url(); ?>assets/bebasperpus/<?= $perpus['kartuperpus'] ?>" target="_blank" class="btn btn-outline-secondary">
-                                                            Preview
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            format filename "nim_kartuanggota.jpg"
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="nomor" class="col-sm-2 col-form-label">Nomor</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="nomor" name="nomor" value="<?= $perpus['nomor'] ?>">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="status" class="col-sm-2 col-form-label">Status</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="status" name="status" value="<?= $perpus['status']; ?>, <?= $perpus['keterangan']; ?>" readonly>
-                                </div>
-                            </div>
-
-                            <div class="form-group row justify-content-end">
-                                <div class="col-sm-10">
-                                    <a href="<?= base_url(); ?>pustakawan" class="btn btn-primary"><i class="fas fa-fw fa-arrow-left"></i>Kembali</a>
-                                    <!-- <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Accept</button> -->
-                                    <a href="" class="btn btn-primary" data-toggle="modal" data-target="#newRoleModalAccept"> <i class="fas fa-check"></i> Accept</a>
-                                    <!-- <a href="<?= base_url(); ?>pustakawan/accept/<?= $perpus['id_bp']; ?>" class="btn btn-primary"> <i class="fas fa-check"></i> Accept</a> -->
-                                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#newRoleModal"> <i class="fas fa-times"></i> Reject</a>
-                                    <a href="" class="btn btn-primary" data-toggle="modal" data-target="#newRoleModalTanggal"> <i class="fas fa-check"></i> Update Tanggal</a>
-                                    <a href="<?= base_url(); ?>pustakawan/cetak/<?= $perpus['id_bp']; ?>" class="btn btn-outline-primary" target="blank"> Cetak </a>
-                                </div>
-                            </div>
-                            </form>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
+    <!-- Page Header & Back Button -->
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <div class="d-flex align-items-center">
+            <a href="<?= base_url('pustakawan'); ?>" class="btn btn-sm btn-outline-secondary shadow-sm mr-3 font-weight-bold" style="border-radius: 6px;">
+                <i class="fas fa-arrow-left mr-1"></i> Kembali
+            </a>
+            <h1 class="h5 mb-0 text-gray-800 font-weight-bold">
+                <i class="fas fa-file-alt mr-1 text-primary"></i> Detail Bebas Perpustakaan
+            </h1>
+            <span class="badge badge-light border text-muted ml-2 font-weight-normal px-2 py-1" style="font-size: 11px;">
+                #<?= $perpus['id_bp']; ?>
+            </span>
+        </div>
+        <div>
+            <?php 
+                $status = strtolower($perpus['status']);
+                if ($status == 'accept') {
+                    echo '<span class="badge badge-success px-3 py-2 shadow-sm font-weight-bold" style="font-size: 12px; border-radius: 6px;"><i class="fas fa-check-circle mr-1"></i> Selesai (Accept)</span>';
+                } elseif ($status == 'reject') {
+                    echo '<span class="badge badge-danger px-3 py-2 shadow-sm font-weight-bold" style="font-size: 12px; border-radius: 6px;"><i class="fas fa-times-circle mr-1"></i> Ditolak (Reject)</span>';
+                } else {
+                    echo '<span class="badge badge-warning text-white px-3 py-2 shadow-sm font-weight-bold" style="font-size: 12px; border-radius: 6px;"><i class="fas fa-clock mr-1"></i> Menunggu Validasi</span>';
+                }
+            ?>
         </div>
     </div>
 
-
-
-    <!-- 
-    <div class="row mt-3">
-        <div class="col-xl">
-            <div class="card">
-                <div class="card-header">
-                    Detail Berkas perpus
+    <div class="row">
+        <!-- Main Info & Files (Left Column) -->
+        <div class="col-lg-8">
+            
+            <!-- Student Information Card -->
+            <div class="card shadow-sm mb-3 border-0" style="border-radius: 10px;">
+                <div class="card-header py-2 px-3 bg-white border-bottom d-flex align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary small">
+                        <i class="fas fa-user-graduate mr-1"></i> Informasi Mahasiswa
+                    </h6>
                 </div>
-                <div class="card-body">
-                    <table>
-                        <tr>
-                            <td width="180">Nama</td>
-                            <td><?= $perpus['nama_lengkap']; ?></td>
-                        </tr>
-                        <tr>
-                            <td>Tempat, Tanggal Lahir</td>
-                            <td><?= $perpus['tempat_lahir'] . ', ' . tgl_ind(date($perpus['tgl_lahir'])); ?></td>
-                        </tr>
-                        <tr>
-                            <td>NIM</td>
-                            <td><?= $perpus['nim']; ?></td>
-                        </tr>
-                        <tr>
-                            <td>Program Studi</td>
-                            <td><?= $perpus['nama_prodi']; ?></td>
-                        </tr>
-                        <tr>
-                            <td>Status</td>
-                            <td>
-                                <h5 class="card-title"><b><?= $perpus['status']; ?>, </b><?= $perpus['keterangan']; ?></h5>
-                            </td>
-                        </tr>
-
-                    </table>
-                    <p class="card-text">
-                        ---------------- ---------------- Lampiran ---------------- ----------------
-                    </p>
-
-                    <a href="<?= base_url(); ?>assets/bebasperpus/<?= $perpus['ktm']; ?>" target="_blank" class="btn btn-success btn-icon-split">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-search"></i> </span>
-                        <span class="text">ktm</span>
-                    </a>
-                    <a href="<?= base_url(); ?>assets/bebasperpus/<?= $perpus['kartuperpus']; ?>" target="_blank" class="btn btn-success btn-icon-split">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-search"></i> </span>
-                        <span class="text">kartuperpus</span>
-                    </a>
-
-                    <p class="card-text">
-                        ---------------- ---------------- ---------------- ---------------- ----------------
-                    </p>
-                    <a href="<?= base_url(); ?>pustakawan" class="btn btn-primary"><i class="fas fa-fw fa-arrow-left"></i>Kembali</a>
-                    <a href="<?= base_url(); ?>pustakawan/accept/<?= $perpus['id_bp']; ?>" class="btn btn-primary"> <i class="fas fa-check"></i> Accept</a>
-                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#newRoleModal"> <i class="fas fa-times"></i> Reject</a>
-
-
+                <div class="card-body p-3">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-borderless mb-0" style="font-size: 0.85rem;">
+                            <tbody>
+                                <tr>
+                                    <td class="text-muted font-weight-bold" style="width: 25%;">Nama Lengkap</td>
+                                    <td style="width: 2%;">:</td>
+                                    <td class="font-weight-bold text-gray-900"><?= htmlspecialchars($perpus['nama_lengkap']); ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted font-weight-bold">NIM</td>
+                                    <td>:</td>
+                                    <td class="font-weight-bold text-primary"><?= htmlspecialchars($perpus['nim_mahasiswa']); ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted font-weight-bold">Program Studi</td>
+                                    <td>:</td>
+                                    <td><?= htmlspecialchars($perpus['nama_prodi'] ?: '-'); ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted font-weight-bold">Email</td>
+                                    <td>:</td>
+                                    <td><?= htmlspecialchars($perpus['email'] ?: '-'); ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted font-weight-bold">Tempat, Tgl Lahir</td>
+                                    <td>:</td>
+                                    <td>
+                                        <?= htmlspecialchars($perpus['tempat_lahir']); ?>, 
+                                        <?= (!empty($perpus['tgl_lahir']) && $perpus['tgl_lahir'] != '0000-00-00') ? tgl_indo($perpus['tgl_lahir']) : '-'; ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted font-weight-bold">Alamat</td>
+                                    <td>:</td>
+                                    <td><?= htmlspecialchars($perpus['alamat'] ?: '-'); ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted font-weight-bold">No. HP / WhatsApp</td>
+                                    <td>:</td>
+                                    <td>
+                                        <?php if (!empty($perpus['no_hp'])): ?>
+                                            <a href="https://wa.me/<?= preg_replace('/^0/', '62', preg_replace('/[^0-9]/', '', $perpus['no_hp'])); ?>" target="_blank" class="text-success font-weight-bold">
+                                                <i class="fab fa-whatsapp mr-1"></i><?= htmlspecialchars($perpus['no_hp']); ?>
+                                            </a>
+                                        <?php else: ?>
+                                            -
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted font-weight-bold">Semester Pengajuan</td>
+                                    <td>:</td>
+                                    <td><span class="badge badge-light border font-weight-bold text-dark px-2 py-1">Semester <?= htmlspecialchars($perpus['semester'] ?: '-'); ?></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div> -->
-</div>
-</div>
 
+            <!-- Documents Card (KTM & Kartu Perpustakaan) -->
+            <div class="card shadow-sm mb-3 border-0" style="border-radius: 10px;">
+                <div class="card-header py-2 px-3 bg-white border-bottom">
+                    <h6 class="m-0 font-weight-bold text-primary small">
+                        <i class="fas fa-file-invoice mr-1"></i> Berkas Persyaratan
+                    </h6>
+                </div>
+                <div class="card-body p-3">
+                    <div class="row">
+                        <!-- KTM Card -->
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <div class="p-3 border rounded bg-light h-100 d-flex flex-column justify-content-between" style="border-radius: 8px !important;">
+                                <div>
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <span class="font-weight-bold small text-gray-800">
+                                            <i class="fas fa-id-card text-primary mr-1"></i> KTM (Kartu Mahasiswa)
+                                        </span>
+                                        <?php 
+                                            $ext_ktm = strtolower(pathinfo($perpus['ktm'], PATHINFO_EXTENSION));
+                                            $is_pdf_ktm = ($ext_ktm === 'pdf');
+                                            $has_ktm = (!empty($perpus['ktm']) && $perpus['ktm'] !== 'default.jpg');
+                                        ?>
+                                        <?php if ($is_pdf_ktm): ?>
+                                            <span class="badge badge-danger" style="font-size: 10px;">PDF</span>
+                                        <?php elseif ($has_ktm): ?>
+                                            <span class="badge badge-info" style="font-size: 10px;">Gambar</span>
+                                        <?php endif; ?>
+                                    </div>
+
+                                    <?php if ($has_ktm && !$is_pdf_ktm): ?>
+                                        <div class="text-center p-2 mb-2 bg-white border rounded" style="max-height: 180px; overflow: hidden;">
+                                            <a href="<?= base_url('assets/bebasperpus/' . $perpus['ktm']); ?>" target="_blank">
+                                                <img src="<?= base_url('assets/bebasperpus/' . $perpus['ktm']); ?>" alt="KTM Preview" style="max-width: 100%; max-height: 160px; object-fit: contain;">
+                                            </a>
+                                        </div>
+                                    <?php elseif ($is_pdf_ktm): ?>
+                                        <div class="text-center py-4 mb-2 bg-white border rounded">
+                                            <i class="fas fa-file-pdf fa-3x text-danger mb-2"></i>
+                                            <div class="small font-weight-bold text-gray-700"><?= htmlspecialchars($perpus['ktm']); ?></div>
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="text-center py-3 mb-2 bg-white border rounded text-muted small">
+                                            <i class="fas fa-exclamation-circle text-warning mr-1"></i> Berkas default / belum diunggah
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+
+                                <div class="text-center mt-2">
+                                    <a href="<?= base_url('assets/bebasperpus/' . $perpus['ktm']); ?>" target="_blank" class="btn btn-sm btn-outline-primary btn-block" style="border-radius: 6px;">
+                                        <i class="fas fa-external-link-alt mr-1"></i> Buka / Unduh KTM
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kartu Perpustakaan Card -->
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded bg-light h-100 d-flex flex-column justify-content-between" style="border-radius: 8px !important;">
+                                <div>
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <span class="font-weight-bold small text-gray-800">
+                                            <i class="fas fa-address-card text-success mr-1"></i> Kartu Perpustakaan
+                                        </span>
+                                        <?php 
+                                            $ext_kartu = strtolower(pathinfo($perpus['kartuperpus'], PATHINFO_EXTENSION));
+                                            $is_pdf_kartu = ($ext_kartu === 'pdf');
+                                            $has_kartu = (!empty($perpus['kartuperpus']) && $perpus['kartuperpus'] !== 'default.jpg');
+                                        ?>
+                                        <?php if ($is_pdf_kartu): ?>
+                                            <span class="badge badge-danger" style="font-size: 10px;">PDF</span>
+                                        <?php elseif ($has_kartu): ?>
+                                            <span class="badge badge-info" style="font-size: 10px;">Gambar</span>
+                                        <?php endif; ?>
+                                    </div>
+
+                                    <?php if ($has_kartu && !$is_pdf_kartu): ?>
+                                        <div class="text-center p-2 mb-2 bg-white border rounded" style="max-height: 180px; overflow: hidden;">
+                                            <a href="<?= base_url('assets/bebasperpus/' . $perpus['kartuperpus']); ?>" target="_blank">
+                                                <img src="<?= base_url('assets/bebasperpus/' . $perpus['kartuperpus']); ?>" alt="Kartu Perpus Preview" style="max-width: 100%; max-height: 160px; object-fit: contain;">
+                                            </a>
+                                        </div>
+                                    <?php elseif ($is_pdf_kartu): ?>
+                                        <div class="text-center py-4 mb-2 bg-white border rounded">
+                                            <i class="fas fa-file-pdf fa-3x text-danger mb-2"></i>
+                                            <div class="small font-weight-bold text-gray-700"><?= htmlspecialchars($perpus['kartuperpus']); ?></div>
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="text-center py-3 mb-2 bg-white border rounded text-muted small">
+                                            <i class="fas fa-info-circle text-muted mr-1"></i> Berkas lewati / tidak ada kartu
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+
+                                <div class="text-center mt-2">
+                                    <a href="<?= base_url('assets/bebasperpus/' . $perpus['kartuperpus']); ?>" target="_blank" class="btn btn-sm btn-outline-success btn-block" style="border-radius: 6px;">
+                                        <i class="fas fa-external-link-alt mr-1"></i> Buka / Unduh Kartu
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons Footer Card -->
+            <div class="card shadow-sm mb-4 border-0" style="border-radius: 10px;">
+                <div class="card-body py-3 px-4 d-flex align-items-center justify-content-between flex-wrap">
+                    <a href="<?= base_url('pustakawan'); ?>" class="btn btn-sm btn-secondary px-3 font-weight-bold" style="border-radius: 6px;">
+                        <i class="fas fa-arrow-left mr-1"></i> Kembali ke Daftar
+                    </a>
+                    
+                    <div class="mt-2 mt-sm-0">
+                        <?php if ($status != 'accept'): ?>
+                            <button type="button" class="btn btn-sm btn-danger px-3 font-weight-bold shadow-sm mr-2" style="border-radius: 6px;" data-toggle="modal" data-target="#modalReject">
+                                <i class="fas fa-times mr-1"></i> Tolak (Reject)
+                            </button>
+                            <button type="button" class="btn btn-sm btn-success px-4 font-weight-bold shadow-sm" style="border-radius: 6px;" data-toggle="modal" data-target="#modalAccept">
+                                <i class="fas fa-check mr-1"></i> Setujui (Accept)
+                            </button>
+                        <?php else: ?>
+                            <button type="button" class="btn btn-sm btn-info px-3 font-weight-bold shadow-sm mr-2" style="border-radius: 6px;" data-toggle="modal" data-target="#modalTanggal">
+                                <i class="fas fa-calendar-alt mr-1"></i> Update Tanggal
+                            </button>
+                            <a href="<?= base_url('pustakawan/cetak/' . $perpus['id_bp']); ?>" class="btn btn-sm btn-primary px-4 font-weight-bold shadow-sm" style="border-radius: 6px;" target="_blank">
+                                <i class="fas fa-print mr-1"></i> Cetak Surat Bebas Perpus
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar Summary & Guide (Right Column) -->
+        <div class="col-lg-4">
+            
+            <!-- Status Detail Card -->
+            <div class="card shadow-sm mb-3 border-0" style="border-radius: 10px;">
+                <div class="card-header py-2 px-3 bg-white border-bottom">
+                    <h6 class="m-0 font-weight-bold text-primary small">
+                        <i class="fas fa-info-circle mr-1"></i> Status Pengajuan
+                    </h6>
+                </div>
+                <div class="card-body p-3">
+                    <div class="text-center pb-3 mb-3 border-bottom">
+                        <?php if ($status == 'accept'): ?>
+                            <div class="icon-box d-inline-flex align-items-center justify-content-center bg-success text-white rounded-circle mb-2" style="width: 54px; height: 54px;">
+                                <i class="fas fa-check fa-2x"></i>
+                            </div>
+                            <h6 class="font-weight-bold text-success mb-1">Pengajuan Disetujui</h6>
+                            <span class="small text-muted">Surat Bebas Perpustakaan telah diverifikasi dan diterbitkan.</span>
+                        <?php elseif ($status == 'reject'): ?>
+                            <div class="icon-box d-inline-flex align-items-center justify-content-center bg-danger text-white rounded-circle mb-2" style="width: 54px; height: 54px;">
+                                <i class="fas fa-times fa-2x"></i>
+                            </div>
+                            <h6 class="font-weight-bold text-danger mb-1">Pengajuan Ditolak</h6>
+                            <span class="small text-danger font-italic"><?= htmlspecialchars($perpus['keterangan'] ?: '-'); ?></span>
+                        <?php else: ?>
+                            <div class="icon-box d-inline-flex align-items-center justify-content-center bg-warning text-white rounded-circle mb-2" style="width: 54px; height: 54px;">
+                                <i class="fas fa-clock fa-2x"></i>
+                            </div>
+                            <h6 class="font-weight-bold text-warning mb-1">Menunggu Validasi</h6>
+                            <span class="small text-muted">Menunggu pemeriksaan dan verifikasi dari petugas pustakawan.</span>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="small">
+                        <div class="d-flex justify-content-between py-1 border-bottom">
+                            <span class="text-muted">Nomor Surat:</span>
+                            <span class="font-weight-bold text-gray-900"><?= htmlspecialchars($perpus['nomor'] ?: '-'); ?></span>
+                        </div>
+                        <div class="d-flex justify-content-between py-1 border-bottom">
+                            <span class="text-muted">Tgl Pengajuan:</span>
+                            <span class="font-weight-bold text-gray-900"><?= (!empty($perpus['date_created']) && $perpus['date_created'] != '0000-00-00 00:00:00') ? date('d-m-Y H:i', strtotime($perpus['date_created'])) : '-'; ?></span>
+                        </div>
+                        <div class="d-flex justify-content-between py-1 border-bottom">
+                            <span class="text-muted">Tgl Update:</span>
+                            <span class="font-weight-bold text-gray-900"><?= (!empty($perpus['date_updated']) && $perpus['date_updated'] != '0000-00-00 00:00:00') ? date('d-m-Y H:i', strtotime($perpus['date_updated'])) : '-'; ?></span>
+                        </div>
+                        <div class="d-flex justify-content-between py-1">
+                            <span class="text-muted">Petugas Verifikator:</span>
+                            <span class="font-weight-bold text-primary"><?= htmlspecialchars($perpus['admin'] ?: '-'); ?></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Verification Guide Card -->
+            <div class="card shadow-sm mb-4 border-0" style="border-radius: 10px; background: #f8fafc;">
+                <div class="card-header py-2 px-3 bg-white border-bottom">
+                    <h6 class="m-0 font-weight-bold text-info small">
+                        <i class="fas fa-clipboard-check mr-1"></i> Panduan Verifikasi
+                    </h6>
+                </div>
+                <div class="card-body p-3 small text-muted" style="line-height: 1.5;">
+                    <ol class="pl-3 mb-0">
+                        <li class="mb-2">Periksa kejelasan berkas <b>KTM</b> dan <b>Kartu Anggota</b> yang diunggah mahasiswa.</li>
+                        <li class="mb-2">Pastikan mahasiswa <b>tidak memiliki tanggungan peminjaman buku</b> atau denda perpustakaan.</li>
+                        <li class="mb-2">Jika berkas lengkap dan sesuai, klik <b>Setujui (Accept)</b> dan masukkan <b>Nomor Surat</b>.</li>
+                        <li>Jika berkas salah atau belum memenuhi syarat, klik <b>Tolak (Reject)</b> serta tulis alasan penolakannya.</li>
+                    </ol>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
 
 <!-- Modal Accept -->
-<div class="modal fade" id="newRoleModalAccept" tabindex="-1" role="dialog" aria-labelledby="newRoleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalAccept" tabindex="-1" role="dialog" aria-labelledby="modalAcceptLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="newRoleModalLabel">Nomor Surat</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+            <div class="modal-header bg-success text-white py-3">
+                <h6 class="modal-title font-weight-bold" id="modalAcceptLabel">
+                    <i class="fas fa-check-circle mr-1"></i> Setujui Pengajuan Bebas Perpustakaan
+                </h6>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form action="<?= base_url('pustakawan/accept/' . $perpus['id_bp']); ?>" method="post">
-                <div class="modal-body">
+                <div class="modal-body p-4">
+                    <p class="small text-muted mb-3">
+                        Anda akan menyetujui pengajuan Bebas Perpustakaan untuk <strong><?= htmlspecialchars($perpus['nama_lengkap']); ?> (<?= htmlspecialchars($perpus['nim_mahasiswa']); ?>)</strong>.
+                    </p>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="nomor" name="nomor" value="<?= $perpus['nomor']; ?>">
+                        <label for="nomor" class="small font-weight-bold text-gray-800">Nomor Surat Lengkap <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control font-weight-bold text-primary" id="nomor" name="nomor" value="<?= htmlspecialchars(isset($nomor_otomatis) ? $nomor_otomatis : ''); ?>" required placeholder="Contoh: 1234<?= htmlspecialchars(isset($base_nomor) ? $base_nomor : ''); ?>" style="border-radius: 6px;">
+                        <small class="form-text text-muted mt-1">
+                            Template dari <strong>tb_nomorsurat</strong>: <span class="badge badge-light border text-dark font-weight-bold"><code><?= htmlspecialchars(isset($base_nomor) ? $base_nomor : ''); ?></code></span>.<br>
+                            Silakan ketik nomor urut di awal (contoh: <code>1234<?= htmlspecialchars(isset($base_nomor) ? $base_nomor : ''); ?></code>).
+                        </small>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label for="link" class="small font-weight-bold text-gray-800">Link Dokumen (Opsional)</label>
+                        <input type="text" class="form-control" id="link" name="link" value="<?= htmlspecialchars($perpus['link'] ?: ''); ?>" placeholder="https://..." style="border-radius: 6px;">
                     </div>
                 </div>
-                <div class=" modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Accept</button>
+                <div class="modal-footer py-2 px-3 bg-light">
+                    <button type="button" class="btn btn-sm btn-secondary font-weight-bold" data-dismiss="modal" style="border-radius: 6px;">Batal</button>
+                    <button type="submit" class="btn btn-sm btn-success font-weight-bold px-3 shadow-sm" style="border-radius: 6px;">
+                        <i class="fas fa-check mr-1"></i> Setujui (Accept)
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="newRoleModal" tabindex="-1" role="dialog" aria-labelledby="newRoleModalLabel" aria-hidden="true">
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.jQuery) {
+            $('#modalAccept').on('shown.bs.modal', function () {
+                var input = document.getElementById('nomor');
+                if (input) {
+                    input.focus();
+                    if (input.value.startsWith('/')) {
+                        input.setSelectionRange(0, 0);
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+<!-- Modal Reject -->
+<div class="modal fade" id="modalReject" tabindex="-1" role="dialog" aria-labelledby="modalRejectLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="newRoleModalLabel">Keterangan</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+            <div class="modal-header bg-danger text-white py-3">
+                <h6 class="modal-title font-weight-bold" id="modalRejectLabel">
+                    <i class="fas fa-times-circle mr-1"></i> Tolak Pengajuan Bebas Perpustakaan
+                </h6>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form action="<?= base_url('pustakawan/reject/' . $perpus['id_bp']); ?>" method="post">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="keterangan" name="keterangan" placeholder="alasan di reject">
+                <div class="modal-body p-4">
+                    <p class="small text-muted mb-3">
+                        Silakan tuliskan alasan penolakan berkas mahasiswa <strong><?= htmlspecialchars($perpus['nama_lengkap']); ?></strong> agar dapat diperbaiki:
+                    </p>
+                    <div class="form-group mb-0">
+                        <label for="keterangan" class="small font-weight-bold text-gray-800">Alasan Penolakan <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="keterangan" name="keterangan" rows="3" required placeholder="Contoh: Berkas KTM tidak terbaca jelas / masih ada tanggungan buku..." style="border-radius: 6px;"></textarea>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Reject</button>
+                <div class="modal-footer py-2 px-3 bg-light">
+                    <button type="button" class="btn btn-sm btn-secondary font-weight-bold" data-dismiss="modal" style="border-radius: 6px;">Batal</button>
+                    <button type="submit" class="btn btn-sm btn-danger font-weight-bold px-3 shadow-sm" style="border-radius: 6px;">
+                        <i class="fas fa-times mr-1"></i> Tolak Pengajuan
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-
-<!-- Modal Tanggal-->
-<div class="modal fade" id="newRoleModalTanggal" tabindex="-1" role="dialog" aria-labelledby="newRoleModalTanggal" aria-hidden="true">
+<!-- Modal Tanggal -->
+<div class="modal fade" id="modalTanggal" tabindex="-1" role="dialog" aria-labelledby="modalTanggalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="newRoleModalTanggal">Tanggal Surat</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+            <div class="modal-header bg-info text-white py-3">
+                <h6 class="modal-title font-weight-bold" id="modalTanggalLabel">
+                    <i class="fas fa-calendar-alt mr-1"></i> Update Tanggal Surat
+                </h6>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form action="<?= base_url('pustakawan/tanggal/' . $perpus['id_bp']); ?>" method="post">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="tanggal" name="tanggal" value="<?= $perpus['date_updated']; ?>">
+                <div class="modal-body p-4">
+                    <div class="form-group mb-0">
+                        <label for="tanggal" class="small font-weight-bold text-gray-800">Tanggal Surat</label>
+                        <input type="text" class="form-control datepicker" id="tanggal" name="tanggal" value="<?= htmlspecialchars((!empty($perpus['date_updated']) && $perpus['date_updated'] != '0000-00-00 00:00:00') ? date('Y-m-d', strtotime($perpus['date_updated'])) : date('Y-m-d')); ?>" required style="border-radius: 6px;">
+                        <small class="form-text text-muted">Format: YYYY-MM-DD</small>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Update Tanggal</button>
+                <div class="modal-footer py-2 px-3 bg-light">
+                    <button type="button" class="btn btn-sm btn-secondary font-weight-bold" data-dismiss="modal" style="border-radius: 6px;">Batal</button>
+                    <button type="submit" class="btn btn-sm btn-info font-weight-bold px-3 shadow-sm" style="border-radius: 6px;">
+                        <i class="fas fa-save mr-1"></i> Simpan Tanggal
+                    </button>
                 </div>
             </form>
         </div>

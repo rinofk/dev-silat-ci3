@@ -19,14 +19,13 @@ class Pustakawan_model extends CI_model
 
     public function get_Idbp($id_bp)
     {
-
-        $this->db->select('*');
+        $this->db->select('tb_bebasperpus.*, tb_bebasperpus.nim_mahasiswa as nim, mahasiswa.nama_lengkap, mahasiswa.tempat_lahir, mahasiswa.tgl_lahir, mahasiswa.alamat, mahasiswa.no_hp, mahasiswa.prodi_id, prodi.nama_prodi, user.email');
         $this->db->from('tb_bebasperpus');
-        $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebasperpus.nim_mahasiswa');
-        $this->db->join('prodi', 'prodi.id_prodi=mahasiswa.prodi_id');
-        $this->db->join('user', 'user.nim=mahasiswa.nim');
+        $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebasperpus.nim_mahasiswa', 'left');
+        $this->db->join('prodi', 'prodi.id_prodi=mahasiswa.prodi_id', 'left');
+        $this->db->join('user', 'user.nim=tb_bebasperpus.nim_mahasiswa', 'left');
 
-        $this->db->where('id_bp', $id_bp);
+        $this->db->where('tb_bebasperpus.id_bp', $id_bp);
         $query = $this->db->get();
         return $query->row_array();
     }
@@ -49,15 +48,22 @@ class Pustakawan_model extends CI_model
         $proses = 'accept';
         date_default_timezone_set('Asia/Jakarta');
         $date = date("Y-m-d H:i:s");
-        $data = [
-            'nomor' => $this->input->post('nomor', true),
-            'status' => $proses,
-            // 'semester' => $this->input->post('semester', true),
-            'link' => $this->input->post('link', true),
-            'keterangan' => 'Validasi Lengkap',
-           // 'date_updated' => $date,
-            'admin' => $this->session->userdata('name')
 
+        $nomor = trim($this->input->post('nomor', true));
+        // Jika nomor hanya berisi angka tanpa format, lengkapi dengan template tb_nomorsurat
+        if (!empty($nomor) && strpos($nomor, '/') === false) {
+            $nomor_surat = $this->db->get_where('tb_nomorsurat', ['id_nomor' => '5'])->row_array();
+            $base_nomor  = $nomor_surat ? $nomor_surat['nomor'] : '/UN22.9/TA.01.02/' . date('Y');
+            $nomor       = $nomor . $base_nomor;
+        }
+
+        $data = [
+            'nomor'        => $nomor,
+            'status'       => $proses,
+            'link'         => $this->input->post('link', true),
+            'keterangan'   => 'Validasi Lengkap',
+            'date_updated' => $date,
+            'admin'        => $this->session->userdata('name')
         ];
         $this->db->where('id_bp', $id_bp);
         $this->db->update('tb_bebasperpus', $data);
@@ -71,7 +77,8 @@ class Pustakawan_model extends CI_model
         $data = [
             'status' => $proses,
             'keterangan' => $this->input->post('keterangan'),
-            'date_updated' => $date
+            'date_updated' => $date,
+            'admin' => $this->session->userdata('name')
 
         ];
         $this->db->where('id_bp', $id_bp);

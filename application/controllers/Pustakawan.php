@@ -23,21 +23,27 @@ class Pustakawan extends CI_Controller
         $data['title'] = 'Bebas Perpustakaan';
         $data['user']  = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
 
-        // Ambil filter dari URL
-        $tahun  = $this->input->get('tahun', true);
-        $status = $this->input->get('status', true);
+        // Data untuk opsi filter
+        $data['filter_tahun']  = $this->Pustakawan_model->get_tahun_options();
+        $data['filter_status'] = array_keys($this->status_badge);
 
-        // Hitungan untuk card dashboard 
+        // Ambil filter dari URL.
+        // Jika belum ada parameter GET sama sekali (pertama kali dibuka), gunakan default:
+        // tahun: tahun terakhir di database (atau tahun sekarang), status: 'di ajukan'
+        $tahun_default = !empty($data['filter_tahun']) ? $data['filter_tahun'][0]['tahun'] : date('Y');
+        $tahun  = ($this->input->get('tahun', true) !== null) ? $this->input->get('tahun', true) : $tahun_default;
+        $status = ($this->input->get('status', true) !== null) ? $this->input->get('status', true) : 'di ajukan';
+
+        $data['selected_tahun']  = $tahun;
+        $data['selected_status'] = $status;
+
+        // Hitungan untuk card dashboard berdasarkan tahun yang dipilih
         $data['count_diajukan'] = $this->Pustakawan_model->count_by_filter($tahun, 'di ajukan');
         $data['count_accept']   = $this->Pustakawan_model->count_by_filter($tahun, 'accept');
         $data['count_reject']   = $this->Pustakawan_model->count_by_filter($tahun, 'reject');
         $data['count_total']    = $this->Pustakawan_model->count_by_filter($tahun, null);
 
-        // Data untuk filter dropdown
-        $data['filter_tahun']  = $this->Pustakawan_model->get_tahun_options();
-        $data['filter_status'] = array_keys($this->status_badge);
-
-        // Data utama
+        // Data utama tabel
         $data['perpus'] = $this->Pustakawan_model->get_filtered_data($tahun, $status);
         $data['status_badge'] = $this->status_badge;
 
@@ -49,6 +55,27 @@ class Pustakawan extends CI_Controller
         $data['title']  = 'Detail Bebas Perpustakaan';
         $data['user']   = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
         $data['perpus'] = $this->Pustakawan_model->get_Idbp($id_bp);
+
+        if (!$data['perpus']) {
+            show_404();
+        }
+
+        // Ambil template format nomor surat dari tb_nomorsurat (id_nomor = 5)
+        $nomor_surat = $this->db->get_where('tb_nomorsurat', ['id_nomor' => '5'])->row_array();
+        $base_nomor  = $nomor_surat ? $nomor_surat['nomor'] : '/UN22.9/TA.01.02/' . date('Y');
+
+        // Siapkan nomor lengkap otomatis
+        if (!empty($data['perpus']['nomor'])) {
+            if (strpos($data['perpus']['nomor'], '/') !== false) {
+                $data['nomor_otomatis'] = $data['perpus']['nomor'];
+            } else {
+                $data['nomor_otomatis'] = $data['perpus']['nomor'] . $base_nomor;
+            }
+        } else {
+            $data['nomor_otomatis'] = $base_nomor;
+        }
+
+        $data['base_nomor'] = $base_nomor;
 
         $this->load_view_template('pustakawan/detail', $data);
     }
