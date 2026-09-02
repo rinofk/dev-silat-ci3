@@ -163,6 +163,33 @@
     Chart.defaults.font.size = 12;
 </script>
 
+<!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).on('click', '.btn-hapus, .btn-delete', function(e) {
+        e.preventDefault();
+        const href = $(this).attr('href');
+        const nama = $(this).data('nama') || 'data ini';
+
+        Swal.fire({
+            title: 'Konfirmasi Hapus',
+            html: 'Apakah Anda yakin ingin menghapus berkas pengajuan dari <b>' + nama + '</b>?<br><small class="text-danger">Data yang dihapus tidak dapat dikembalikan!</small>',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#e74a3b',
+            cancelButtonColor: '#858796',
+            confirmButtonText: '<i class="fas fa-trash-alt mr-1"></i> Ya, Hapus!',
+            cancelButtonText: 'Batal',
+            reverseButtons: true,
+            focusCancel: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = href;
+            }
+        });
+    });
+</script>
+
 </body>
 
 </html>

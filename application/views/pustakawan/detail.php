@@ -3,6 +3,37 @@
 
     <!-- Flash Message -->
     <?php if ($this->session->flashdata('flash')) : ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                if (typeof Swal !== 'undefined') {
+                    var flash = "<?= $this->session->flashdata('flash'); ?>";
+                    var title = 'Berhasil!';
+                    var text = 'Berkas perpustakaan berhasil ' + flash + '.';
+                    var icon = 'success';
+                    
+                    if (flash === 'dihapus') {
+                        title = 'Berhasil Dihapus!';
+                        text = 'Berkas pengajuan telah berhasil dihapus dari sistem.';
+                    } else if (flash === 'ditolak') {
+                        title = 'Pengajuan Ditolak';
+                        text = 'Berkas pengajuan berhasil ditolak.';
+                        icon = 'info';
+                    } else if (flash === 'diterima') {
+                        title = 'Pengajuan Disetujui!';
+                        text = 'Berkas pengajuan telah berhasil disetujui & divalidasi.';
+                    }
+
+                    Swal.fire({
+                        icon: icon,
+                        title: title,
+                        text: text,
+                        timer: 2500,
+                        showConfirmButton: false,
+                        timerProgressBar: true
+                    });
+                }
+            });
+        </script>
         <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm py-2 px-3 col-md-6 mb-3 small" role="alert" style="border-radius: 6px;">
             <i class="fas fa-check-circle mr-1"></i> Berkas perpus <strong>berhasil</strong> <?= $this->session->flashdata('flash'); ?>.
             <button type="button" class="close py-2" data-dismiss="alert" aria-label="Close">

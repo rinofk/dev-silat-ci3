@@ -108,6 +108,37 @@
 
     <!-- Flash Message -->
     <?php if ($this->session->flashdata('flash')) : ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                if (typeof Swal !== 'undefined') {
+                    var flash = "<?= $this->session->flashdata('flash'); ?>";
+                    var title = 'Berhasil!';
+                    var text = 'Data mahasiswa berhasil ' + flash + '.';
+                    var icon = 'success';
+                    
+                    if (flash === 'dihapus') {
+                        title = 'Berhasil Dihapus!';
+                        text = 'Berkas pengajuan telah berhasil dihapus dari sistem.';
+                    } else if (flash === 'ditolak') {
+                        title = 'Pengajuan Ditolak';
+                        text = 'Berkas pengajuan berhasil ditolak.';
+                        icon = 'info';
+                    } else if (flash === 'diterima') {
+                        title = 'Pengajuan Disetujui!';
+                        text = 'Berkas pengajuan telah berhasil disetujui & divalidasi.';
+                    }
+
+                    Swal.fire({
+                        icon: icon,
+                        title: title,
+                        text: text,
+                        timer: 2500,
+                        showConfirmButton: false,
+                        timerProgressBar: true
+                    });
+                }
+            });
+        </script>
         <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm py-2 px-3 col-md-6 mb-2 small" role="alert" style="border-radius: 6px;">
             <i class="fas fa-check-circle mr-1"></i> Data mahasiswa <strong>berhasil</strong> <?= $this->session->flashdata('flash'); ?>.
             <button type="button" class="close py-2" data-dismiss="alert" aria-label="Close">
@@ -255,7 +286,7 @@
                                                     <span class="sr-only">Toggle Dropdown</span>
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-right shadow-sm border-0 py-1" style="border-radius: 6px;">
-                                                    <a class="dropdown-item text-danger small py-1" href="<?= base_url('pustakawan/hapus/' . $s['id_bp']); ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus berkas pengajuan dari <?= addslashes($s['nama_lengkap']); ?> [<?= $s['id_bp']; ?>]?')">
+                                                    <a class="dropdown-item text-danger small py-1 btn-hapus" href="<?= base_url('pustakawan/hapus/' . $s['id_bp']); ?>" data-nama="<?= htmlspecialchars($s['nama_lengkap'] . ' [#' . $s['id_bp'] . ']'); ?>">
                                                         <i class="fas fa-trash-alt mr-1"></i> Hapus
                                                     </a>
                                                 </div>
