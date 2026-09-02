@@ -2,41 +2,173 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <div class="row">
-        <div class="col-xl-8 col-lg-10">
-            <?= $this->session->flashdata('message'); ?>
-        </div>
+    <div class="d-sm-flex align-items-center justify-content-between mb-3">
+        <h1 class="h4 mb-0 text-gray-800 font-weight-bold">Bebas Perpustakaan</h1>
     </div>
 
-    <?php if (empty($bp['nim_mahasiswa'])) { ?>
-        <div class="row mt-3">
-            <div class="col-xl-8 col-lg-10 text-center py-5">
-                <div class="card shadow border-0 p-4" style="border-radius: 20px;">
-                    <div class="card-body">
-                        <div class="icon-box mb-4 d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px; background: rgba(2, 132, 199, 0.1); border-radius: 50%; color: var(--primary);">
-                            <i class="fas fa-book-reader fa-3x"></i>
+    <?php if ($this->session->flashdata('message')) : ?>
+        <div class="row">
+            <div class="col-12">
+                <?= $this->session->flashdata('message'); ?>
+            </div>
+        </div>
+    <?php endif; ?>
+
+    <!-- CARD INFORMASI ALUR PENGAJUAN (FULL WIDTH) -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm mb-4 border-left-primary" style="border-radius: 12px;">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="mr-3 d-flex align-items-center justify-content-center bg-primary text-white rounded-circle shadow-sm" style="width: 42px; height: 42px; min-width: 42px;">
+                            <i class="fas fa-info-circle fa-lg"></i>
                         </div>
-                        <h4 class="font-weight-bold text-gray-900 mb-3">Surat Bebas Perpustakaan</h4>
-                        <p class="text-muted mb-4" style="max-width: 500px; margin: 0 auto;">
-                            Anda belum mengajukan surat bebas perpustakaan. Silakan unggah dokumen persyaratan Anda untuk memulai proses pengajuan.
-                        </p>
-                        <a href="<?= base_url('perpustakaan/tambah'); ?>" class="btn btn-primary px-4 py-2 font-weight-bold shadow-sm" style="border-radius: 10px;">
-                            <i class="fas fa-plus-circle mr-1"></i> Buat Surat Bebas Perpustakaan
-                        </a>
+                        <div>
+                            <h5 class="m-0 font-weight-bold text-primary">Informasi & Alur Pengajuan Bebas Perpustakaan</h5>
+                            <small class="text-muted">Panduan alur proses pengajuan surat bebas perpustakaan hingga pengunduhan/cetak dokumen.</small>
+                        </div>
+                    </div>
+
+                    <!-- Steps Grid (4 Columns) -->
+                    <div class="row text-dark mt-3">
+                        <div class="col-xl-3 col-md-6 mb-3">
+                            <div class="p-3 bg-light rounded h-100 border" style="border-left: 4px solid #4e73df !important;">
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="badge badge-primary badge-pill mr-2 px-2 py-1">Langkah 1</span>
+                                    <strong class="text-gray-800"><i class="fas fa-file-upload text-primary mr-1"></i> Unggah Berkas</strong>
+                                </div>
+                                <p class="small text-muted mb-0">Klik tombol <strong>Buat Surat Bebas Perpustakaan</strong> dan unggah berkas KTM serta Kartu Perpustakaan (maks. 2 MB).</p>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-3">
+                            <div class="p-3 bg-light rounded h-100 border" style="border-left: 4px solid #36b9cc !important;">
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="badge badge-info badge-pill mr-2 px-2 py-1">Langkah 2</span>
+                                    <strong class="text-gray-800"><i class="fas fa-user-check text-info mr-1"></i> Verifikasi</strong>
+                                </div>
+                                <p class="small text-muted mb-0">Pustakawan akan memeriksa berkas serta memvalidasi tidak adanya tanggungan pinjaman buku atau denda.</p>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-3">
+                            <div class="p-3 bg-light rounded h-100 border" style="border-left: 4px solid #f6c23e !important;">
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="badge badge-warning text-white badge-pill mr-2 px-2 py-1">Langkah 3</span>
+                                    <strong class="text-gray-800"><i class="fas fa-sync-alt text-warning mr-1"></i> Status / Revisi</strong>
+                                </div>
+                                <p class="small text-muted mb-0">Jika ditolak (<em>Reject</em>), Anda dapat memperbarui berkas yang salah dan menekan tombol <strong>Kirim Ulang</strong>.</p>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-3">
+                            <div class="p-3 bg-light rounded h-100 border" style="border-left: 4px solid #1cc88a !important;">
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="badge badge-success badge-pill mr-2 px-2 py-1">Langkah 4</span>
+                                    <strong class="text-gray-800"><i class="fas fa-print text-success mr-1"></i> Unduh Surat</strong>
+                                </div>
+                                <p class="small text-muted mb-0">Surat yang disetujui (<em>Accept</em>) dapat langsung diunduh / dicetak pada halaman ini melalui tombol <strong>Cetak Surat</strong>.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notice Box -->
+                    <div class="alert alert-info mb-0 mt-2 py-2 px-3 small d-flex align-items-center border-0 shadow-sm" style="border-radius: 8px; background-color: #e8f4fd; color: #1e6091;">
+                        <i class="fas fa-cloud-download-alt mr-2 text-info" style="font-size: 1.3rem;"></i>
+                        <div>
+                            <strong>Penting:</strong> Surat Bebas Perpustakaan yang telah disetujui oleh pustakawan <strong>akan otomatis tersedia dan dapat langsung di-download / dicetak pada halaman ini</strong>.
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    <?php } else { ?>
-        <!-- Premium Form Layout -->
+    </div>
+
+    <?php if (empty($bp['nim_mahasiswa'])) { ?>
+        <!-- LAYOUT MAHASISWA BELUM MENGAJUKAN (2 KOLOM: 8 / 4) -->
         <div class="row">
-            <div class="col-xl-8 col-lg-10">
-                <div class="card shadow mb-4 border-0" style="border-radius: 20px; overflow: hidden;">
+            <!-- Kolom Utama: Action Buat Pengajuan -->
+            <div class="col-lg-8 mb-4">
+                <div class="card shadow border-0 p-4 text-center h-100 d-flex justify-content-center" style="border-radius: 16px; min-height: 380px;">
+                    <div class="card-body py-4 d-flex flex-column justify-content-center align-items-center">
+                        <div class="icon-box mb-4 d-inline-flex align-items-center justify-content-center" style="width: 85px; height: 85px; background: rgba(78, 115, 223, 0.1); border-radius: 50%; color: #4e73df;">
+                            <i class="fas fa-book-reader fa-3x"></i>
+                        </div>
+                        <h4 class="font-weight-bold text-gray-900 mb-2">Surat Bebas Perpustakaan</h4>
+                        <p class="text-muted mb-4" style="max-width: 520px;">
+                            Anda belum mengajukan surat bebas perpustakaan. Silakan klik tombol di bawah untuk melengkapi data dan mengunggah dokumen persyaratan.
+                        </p>
+                        <a href="<?= base_url('perpustakaan/tambah'); ?>" class="btn btn-primary px-4 py-2.5 font-weight-bold shadow-sm" style="border-radius: 10px; font-size: 1rem;">
+                            <i class="fas fa-plus-circle mr-2"></i> Buat Surat Bebas Perpustakaan
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kolom Samping: Persyaratan & Bantuan -->
+            <div class="col-lg-4 mb-4">
+                <!-- Card Persyaratan Berkas -->
+                <div class="card shadow-sm mb-4 border-0" style="border-radius: 16px;">
+                    <div class="card-header bg-white py-3 border-bottom">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <i class="fas fa-clipboard-check mr-2"></i>Persyaratan Dokumen
+                        </h6>
+                    </div>
+                    <div class="card-body p-3">
+                        <ul class="list-unstyled mb-0" style="font-size: 0.88rem;">
+                            <li class="mb-3 d-flex align-items-start">
+                                <div class="mr-2 text-primary mt-1"><i class="fas fa-id-card fa-lg"></i></div>
+                                <div>
+                                    <strong class="text-gray-800 d-block">KTM (Kartu Mahasiswa)</strong>
+                                    <span class="text-muted small">Scan/Foto KTM asli yang jelas (format PDF, JPG, PNG maks. 2 MB).</span>
+                                </div>
+                            </li>
+                            <li class="mb-3 d-flex align-items-start">
+                                <div class="mr-2 text-info mt-1"><i class="fas fa-address-card fa-lg"></i></div>
+                                <div>
+                                    <strong class="text-gray-800 d-block">Kartu Perpustakaan</strong>
+                                    <span class="text-muted small">Scan/Foto kartu anggota perpustakaan (opsional jika ada).</span>
+                                </div>
+                            </li>
+                            <li class="mb-2 d-flex align-items-start">
+                                <div class="mr-2 text-success mt-1"><i class="fas fa-check-circle fa-lg"></i></div>
+                                <div>
+                                    <strong class="text-gray-800 d-block">Bebas Pinjaman & Denda</strong>
+                                    <span class="text-muted small">Pastikan tidak memiliki buku yang belum dikembalikan atau tanggungan denda.</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card Bantuan Operator -->
+                <div class="card shadow-sm border-left-success" style="border-radius: 16px;">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="mr-3 text-success" style="font-size: 2.2rem;">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <h6 class="font-weight-bold text-gray-800 mb-1" style="font-size: 0.95rem;">Bantuan Petugas</h6>
+                                <p class="small text-muted mb-2">Ada kendala perihal Bebas Perpustakaan?</p>
+                                <a href="https://wa.me/6281345434600?text=Hai%20Admin%20Aplikasi%20bebas%20Perpustakaan" target="_blank" rel="nofollow" class="btn btn-sm btn-success font-weight-bold shadow-sm" style="border-radius: 20px;">
+                                    <i class="fab fa-whatsapp mr-1"></i> Hubungi Suryani
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <?php } else { ?>
+        <!-- LAYOUT MAHASISWA SUDAH MENGAJUKAN (2 KOLOM: 8 / 4) -->
+        <div class="row">
+            <!-- Kolom Utama (Form Status & Berkas) -->
+            <div class="col-lg-8 mb-4">
+                <div class="card shadow mb-4 border-0" style="border-radius: 16px; overflow: hidden;">
                     <div class="card-header py-3 bg-gradient-primary text-white">
-                        <h6 class="m-0 font-weight-bold"><i class="fas fa-book-open mr-2"></i>Status Bebas Perpustakaan</h6>
+                        <h6 class="m-0 font-weight-bold"><i class="fas fa-book-open mr-2"></i>Status & Berkas Bebas Perpustakaan</h6>
                     </div>
 
-                    <div class="card-body p-4 p-md-5">
+                    <div class="card-body p-4 p-md-4">
                         
                         <!-- Status Alert Box -->
                         <div class="mb-4">
@@ -274,15 +406,60 @@
                         </form>
                     </div>
                 </div>
+            </div>
 
-                <!-- Bantuan Admin -->
-                <div class="mt-4 p-3 bg-light rounded shadow-sm d-flex align-items-center" style="border-radius: 12px; border: 1px solid #e2e8f0;">
-                    <div class="text-success mr-3" style="font-size: 1.5rem;"><i class="fab fa-whatsapp"></i></div>
-                    <div class="small">
-                        Butuh bantuan perihal Bebas Perpustakaan? Hubungi petugas perpustakaan: <a href="https://wa.me/6281345434600?text=Hai%20Admin%20Aplikasi%20bebas%20Perpustakaan" target="_blank" class="font-weight-bold text-success">Suryani (WhatsApp)</a>
+            <!-- Kolom Samping (Ringkasan & Bantuan) -->
+            <div class="col-lg-4 mb-4">
+                <!-- Card Ringkasan Status -->
+                <div class="card shadow-sm mb-4 border-0" style="border-radius: 16px;">
+                    <div class="card-header bg-white py-3 border-bottom">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <i class="fas fa-info-circle mr-2"></i>Ringkasan Pengajuan
+                        </h6>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="mb-3">
+                            <span class="text-muted small d-block">Status Permohonan:</span>
+                            <?php if ($bp['status'] == 'accept') { ?>
+                                <span class="badge badge-success px-3 py-1.5 font-weight-bold" style="font-size: 0.85rem;"><i class="fas fa-check-circle mr-1"></i> Disetujui</span>
+                            <?php } elseif ($bp['status'] == 'reject') { ?>
+                                <span class="badge badge-danger px-3 py-1.5 font-weight-bold" style="font-size: 0.85rem;"><i class="fas fa-times-circle mr-1"></i> Ditolak / Perlu Revisi</span>
+                            <?php } else { ?>
+                                <span class="badge badge-warning px-3 py-1.5 font-weight-bold text-white" style="font-size: 0.85rem;"><i class="fas fa-clock mr-1"></i> Menunggu Verifikasi</span>
+                            <?php } ?>
+                        </div>
+                        <div class="mb-2 pb-2 border-bottom">
+                            <span class="text-muted small d-block">NIM Mahasiswa:</span>
+                            <span class="font-weight-bold text-gray-800"><?= htmlspecialchars($mahasiswa['nim']); ?></span>
+                        </div>
+                        <div class="mb-2 pb-2 border-bottom">
+                            <span class="text-muted small d-block">Nama Lengkap:</span>
+                            <span class="font-weight-bold text-gray-800"><?= htmlspecialchars($mahasiswa['nama_lengkap']); ?></span>
+                        </div>
+                        <div>
+                            <span class="text-muted small d-block">Program Studi:</span>
+                            <span class="font-weight-bold text-gray-800"><?= htmlspecialchars($mahasiswa['nama_prodi']); ?></span>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Card Bantuan Operator -->
+                <div class="card shadow-sm border-left-success" style="border-radius: 16px;">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="mr-3 text-success" style="font-size: 2.2rem;">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <h6 class="font-weight-bold text-gray-800 mb-1" style="font-size: 0.95rem;">Bantuan Petugas</h6>
+                                <p class="small text-muted mb-2">Ada kendala perihal Bebas Perpustakaan?</p>
+                                <a href="https://wa.me/6281345434600?text=Hai%20Admin%20Aplikasi%20bebas%20Perpustakaan" target="_blank" rel="nofollow" class="btn btn-sm btn-success font-weight-bold shadow-sm" style="border-radius: 20px;">
+                                    <i class="fab fa-whatsapp mr-1"></i> Hubungi Suryani
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     <?php } ?>
