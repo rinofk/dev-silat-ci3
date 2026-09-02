@@ -24,7 +24,7 @@ class Pustakawan extends CI_Controller
         $data['user']  = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
 
         // Ambil filter dari URL
-        $tahun  = $this->input->get('tahun', true) ?? date('Y');
+        $tahun  = $this->input->get('tahun', true);
         $status = $this->input->get('status', true);
 
         // Hitungan untuk card dashboard 

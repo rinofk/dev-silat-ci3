@@ -109,24 +109,23 @@
                                         if ($s['status'] == 'accept') {
                                             $label = 'Selesai';
                                             $badge = 'success';
-                                        } elseif ($s['status'] == 'di ajukan') {
+                                        } elseif ($s['status'] == 'di ajukan' || empty($s['status'])) {
                                             $label = 'Di Ajukan';
                                             $badge = 'warning';
                                         } elseif ($s['status'] == 'reject') {
                                             $label = 'Reject';
                                             $badge = 'danger';
                                         } else {
-                                        $label = $s['status'];
-                                        $badge = 'secondary'; // default jika status lain
+                                            $label = $s['status'];
+                                            $badge = 'secondary'; // default jika status lain
                                         }
                                     ?>
                                     <span class="badge badge-<?= $badge ?>"><?= $label ?></span>
-                                    <br><small><?= $s['keterangan']; ?></small>
+                                    <br><small><?= !empty($s['keterangan']) ? $s['keterangan'] : ($label == 'Di Ajukan' ? 'menunggu proses validasi' : ''); ?></small>
                                 </td>
                                 <td class="text-center">
-                                    <?= date('d-m-Y', strtotime($s['date_updated'])); ?><br>
+                                    <?= (!empty($s['date_updated']) && $s['date_updated'] != '0000-00-00 00:00:00') ? date('d-m-Y', strtotime($s['date_updated'])) : '-'; ?><br>
                                     <small class="text-muted"><?= $s['admin']; ?></small>
-
                                 </td>
                                 <td class="text-center">
                                 

@@ -90,14 +90,17 @@ class Pustakawan_model extends CI_model
     
     public function ajuan($nim)
     {
-        $status = 'di ajukan';
         $this->db->select('*');
         $this->db->from('tb_bebasperpus');
         $this->db->join('mahasiswa', 'mahasiswa.nim=tb_bebasperpus.nim_mahasiswa');
         $this->db->join('prodi', 'prodi.id_prodi=mahasiswa.prodi_id');
 
         $this->db->where('nim_mahasiswa', $nim);
-        $this->db->where('status', $status);
+        $this->db->group_start()
+                 ->where('tb_bebasperpus.status', 'di ajukan')
+                 ->or_where('tb_bebasperpus.status', '')
+                 ->or_where('tb_bebasperpus.status IS NULL')
+                 ->group_end();
         $query = $this->db->get();
         return $query->row_array();
     }
@@ -158,50 +161,67 @@ class Pustakawan_model extends CI_model
     //     }
     // }
 
-//new
-public function count_by_filter($tahun = null, $status = null)
-{
-    $this->db->from('tb_bebasperpus b');
+    //new
+    public function count_by_filter($tahun = null, $status = null)
+    {
+        $this->db->from('tb_bebasperpus b');
 
-    if (!empty($tahun)) {
-        $this->db->where('YEAR(b.date_created)', $tahun);
+        if (!empty($tahun)) {
+            $this->db->where('YEAR(b.date_created)', $tahun);
+        }
+
+        if (!empty($status)) {
+            if ($status === 'di ajukan') {
+                $this->db->group_start()
+                         ->where('b.status', 'di ajukan')
+                         ->or_where('b.status', '')
+                         ->or_where('b.status IS NULL')
+                         ->group_end();
+            } else {
+                $this->db->where('b.status', $status);
+            }
+        }
+
+        return $this->db->count_all_results();
     }
 
-    if (!empty($status)) {
-        $this->db->where('b.status', $status);
+    public function get_filtered_data($tahun = null, $status = null)
+    {
+        $this->db->select('b.*, m.nama_lengkap, p.nama_prodi');
+        $this->db->from('tb_bebasperpus b');
+        $this->db->join('mahasiswa m', 'm.nim = b.nim_mahasiswa', 'left');
+        $this->db->join('prodi p', 'p.id_prodi = m.prodi_id', 'left');
+
+        if (!empty($tahun)) {
+            $this->db->where('YEAR(b.date_created)', $tahun);
+        }
+
+        if (!empty($status)) {
+            if ($status === 'di ajukan') {
+                $this->db->group_start()
+                         ->where('b.status', 'di ajukan')
+                         ->or_where('b.status', '')
+                         ->or_where('b.status IS NULL')
+                         ->group_end();
+            } else {
+                $this->db->where('b.status', $status);
+            }
+        }
+        // Urutkan berdasarkan tanggal dibuat, terbaru di atas
+        $this->db->order_by('b.date_created', 'DESC');
+        return $this->db->get()->result_array();
     }
 
-    return $this->db->count_all_results();
-}
+    public function get_tahun_options()
+    {
+        $this->db->select('YEAR(date_created) as tahun');
+        $this->db->from('tb_bebasperpus');
+        $this->db->where('date_created IS NOT NULL');
+        $this->db->where('date_created !=', '0000-00-00 00:00:00');
+        $this->db->group_by('YEAR(date_created)');
+        $this->db->order_by('tahun', 'DESC');
 
-public function get_filtered_data($tahun = null, $status = null)
-{
-    $this->db->select('b.*, m.nama_lengkap, p.nama_prodi');
-    $this->db->from('tb_bebasperpus b');
-    $this->db->join('mahasiswa m', 'm.nim = b.nim_mahasiswa', 'left');
-    $this->db->join('prodi p', 'p.id_prodi = m.prodi_id', 'left');
-
-    if (!empty($tahun)) {
-        $this->db->where('YEAR(b.date_created)', $tahun);
+        return $this->db->get()->result_array();
     }
-
-    if (!empty($status)) {
-        $this->db->where('b.status', $status);
-    }
-    // Urutkan berdasarkan tanggal dibuat, terbaru di atas
-    $this->db->order_by('b.date_created', 'DESC');
-    return $this->db->get()->result_array();
-}
-
-public function get_tahun_options()
-{
-    $this->db->select('YEAR(date_created) as tahun');
-    $this->db->from('tb_bebasperpus');
-    $this->db->group_by('YEAR(date_created)');
-    $this->db->order_by('tahun', 'DESC');
-
-    return $this->db->get()->result_array();
-}
-
 
 }

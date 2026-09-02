@@ -126,7 +126,7 @@
                         <div class="form-group row">
                             <label for="semester" class="col-sm-3 col-form-label font-weight-bold text-gray-800">Semester</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="semester" name="semester" value="<?= $bp['semester'] ?>" <?= ($bp['status'] == 'accept' || empty($bp['status'])) ? 'readonly class="bg-light"' : '' ?> required>
+                                <input type="text" class="form-control" id="semester" name="semester" value="<?= $bp['semester'] ?>" <?= ($bp['status'] != 'reject') ? 'readonly class="bg-light"' : '' ?> required>
                             </div>
                         </div>
 

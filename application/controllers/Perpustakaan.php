@@ -139,11 +139,13 @@ class Perpustakaan extends CI_Controller
             "semester"      => $this->input->post('semester', true),
             "ktm"           => $ktm,
             "kartuperpus"   => $kartu_anggota,
+            "status"        => 'di ajukan',
+            "keterangan"    => 'menunggu proses validasi',
             "date_created"  => $date
         ];
         $this->db->insert('tb_bebasperpus', $insert_data);
 
-        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berkas Anda Berhasil di SIMPAN</div>');
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berkas Anda Berhasil di KIRIM</div>');
         redirect('perpustakaan');
     }
 
