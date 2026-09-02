@@ -112,10 +112,11 @@
 
             <!-- Documents Card (KTM & Kartu Perpustakaan) -->
             <div class="card shadow-sm mb-3 border-0" style="border-radius: 10px;">
-                <div class="card-header py-2 px-3 bg-white border-bottom">
+                <div class="card-header py-2 px-3 bg-white border-bottom d-flex align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary small">
                         <i class="fas fa-file-invoice mr-1"></i> Berkas Persyaratan
                     </h6>
+                    <span class="text-muted small" style="font-size: 11px;">Pratinjau Dokumen</span>
                 </div>
                 <div class="card-body p-3">
                     <div class="row">
@@ -133,34 +134,43 @@
                                             $has_ktm = (!empty($perpus['ktm']) && $perpus['ktm'] !== 'default.jpg');
                                         ?>
                                         <?php if ($is_pdf_ktm): ?>
-                                            <span class="badge badge-danger" style="font-size: 10px;">PDF</span>
+                                            <span class="badge badge-danger font-weight-bold px-2 py-1" style="font-size: 10px;"><i class="fas fa-file-pdf mr-1"></i>PDF</span>
                                         <?php elseif ($has_ktm): ?>
-                                            <span class="badge badge-info" style="font-size: 10px;">Gambar</span>
+                                            <span class="badge badge-info font-weight-bold px-2 py-1" style="font-size: 10px;"><i class="fas fa-image mr-1"></i>Gambar</span>
                                         <?php endif; ?>
                                     </div>
 
                                     <?php if ($has_ktm && !$is_pdf_ktm): ?>
-                                        <div class="text-center p-2 mb-2 bg-white border rounded" style="max-height: 180px; overflow: hidden;">
-                                            <a href="<?= base_url('assets/bebasperpus/' . $perpus['ktm']); ?>" target="_blank">
-                                                <img src="<?= base_url('assets/bebasperpus/' . $perpus['ktm']); ?>" alt="KTM Preview" style="max-width: 100%; max-height: 160px; object-fit: contain;">
-                                            </a>
+                                        <div class="text-center p-1 mb-2 bg-white border rounded position-relative" style="height: 200px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                                            <img src="<?= base_url('assets/bebasperpus/' . $perpus['ktm']); ?>" alt="KTM Preview" style="max-width: 100%; max-height: 190px; object-fit: contain; cursor: pointer;" data-toggle="modal" data-target="#modalPreviewKtm" title="Klik untuk memperbesar">
                                         </div>
                                     <?php elseif ($is_pdf_ktm): ?>
-                                        <div class="text-center py-4 mb-2 bg-white border rounded">
-                                            <i class="fas fa-file-pdf fa-3x text-danger mb-2"></i>
-                                            <div class="small font-weight-bold text-gray-700"><?= htmlspecialchars($perpus['ktm']); ?></div>
+                                        <div class="mb-2 bg-white border rounded position-relative" style="height: 200px; overflow: hidden;">
+                                            <iframe src="<?= base_url('assets/bebasperpus/' . $perpus['ktm']); ?>#toolbar=0&navpanes=0" style="width: 100%; height: 100%; border: none;" loading="lazy"></iframe>
                                         </div>
                                     <?php else: ?>
-                                        <div class="text-center py-3 mb-2 bg-white border rounded text-muted small">
-                                            <i class="fas fa-exclamation-circle text-warning mr-1"></i> Berkas default / belum diunggah
+                                        <div class="text-center py-4 mb-2 bg-white border rounded text-muted small d-flex flex-column align-items-center justify-content-center" style="height: 200px;">
+                                            <i class="fas fa-exclamation-circle fa-2x text-warning mb-2"></i>
+                                            <span>Berkas default / belum diunggah</span>
                                         </div>
                                     <?php endif; ?>
                                 </div>
 
-                                <div class="text-center mt-2">
-                                    <a href="<?= base_url('assets/bebasperpus/' . $perpus['ktm']); ?>" target="_blank" class="btn btn-sm btn-outline-primary btn-block" style="border-radius: 6px;">
-                                        <i class="fas fa-external-link-alt mr-1"></i> Buka / Unduh KTM
-                                    </a>
+                                <div class="mt-2">
+                                    <div class="btn-group btn-block" role="group">
+                                        <?php if ($has_ktm || $is_pdf_ktm): ?>
+                                            <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#modalPreviewKtm" style="border-radius: 6px 0 0 6px;">
+                                                <i class="fas fa-search-plus mr-1"></i> Preview
+                                            </button>
+                                            <a href="<?= base_url('assets/bebasperpus/' . $perpus['ktm']); ?>" target="_blank" class="btn btn-sm btn-primary" style="border-radius: 0 6px 6px 0;">
+                                                <i class="fas fa-external-link-alt mr-1"></i> Buka File
+                                            </a>
+                                        <?php else: ?>
+                                            <a href="<?= base_url('assets/bebasperpus/' . $perpus['ktm']); ?>" target="_blank" class="btn btn-sm btn-outline-secondary btn-block" style="border-radius: 6px;">
+                                                <i class="fas fa-external-link-alt mr-1"></i> Buka File Default
+                                            </a>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -179,34 +189,43 @@
                                             $has_kartu = (!empty($perpus['kartuperpus']) && $perpus['kartuperpus'] !== 'default.jpg');
                                         ?>
                                         <?php if ($is_pdf_kartu): ?>
-                                            <span class="badge badge-danger" style="font-size: 10px;">PDF</span>
+                                            <span class="badge badge-danger font-weight-bold px-2 py-1" style="font-size: 10px;"><i class="fas fa-file-pdf mr-1"></i>PDF</span>
                                         <?php elseif ($has_kartu): ?>
-                                            <span class="badge badge-info" style="font-size: 10px;">Gambar</span>
+                                            <span class="badge badge-info font-weight-bold px-2 py-1" style="font-size: 10px;"><i class="fas fa-image mr-1"></i>Gambar</span>
                                         <?php endif; ?>
                                     </div>
 
                                     <?php if ($has_kartu && !$is_pdf_kartu): ?>
-                                        <div class="text-center p-2 mb-2 bg-white border rounded" style="max-height: 180px; overflow: hidden;">
-                                            <a href="<?= base_url('assets/bebasperpus/' . $perpus['kartuperpus']); ?>" target="_blank">
-                                                <img src="<?= base_url('assets/bebasperpus/' . $perpus['kartuperpus']); ?>" alt="Kartu Perpus Preview" style="max-width: 100%; max-height: 160px; object-fit: contain;">
-                                            </a>
+                                        <div class="text-center p-1 mb-2 bg-white border rounded position-relative" style="height: 200px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                                            <img src="<?= base_url('assets/bebasperpus/' . $perpus['kartuperpus']); ?>" alt="Kartu Perpus Preview" style="max-width: 100%; max-height: 190px; object-fit: contain; cursor: pointer;" data-toggle="modal" data-target="#modalPreviewKartu" title="Klik untuk memperbesar">
                                         </div>
                                     <?php elseif ($is_pdf_kartu): ?>
-                                        <div class="text-center py-4 mb-2 bg-white border rounded">
-                                            <i class="fas fa-file-pdf fa-3x text-danger mb-2"></i>
-                                            <div class="small font-weight-bold text-gray-700"><?= htmlspecialchars($perpus['kartuperpus']); ?></div>
+                                        <div class="mb-2 bg-white border rounded position-relative" style="height: 200px; overflow: hidden;">
+                                            <iframe src="<?= base_url('assets/bebasperpus/' . $perpus['kartuperpus']); ?>#toolbar=0&navpanes=0" style="width: 100%; height: 100%; border: none;" loading="lazy"></iframe>
                                         </div>
                                     <?php else: ?>
-                                        <div class="text-center py-3 mb-2 bg-white border rounded text-muted small">
-                                            <i class="fas fa-info-circle text-muted mr-1"></i> Berkas lewati / tidak ada kartu
+                                        <div class="text-center py-4 mb-2 bg-white border rounded text-muted small d-flex flex-column align-items-center justify-content-center" style="height: 200px;">
+                                            <i class="fas fa-info-circle fa-2x text-muted mb-2"></i>
+                                            <span>Berkas lewati / tidak ada kartu</span>
                                         </div>
                                     <?php endif; ?>
                                 </div>
 
-                                <div class="text-center mt-2">
-                                    <a href="<?= base_url('assets/bebasperpus/' . $perpus['kartuperpus']); ?>" target="_blank" class="btn btn-sm btn-outline-success btn-block" style="border-radius: 6px;">
-                                        <i class="fas fa-external-link-alt mr-1"></i> Buka / Unduh Kartu
-                                    </a>
+                                <div class="mt-2">
+                                    <div class="btn-group btn-block" role="group">
+                                        <?php if ($has_kartu || $is_pdf_kartu): ?>
+                                            <button type="button" class="btn btn-sm btn-outline-success" data-toggle="modal" data-target="#modalPreviewKartu" style="border-radius: 6px 0 0 6px;">
+                                                <i class="fas fa-search-plus mr-1"></i> Preview
+                                            </button>
+                                            <a href="<?= base_url('assets/bebasperpus/' . $perpus['kartuperpus']); ?>" target="_blank" class="btn btn-sm btn-success" style="border-radius: 0 6px 6px 0;">
+                                                <i class="fas fa-external-link-alt mr-1"></i> Buka File
+                                            </a>
+                                        <?php else: ?>
+                                            <a href="<?= base_url('assets/bebasperpus/' . $perpus['kartuperpus']); ?>" target="_blank" class="btn btn-sm btn-outline-secondary btn-block" style="border-radius: 6px;">
+                                                <i class="fas fa-external-link-alt mr-1"></i> Buka File Default
+                                            </a>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -436,6 +455,80 @@
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Preview KTM -->
+<div class="modal fade" id="modalPreviewKtm" tabindex="-1" role="dialog" aria-labelledby="modalPreviewKtmLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document" style="max-width: 90vw;">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+            <div class="modal-header bg-primary text-white py-2 px-3 d-flex align-items-center justify-content-between">
+                <h6 class="modal-title font-weight-bold" id="modalPreviewKtmLabel">
+                    <i class="fas fa-id-card mr-1"></i> Pratinjau KTM - <?= htmlspecialchars($perpus['nama_lengkap']); ?>
+                </h6>
+                <div>
+                    <a href="<?= base_url('assets/bebasperpus/' . $perpus['ktm']); ?>" target="_blank" class="btn btn-xs btn-light text-primary font-weight-bold mr-2" style="font-size: 11px;">
+                        <i class="fas fa-external-link-alt mr-1"></i> Tab Baru
+                    </a>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body p-0 bg-dark text-center" style="min-height: 75vh;">
+                <?php 
+                    $ext_ktm = strtolower(pathinfo($perpus['ktm'], PATHINFO_EXTENSION));
+                    if ($ext_ktm === 'pdf'):
+                ?>
+                    <iframe src="<?= base_url('assets/bebasperpus/' . $perpus['ktm']); ?>" style="width: 100%; height: 75vh; border: none;"></iframe>
+                <?php else: ?>
+                    <div class="p-3 d-flex align-items-center justify-content-center" style="min-height: 75vh;">
+                        <img src="<?= base_url('assets/bebasperpus/' . $perpus['ktm']); ?>" alt="KTM Full Preview" style="max-width: 100%; max-height: 72vh; object-fit: contain; border-radius: 4px;">
+                    </div>
+                <?php endif; ?>
+            </div>
+            <div class="modal-footer py-2 px-3 bg-light d-flex justify-content-between">
+                <span class="small text-muted font-italic"><?= htmlspecialchars($perpus['ktm']); ?></span>
+                <button type="button" class="btn btn-sm btn-secondary font-weight-bold" data-dismiss="modal" style="border-radius: 6px;">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Preview Kartu Perpustakaan -->
+<div class="modal fade" id="modalPreviewKartu" tabindex="-1" role="dialog" aria-labelledby="modalPreviewKartuLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document" style="max-width: 90vw;">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+            <div class="modal-header bg-success text-white py-2 px-3 d-flex align-items-center justify-content-between">
+                <h6 class="modal-title font-weight-bold" id="modalPreviewKartuLabel">
+                    <i class="fas fa-address-card mr-1"></i> Pratinjau Kartu Perpustakaan - <?= htmlspecialchars($perpus['nama_lengkap']); ?>
+                </h6>
+                <div>
+                    <a href="<?= base_url('assets/bebasperpus/' . $perpus['kartuperpus']); ?>" target="_blank" class="btn btn-xs btn-light text-success font-weight-bold mr-2" style="font-size: 11px;">
+                        <i class="fas fa-external-link-alt mr-1"></i> Tab Baru
+                    </a>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body p-0 bg-dark text-center" style="min-height: 75vh;">
+                <?php 
+                    $ext_kartu = strtolower(pathinfo($perpus['kartuperpus'], PATHINFO_EXTENSION));
+                    if ($ext_kartu === 'pdf'):
+                ?>
+                    <iframe src="<?= base_url('assets/bebasperpus/' . $perpus['kartuperpus']); ?>" style="width: 100%; height: 75vh; border: none;"></iframe>
+                <?php else: ?>
+                    <div class="p-3 d-flex align-items-center justify-content-center" style="min-height: 75vh;">
+                        <img src="<?= base_url('assets/bebasperpus/' . $perpus['kartuperpus']); ?>" alt="Kartu Perpus Full Preview" style="max-width: 100%; max-height: 72vh; object-fit: contain; border-radius: 4px;">
+                    </div>
+                <?php endif; ?>
+            </div>
+            <div class="modal-footer py-2 px-3 bg-light d-flex justify-content-between">
+                <span class="small text-muted font-italic"><?= htmlspecialchars($perpus['kartuperpus']); ?></span>
+                <button type="button" class="btn btn-sm btn-secondary font-weight-bold" data-dismiss="modal" style="border-radius: 6px;">Tutup</button>
+            </div>
         </div>
     </div>
 </div>
