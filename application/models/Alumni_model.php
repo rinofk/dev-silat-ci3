@@ -57,16 +57,13 @@ class Alumni_model extends CI_model
 
     public function getUbahAlumni()
     {
-
         $date_update = date('Y-m-d H:i:s');
         $data = [
-
             "tahun_wisuda" => $this->input->post('tahun_wisuda'),
             "judul_skripsi" => $this->input->post('judul_skripsi'),
             "jalur_masuk" => $this->input->post('jalur_masuk'),
             "pesan_kesan" => ucwords(strtolower($this->input->post('pesan_kesan'))),
-            "tanggal_updatealumni" => $date_update,
-            "status_alumni" => 0
+            "tanggal_updatealumni" => $date_update
         ];
         $this->db->where('nim_alumni', $this->input->post('nim_alumni'));
         $this->db->update('tb_alumni', $data);

@@ -18,62 +18,62 @@
     <div class="row">
         <div class="col-12">
             <div class="card shadow-sm mb-4 border-left-primary" style="border-radius: 12px;">
-                <div class="card-body p-4">
+                <div class="card-body p-3 p-md-4">
                     <div class="d-flex align-items-center mb-3">
-                        <div class="mr-3 d-flex align-items-center justify-content-center bg-primary text-white rounded-circle shadow-sm" style="width: 42px; height: 42px; min-width: 42px;">
+                        <div class="mr-3 d-flex align-items-center justify-content-center bg-primary text-white rounded-circle shadow-sm" style="width: 38px; height: 38px; min-width: 38px;">
                             <i class="fas fa-info-circle fa-lg"></i>
                         </div>
                         <div>
-                            <h5 class="m-0 font-weight-bold text-primary">Informasi & Alur Pengajuan Bebas Perpustakaan</h5>
-                            <small class="text-muted">Panduan alur proses pengajuan surat bebas perpustakaan hingga pengunduhan/cetak dokumen.</small>
+                            <h5 class="m-0 font-weight-bold text-primary" style="font-size: 1.05rem;">Alur Pengajuan Bebas Perpustakaan</h5>
+                            <small class="text-muted d-block" style="font-size: 0.8rem;">Panduan proses pengajuan hingga pengunduhan/cetak dokumen.</small>
                         </div>
                     </div>
 
-                    <!-- Steps Grid (4 Columns) -->
-                    <div class="row text-dark mt-3">
-                        <div class="col-xl-3 col-md-6 mb-3">
-                            <div class="p-3 bg-light rounded h-100 border" style="border-left: 4px solid #4e73df !important;">
-                                <div class="d-flex align-items-center mb-2">
-                                    <span class="badge badge-primary badge-pill mr-2 px-2 py-1">Langkah 1</span>
-                                    <strong class="text-gray-800"><i class="fas fa-file-upload text-primary mr-1"></i> Unggah Berkas</strong>
+                    <!-- Steps Grid (Responsif 2 Kolom di HP, 4 Kolom di Laptop/PC) -->
+                    <div class="row text-dark">
+                        <div class="col-6 col-md-3 mb-2 mb-md-3 px-2">
+                            <div class="p-2 p-md-3 bg-light rounded h-100 border" style="border-left: 3px solid #4e73df !important;">
+                                <div class="d-flex flex-wrap align-items-center mb-1">
+                                    <span class="badge badge-primary badge-pill mr-1 mb-1" style="font-size: 0.7rem;">Langkah 1</span>
+                                    <strong class="text-gray-800 small d-block mb-1">Unggah Berkas</strong>
                                 </div>
-                                <p class="small text-muted mb-0">Klik tombol <strong>Buat Surat Bebas Perpustakaan</strong> dan unggah berkas KTM serta Kartu Perpustakaan (maks. 2 MB).</p>
+                                <p class="text-muted mb-0" style="font-size: 0.76rem; line-height: 1.3;">Klik <strong>Buat Surat</strong> & unggah scan KTM dan Kartu Perpustakaan.</p>
                             </div>
                         </div>
-                        <div class="col-xl-3 col-md-6 mb-3">
-                            <div class="p-3 bg-light rounded h-100 border" style="border-left: 4px solid #36b9cc !important;">
-                                <div class="d-flex align-items-center mb-2">
-                                    <span class="badge badge-info badge-pill mr-2 px-2 py-1">Langkah 2</span>
-                                    <strong class="text-gray-800"><i class="fas fa-user-check text-info mr-1"></i> Verifikasi</strong>
+                        <div class="col-6 col-md-3 mb-2 mb-md-3 px-2">
+                            <div class="p-2 p-md-3 bg-light rounded h-100 border" style="border-left: 3px solid #36b9cc !important;">
+                                <div class="d-flex flex-wrap align-items-center mb-1">
+                                    <span class="badge badge-info badge-pill mr-1 mb-1" style="font-size: 0.7rem;">Langkah 2</span>
+                                    <strong class="text-gray-800 small d-block mb-1">Verifikasi</strong>
                                 </div>
-                                <p class="small text-muted mb-0">Pustakawan akan memeriksa berkas serta memvalidasi tidak adanya tanggungan pinjaman buku atau denda.</p>
+                                <p class="text-muted mb-0" style="font-size: 0.76rem; line-height: 1.3;">Pustakawan memeriksa berkas & validasi bebas pinjaman/denda.</p>
                             </div>
                         </div>
-                        <div class="col-xl-3 col-md-6 mb-3">
-                            <div class="p-3 bg-light rounded h-100 border" style="border-left: 4px solid #f6c23e !important;">
-                                <div class="d-flex align-items-center mb-2">
-                                    <span class="badge badge-warning text-white badge-pill mr-2 px-2 py-1">Langkah 3</span>
-                                    <strong class="text-gray-800"><i class="fas fa-sync-alt text-warning mr-1"></i> Status / Revisi</strong>
+                        <div class="col-6 col-md-3 mb-2 mb-md-3 px-2">
+                            <div class="p-2 p-md-3 bg-light rounded h-100 border" style="border-left: 3px solid #f6c23e !important;">
+                                <div class="d-flex flex-wrap align-items-center mb-1">
+                                    <span class="badge badge-warning text-white badge-pill mr-1 mb-1" style="font-size: 0.7rem;">Langkah 3</span>
+                                    <strong class="text-gray-800 small d-block mb-1">Revisi (Jika Ditolak)</strong>
                                 </div>
-                                <p class="small text-muted mb-0">Jika ditolak (<em>Reject</em>), Anda dapat memperbarui berkas yang salah dan menekan tombol <strong>Kirim Ulang</strong>.</p>
+                                <p class="text-muted mb-0" style="font-size: 0.76rem; line-height: 1.3;">Jika ditolak, perbarui berkas yang salah lalu klik <strong>Kirim Ulang</strong>.</p>
                             </div>
                         </div>
-                        <div class="col-xl-3 col-md-6 mb-3">
-                            <div class="p-3 bg-light rounded h-100 border" style="border-left: 4px solid #1cc88a !important;">
-                                <div class="d-flex align-items-center mb-2">
-                                    <span class="badge badge-success badge-pill mr-2 px-2 py-1">Langkah 4</span>
-                                    <strong class="text-gray-800"><i class="fas fa-print text-success mr-1"></i> Unduh Surat</strong>
+                        <div class="col-6 col-md-3 mb-2 mb-md-3 px-2">
+                            <div class="p-2 p-md-3 bg-light rounded h-100 border" style="border-left: 3px solid #1cc88a !important;">
+                                <div class="d-flex flex-wrap align-items-center mb-1">
+                                    <span class="badge badge-success badge-pill mr-1 mb-1" style="font-size: 0.7rem;">Langkah 4</span>
+                                    <strong class="text-gray-800 small d-block mb-1">Unduh Surat</strong>
                                 </div>
-                                <p class="small text-muted mb-0">Surat yang disetujui (<em>Accept</em>) dapat langsung diunduh / dicetak pada halaman ini melalui tombol <strong>Cetak Surat</strong>.</p>
+                                <p class="text-muted mb-0" style="font-size: 0.76rem; line-height: 1.3;">Surat yang disetujui dapat langsung dicetak pada halaman ini.</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Notice Box -->
-                    <div class="alert alert-info mb-0 mt-2 py-2 px-3 small d-flex align-items-center border-0 shadow-sm" style="border-radius: 8px; background-color: #e8f4fd; color: #1e6091;">
-                        <i class="fas fa-cloud-download-alt mr-2 text-info" style="font-size: 1.3rem;"></i>
+                    <div class="alert alert-info mb-0 mt-2 py-2 px-3 small d-flex align-items-start border-0 shadow-sm" style="border-radius: 8px; background-color: #e8f4fd; color: #1e6091; font-size: 0.82rem;">
+                        <i class="fas fa-cloud-download-alt mr-2 mt-1 text-info fa-lg"></i>
                         <div>
-                            <strong>Penting:</strong> Surat Bebas Perpustakaan yang telah disetujui oleh pustakawan <strong>akan otomatis tersedia dan dapat langsung di-download / dicetak pada halaman ini</strong>.
+                            <strong>Catatan:</strong> Surat Bebas Perpustakaan yang telah disetujui pustakawan <strong>akan otomatis tersedia dan dapat langsung dicetak / diunduh pada halaman ini</strong>.
                         </div>
                     </div>
                 </div>
@@ -86,16 +86,16 @@
         <div class="row">
             <!-- Kolom Utama: Action Buat Pengajuan -->
             <div class="col-lg-8 mb-4">
-                <div class="card shadow border-0 p-4 text-center h-100 d-flex justify-content-center" style="border-radius: 16px; min-height: 380px;">
+                <div class="card shadow-sm border-0 p-3 p-md-4 text-center h-100 d-flex justify-content-center" style="border-radius: 16px;">
                     <div class="card-body py-4 d-flex flex-column justify-content-center align-items-center">
-                        <div class="icon-box mb-4 d-inline-flex align-items-center justify-content-center" style="width: 85px; height: 85px; background: rgba(78, 115, 223, 0.1); border-radius: 50%; color: #4e73df;">
+                        <div class="icon-box mb-3 d-inline-flex align-items-center justify-content-center" style="width: 75px; height: 75px; background: rgba(78, 115, 223, 0.1); border-radius: 50%; color: #4e73df;">
                             <i class="fas fa-book-reader fa-3x"></i>
                         </div>
-                        <h4 class="font-weight-bold text-gray-900 mb-2">Surat Bebas Perpustakaan</h4>
-                        <p class="text-muted mb-4" style="max-width: 520px;">
+                        <h4 class="font-weight-bold text-gray-900 mb-2" style="font-size: 1.25rem;">Surat Bebas Perpustakaan</h4>
+                        <p class="text-muted mb-4" style="max-width: 520px; font-size: 0.92rem;">
                             Anda belum mengajukan surat bebas perpustakaan. Silakan klik tombol di bawah untuk melengkapi data dan mengunggah dokumen persyaratan.
                         </p>
-                        <a href="<?= base_url('perpustakaan/tambah'); ?>" class="btn btn-primary px-4 py-2.5 font-weight-bold shadow-sm" style="border-radius: 10px; font-size: 1rem;">
+                        <a href="<?= base_url('perpustakaan/tambah'); ?>" class="btn btn-primary px-4 py-2.5 font-weight-bold shadow-sm d-inline-flex align-items-center" style="border-radius: 10px; font-size: 0.95rem;">
                             <i class="fas fa-plus-circle mr-2"></i> Buat Surat Bebas Perpustakaan
                         </a>
                     </div>

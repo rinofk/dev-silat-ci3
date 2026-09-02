@@ -129,45 +129,110 @@ class Alumni extends CI_Controller
         redirect('alumni');
     }
 
-    public function upload()
+    public function upload_ajax()
     {
+        $nim = $this->session->userdata('nim');
+        if (empty($nim)) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(403)
+                ->set_output(json_encode([
+                    'status' => 'error',
+                    'message' => 'Sesi login telah berakhir. Silakan login kembali.'
+                ]));
+            return;
+        }
 
-        $data['title'] = 'Edit Alumni';
-        $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
-        $nim = $this->input->post('nim');
-        $alamat = $this->input->post('alamat');
+        if (empty($_FILES['poto']['name'])) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(400)
+                ->set_output(json_encode([
+                    'status' => 'error',
+                    'message' => 'Tidak ada file foto yang dipilih.'
+                ]));
+            return;
+        }
 
-        $upload_image = $_FILES['poto']['name'];
-        if ($upload_image) {
-            $config['allowed_types'] = 'gif|jpg|jpeg|png';
-            $config['max_size']     = '6148';
-            $config['upload_path'] = './assets/img/alumni/';
-            $config['file_name'] = $this->input->post('nim');
-            $config['overwrite'] = true;
-            // $config['detect_mime']   = true;
+        $upload_path = './assets/img/alumni/';
+        if (!is_dir($upload_path)) {
+            mkdir($upload_path, 0777, true);
+        }
 
-            // FIX MIME type WhatsApp / Android
-            $config['mime_types'] = [
-                'jpg'  => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
-                'jpeg' => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
-                'png'  => ['image/png',  'image/x-png']
-            ];
+        $config = [
+            'upload_path'   => $upload_path,
+            'allowed_types' => 'gif|jpg|jpeg|png|JPG|JPEG|PNG',
+            'max_size'      => 6148, // 6 MB
+            'file_name'     => $nim . '_' . time()
+        ];
 
-            $this->load->library('upload', $config);
-            $old_image = $data['tb_alumni']['poto'];
-            if ($old_image != 'default.jpg') {
-                unlink(FCPATH . 'assets/img/alumni/' . $old_image);
+        $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+
+        if (!$this->upload->do_upload('poto')) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode([
+                    'status' => 'error',
+                    'message' => $this->upload->display_errors('', '')
+                ]));
+        } else {
+            $upload_data = $this->upload->data();
+            $new_image = $upload_data['file_name'];
+
+            // Hapus file lama jika ada dan bukan default.jpg
+            $current_alumni = $this->db->get_where('tb_alumni', ['nim_alumni' => $nim])->row_array();
+            if (!empty($current_alumni['poto']) && $current_alumni['poto'] != 'default.jpg' && file_exists($upload_path . $current_alumni['poto'])) {
+                @unlink($upload_path . $current_alumni['poto']);
             }
 
+            // Update database langsung
+            $this->db->where('nim_alumni', $nim);
+            $this->db->update('tb_alumni', [
+                'poto' => $new_image,
+                'tanggal_updatealumni' => date('Y-m-d H:i:s')
+            ]);
+
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode([
+                    'status' => 'success',
+                    'message' => 'Pas foto berhasil diunggah secara realtime!',
+                    'file_name' => $new_image,
+                    'file_url' => base_url('assets/img/alumni/' . $new_image) . '?v=' . time()
+                ]));
+        }
+    }
+
+    public function upload()
+    {
+        $nim = $this->session->userdata('nim');
+        $alamat = $this->input->post('alamat');
+
+        $upload_image = !empty($_FILES['poto']['name']) ? $_FILES['poto']['name'] : null;
+        if ($upload_image) {
+            $config['allowed_types'] = 'gif|jpg|jpeg|png|JPG|JPEG|PNG';
+            $config['max_size']     = '6148';
+            $config['upload_path'] = './assets/img/alumni/';
+            $config['file_name'] = $nim . '_' . time();
+
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            $current_alumni = $this->db->get_where('tb_alumni', ['nim_alumni' => $nim])->row_array();
+            $old_image = !empty($current_alumni['poto']) ? $current_alumni['poto'] : 'default.jpg';
+
             if ($this->upload->do_upload('poto')) {
+                if ($old_image != 'default.jpg' && file_exists('./assets/img/alumni/' . $old_image)) {
+                    @unlink('./assets/img/alumni/' . $old_image);
+                }
                 $new_image = $this->upload->data('file_name');
                 $this->db->set('poto', $new_image);
-            } else {
-                echo $this->upload->display_errors();
             }
         }
 
         $this->db->set('alamat_sekarang', $alamat);
+        $this->db->set('tanggal_updatealumni', date('Y-m-d H:i:s'));
         $this->db->where('nim_alumni', $nim);
         $this->db->update('tb_alumni');
         $this->session->set_flashdata('flash', 'Diubah');
