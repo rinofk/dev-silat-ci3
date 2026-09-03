@@ -188,36 +188,30 @@ class Bebaslab extends CI_Controller
             show_404();
         }
 
-        // Generate nomor surat otomatis
-        $data['tahun'] = date('Y', strtotime($data['bl']->date_updated ? $data['bl']->date_updated : $data['bl']->date_created));
-        $nomor_surat = $this->db->get_where('tb_nomorsurat', ['id_nomor' => 6])->row_array();
+        // Ambil template format nomor surat dari tb_nomorsurat (id_nomor = 6)
+        $doc_date = !empty($data['bl']->date_updated) ? $data['bl']->date_updated : (!empty($data['bl']->date_finished) ? $data['bl']->date_finished : $data['bl']->date_created);
+        $data['tahun'] = date('Y', strtotime($doc_date ?: date('Y-m-d')));
         
-        $nomor_base = $nomor_surat ? $nomor_surat['nomor'] : '';
-        if (!empty($nomor_base)) {
-            // 1. Check/Add /DST prefix safely
-            if (stripos($nomor_base, 'DST') === false) {
-                if (substr($nomor_base, 0, 1) === '/') {
-                    $nomor_base = '/DST' . $nomor_base;
-                } else {
-                    $nomor_base = '/DST/' . $nomor_base;
-                }
-            } else {
-                if (substr($nomor_base, 0, 1) !== '/') {
-                    $nomor_base = '/' . $nomor_base;
-                }
-            }
-            
-            // 2. Check/Add year suffix safely
-            $tahun_suffix = $data['tahun'];
-            if (substr($nomor_base, -strlen($tahun_suffix)) !== $tahun_suffix) {
-                if (substr($nomor_base, -1) !== '/') {
-                    $nomor_base = $nomor_base . '/' . $tahun_suffix;
-                } else {
-                    $nomor_base = $nomor_base . $tahun_suffix;
-                }
-            }
+        $nomor_surat = $this->db->get_where('tb_nomorsurat', ['id_nomor' => 6])->row_array();
+        $base_nomor  = $nomor_surat ? $nomor_surat['nomor'] : '/DST/UN22.9/TA.00/' . $data['tahun'];
+
+        // Pastikan format base_nomor rapi dengan tahun jika belum berakhiran tahun
+        if (!empty($base_nomor) && substr(rtrim($base_nomor), -4) !== $data['tahun']) {
+            $base_nomor = rtrim($base_nomor, '/') . '/' . $data['tahun'];
         }
-        $data['nomor_otomatis'] = $nomor_base;
+
+        // Siapkan nomor lengkap otomatis
+        if (!empty($data['bl']->nomor)) {
+            if (strpos($data['bl']->nomor, '/') !== false) {
+                $data['nomor_otomatis'] = $data['bl']->nomor;
+            } else {
+                $data['nomor_otomatis'] = $data['bl']->nomor . $base_nomor;
+            }
+        } else {
+            $data['nomor_otomatis'] = $base_nomor;
+        }
+
+        $data['base_nomor'] = $base_nomor;
 
         $this->load->view('templates/header_a', $data);
         $this->load->view('templates/sidebar', $data);
@@ -255,9 +249,20 @@ class Bebaslab extends CI_Controller
     {
         date_default_timezone_set('Asia/Jakarta');
 
+        $nomor = trim($this->input->post('nomor', true));
+        // Jika nomor hanya berisi angka tanpa format, lengkapi dengan template tb_nomorsurat
+        if (!empty($nomor) && strpos($nomor, '/') === false) {
+            $nomor_surat = $this->db->get_where('tb_nomorsurat', ['id_nomor' => 6])->row_array();
+            $base_nomor  = $nomor_surat ? $nomor_surat['nomor'] : '/DST/UN22.9/TA.00/' . date('Y');
+            if (substr(rtrim($base_nomor), -4) !== date('Y')) {
+                $base_nomor = rtrim($base_nomor, '/') . '/' . date('Y');
+            }
+            $nomor = $nomor . $base_nomor;
+        }
+
         $update = [
             'status'         => 'accept',
-            'nomor'          => $this->input->post('nomor', true),
+            'nomor'          => $nomor,
             'keterangan'     => 'Validasi Lengkap',
             'date_finished'  => date("Y-m-d H:i:s"),
             'berlaku_sampai' => date("Y-m-d", strtotime("+90 days")),
