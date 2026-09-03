@@ -2,8 +2,12 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand & Close Button on Mobile -->
+    <?php
+        $sidebar_role_id = $this->session->userdata('role_id');
+        $brand_dashboard_url = ($sidebar_role_id == 2) ? base_url('user') : base_url('operator');
+    ?>
     <div class="sidebar-brand-container d-flex align-items-center justify-content-between px-3">
-        <a class="sidebar-brand d-flex align-items-center m-0 p-0 text-white" href="#">
+        <a class="sidebar-brand d-flex align-items-center m-0 p-0 text-white" href="<?= $brand_dashboard_url; ?>" title="Menuju Dashboard">
             <div class="sidebar-brand-icon">
                 <i class="fas fa-shield-alt"></i>
             </div>
@@ -74,7 +78,7 @@
 
 
         <li class="nav-item">
-            <a class="nav-link" href="<?= base_url('auth/logout'); ?>">
+            <a class="nav-link btn-logout" href="<?= base_url('auth/logout'); ?>">
                 <i class="fas fa-fw fa-sign-out-alt"></i>
                 <span>Logout</span></a>
         </li>

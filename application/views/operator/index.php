@@ -1210,9 +1210,13 @@
             </div>
         </div>
     </div>
-    </div>
 </div>
 <!-- /#sectionStatistikWrapper -->
+
+</div>
+<!-- End of Page Content (container-fluid) -->
+</div>
+<!-- End of Main Content (#content) -->
 
 <!-- Drawer Detail Pengunjung -->
 <div id="visitorDrawer" class="visitor-drawer">
@@ -1221,6 +1225,8 @@
         <!-- konten dari AJAX -->
     </div>
 </div>
+
+
 
 
 <!-- Chart.js -->

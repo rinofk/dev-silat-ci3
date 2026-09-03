@@ -21,10 +21,27 @@
     <link href="<?= base_url('assets/'); ?>css/sb-admin-2.min.css" rel="stylesheet">
 
     <style>
-        .status-card.active {
-            box-shadow: 0 0 10px rgba(0, 123, 255, 0.7);
-            transform: scale(1.02);
-            transition: 0.2s;
+        /* Sticky Footer & Full Viewport Height Fix */
+        html, body {
+            height: 100%;
+        }
+        #wrapper {
+            min-height: 100vh;
+            display: flex;
+        }
+        #content-wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            overflow-x: hidden;
+        }
+        #content {
+            flex: 1 0 auto;
+        }
+        footer.sticky-footer {
+            margin-top: auto !important;
+            flex-shrink: 0;
         }
 
         /* Mobile Sidebar Auto-Hidden & Offcanvas Drawer Enhancement */
@@ -102,10 +119,22 @@
                 display: block;
             }
 
-            /* Konten utama selalu 100% penuh */
+            /* Konten utama selalu 100% penuh dan setinggi layar HP agar footer selalu di dasar */
             #content-wrapper {
                 width: 100% !important;
+                min-height: 100vh !important;
                 overflow-x: hidden;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+
+            #content {
+                flex: 1 0 auto !important;
+            }
+
+            footer.sticky-footer {
+                margin-top: auto !important;
+                width: 100% !important;
             }
 
             .sidebar-brand-container {

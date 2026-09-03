@@ -19,25 +19,6 @@
     <i class="fas fa-angle-up"></i>
 </a>
 
-<!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="<?= base_url('auth/logout'); ?>">Logout</a>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Bootstrap core JavaScript-->
 <script src="<?= base_url('assets/'); ?>vendor/jquery/jquery.min.js"></script>
 <script src="<?= base_url('assets/'); ?>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -200,6 +181,31 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = href;
+            }
+        });
+    });
+
+    // SweetAlert2 Konfirmasi Logout (Topbar Profil & Sidebar)
+    $(document).on('click', 'a[href*="auth/logout"], .btn-logout, [data-target="#logoutModal"]', function(e) {
+        e.preventDefault();
+        const logoutUrl = $(this).attr('href') && $(this).attr('href') !== '#' ? $(this).attr('href') : '<?= base_url("auth/logout"); ?>';
+        
+        Swal.fire({
+            title: '<span style="font-family: \'Plus Jakarta Sans\', sans-serif; font-weight: 800; color: #1e293b;">Konfirmasi Logout</span>',
+            html: '<div style="font-family: \'Inter\', sans-serif; font-size: 14px; color: #64748b;">Apakah Anda yakin ingin mengakhiri sesi dan keluar dari sistem <b>SILAT</b>?</div>',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#e11d48',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: '<i class="fas fa-sign-out-alt mr-1"></i> Ya, Logout',
+            cancelButtonText: 'Batal',
+            reverseButtons: true,
+            customClass: {
+                popup: 'animated fadeInDown'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = logoutUrl;
             }
         });
     });
