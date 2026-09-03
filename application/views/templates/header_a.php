@@ -107,6 +107,50 @@
                 width: 100% !important;
                 overflow-x: hidden;
             }
+
+            .sidebar-brand-container {
+                height: 4.375rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .sidebar-close-btn {
+                background: rgba(255, 255, 255, 0.15) !important;
+                border: 1px solid rgba(255, 255, 255, 0.25) !important;
+                border-radius: 8px !important;
+                width: 32px !important;
+                height: 32px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                padding: 0 !important;
+            }
+
+            .sidebar-close-btn:hover {
+                background: rgba(255, 255, 255, 0.3) !important;
+                transform: scale(1.06);
+            }
+
+            .btn-light-sidebar {
+                background: rgba(255, 255, 255, 0.12) !important;
+                color: #ffffff !important;
+                border: 1px solid rgba(255, 255, 255, 0.25) !important;
+                border-radius: 10px !important;
+                font-size: 11.5px !important;
+                transition: all 0.2s ease;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+
+            .btn-light-sidebar:hover,
+            .btn-light-sidebar:active {
+                background: rgba(255, 255, 255, 0.25) !important;
+                color: #ffffff !important;
+                transform: translateY(-1px);
+            }
         }
 
         @keyframes slideInMobileSidebar {

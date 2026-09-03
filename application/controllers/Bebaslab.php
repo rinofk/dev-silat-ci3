@@ -328,6 +328,58 @@ class Bebaslab extends CI_Controller
     }
 
     // ===============================
+    // UBAH STATUS (RESET / GANTI STATUS)
+    // ===============================
+    public function ubah_status($id)
+    {
+        date_default_timezone_set('Asia/Jakarta');
+
+        $new_status = trim($this->input->post('status', true));
+        $keterangan = trim($this->input->post('keterangan', true));
+        $nomor      = trim($this->input->post('nomor', true));
+
+        $update = [
+            'status'       => $new_status,
+            'date_updated' => date("Y-m-d H:i:s"),
+            'lab1_admin'   => $this->session->userdata('name')
+        ];
+
+        if ($new_status == 'reject') {
+            $update['keterangan'] = $keterangan ?: 'Berkas perlu diperbaiki.';
+        } elseif ($new_status == 'accept') {
+            if (!empty($nomor)) {
+                if (strpos($nomor, '/') === false) {
+                    $nomor_surat = $this->db->get_where('tb_nomorsurat', ['id_nomor' => 6])->row_array();
+                    $base_nomor  = $nomor_surat ? $nomor_surat['nomor'] : '/DST/UN22.9/TA.00/' . date('Y');
+                    if (substr(rtrim($base_nomor), -4) !== date('Y')) {
+                        $base_nomor = rtrim($base_nomor, '/') . '/' . date('Y');
+                    }
+                    $nomor = $nomor . $base_nomor;
+                }
+                $update['nomor'] = $nomor;
+            }
+            $update['keterangan']     = 'Validasi Lengkap';
+            $update['date_finished']  = date("Y-m-d H:i:s");
+            $update['berlaku_sampai'] = date("Y-m-d", strtotime("+90 days"));
+        } elseif ($new_status == 'di ajukan') {
+            $update['keterangan'] = $keterangan ?: 'Status di-reset ke Menunggu Validasi';
+        } elseif ($new_status == 'proses') {
+            $update['keterangan'] = $keterangan ?: 'Sedang diproses laboran';
+        }
+
+        $this->db->where('id_bebaslab', $id)->update('tb_bebaslab', $update);
+
+        $status_label = ($new_status == 'accept') ? 'Diterima (Accept)' : (($new_status == 'reject') ? 'Ditolak (Reject)' : (($new_status == 'proses') ? 'Diproses' : 'Menunggu Validasi (Di ajukan)'));
+
+        $this->session->set_flashdata(
+            'message',
+            '<div class="alert alert-success"><i class="fas fa-check-circle mr-1"></i> Status pengajuan berhasil diubah menjadi: <b>' . $status_label . '</b>!</div>'
+        );
+
+        redirect('bebaslab/detail/' . $id);
+    }
+
+    // ===============================
     // CETAK PDF
     // ===============================
     public function cetak($id)

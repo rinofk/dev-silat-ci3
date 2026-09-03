@@ -57,84 +57,132 @@
         border-radius: 2px;
     }
 
-    /* Service Queue Cards Grid */
-    .service-status-card {
-        border-radius: 18px !important;
-        border: none !important;
-        box-shadow: var(--card-shadow) !important;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    /* ========================================== */
+    /* APP SERVICE LAUNCHER ICONS (MODERN APPS)   */
+    /* ========================================== */
+    .app-service-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .app-service-link {
+        text-decoration: none !important;
+        display: block;
+        height: 100%;
+        color: inherit;
+    }
+
+    .app-service-card {
         background: #ffffff;
-        overflow: hidden;
+        border-radius: 18px;
+        padding: 20px 12px 16px 12px;
+        text-align: center;
+        border: 1px solid #eef2f6;
+        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02);
+        transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        height: 100%;
         position: relative;
-        height: 100%;
+        overflow: hidden;
+        cursor: pointer;
     }
 
-    .service-status-card:hover {
-        transform: translateY(-4px);
-        box-shadow: var(--card-hover-shadow) !important;
+    .app-service-link:hover .app-service-card {
+        transform: translateY(-5px);
+        box-shadow: 0 14px 28px -4px rgba(15, 23, 42, 0.12), 0 6px 10px -2px rgba(15, 23, 42, 0.04);
+        border-color: #cbd5e1;
     }
 
-    .service-status-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 5px;
-        height: 100%;
+    .app-service-link:active .app-service-card {
+        transform: scale(0.96);
     }
 
-    .service-status-card.primary::before { background: var(--primary); }
-    .service-status-card.success::before { background: var(--success); }
-    .service-status-card.warning::before { background: var(--warning); }
-    .service-status-card.info::before { background: var(--info); }
-
-    .service-card-body {
-        padding: 22px;
-    }
-
-    .service-card-tag {
-        font-family: var(--font-title);
-        font-size: 11px;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: #64748b;
-    }
-
-    .service-card-icon-box {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
+    .app-icon-squircle {
+        width: 58px;
+        height: 58px;
+        border-radius: 18px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 14px;
+        font-size: 24px;
+        color: #ffffff;
+        margin-bottom: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+        transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
     }
 
-    .service-card-icon-box.bg-light-primary { background-color: #e0f2fe !important; color: #0284c7 !important; }
-    .service-card-icon-box.bg-light-success { background-color: #d1fae5 !important; color: #10b981 !important; }
-    .service-card-icon-box.bg-light-warning { background-color: #fef3c7 !important; color: #f59e0b !important; }
-    .service-card-icon-box.bg-light-info { background-color: #ecfeff !important; color: #06b6d4 !important; }
+    .app-service-link:hover .app-icon-squircle {
+        transform: scale(1.1) rotate(4deg);
+        box-shadow: 0 12px 22px rgba(0, 0, 0, 0.2);
+    }
 
-    .badge-pill-name {
-        display: inline-block;
+    /* Vibrant Gradients for App Icons */
+    .bg-gradient-blue {
+        background: linear-gradient(135deg, #0284c7, #38bdf8) !important;
+    }
+    .bg-gradient-green {
+        background: linear-gradient(135deg, #059669, #34d399) !important;
+    }
+    .bg-gradient-amber {
+        background: linear-gradient(135deg, #d97706, #fbbf24) !important;
+    }
+    .bg-gradient-purple {
+        background: linear-gradient(135deg, #7c3aed, #c084fc) !important;
+    }
+    .bg-gradient-indigo {
+        background: linear-gradient(135deg, #4f46e5, #06b6d4) !important;
+    }
+
+    .app-service-title {
+        font-family: var(--font-title);
+        font-size: 13.5px;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 4px;
+        line-height: 1.3;
+        transition: color 0.2s ease;
+    }
+
+    .app-service-link:hover .app-service-title {
+        color: var(--primary);
+    }
+
+    .app-service-admin {
         font-family: var(--font-body);
-        font-size: 12px !important;
+        font-size: 11px;
         font-weight: 600;
-        color: #334155 !important;
-        background-color: #f1f5f9 !important;
-        border: 1px solid #e2e8f0 !important;
-        border-radius: 8px !important;
-        padding: 6px 12px !important;
-        margin-right: 4px;
-        margin-bottom: 6px;
+        color: #64748b;
+        background-color: #f1f5f9;
+        padding: 3px 8px;
+        border-radius: 6px;
+        margin-top: 4px;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        border: 1px solid #e2e8f0;
+    }
+
+    .app-service-hint {
+        font-family: var(--font-body);
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--primary);
+        margin-top: 6px;
+        opacity: 0;
+        transform: translateY(4px);
         transition: all 0.2s ease;
     }
-    
-    .badge-pill-name:hover {
-        background-color: #e2e8f0 !important;
-        transform: translateY(-1px);
-        text-decoration: none;
+
+    .app-service-link:hover .app-service-hint {
+        opacity: 1;
+        transform: translateY(0);
     }
 
     /* Visitor Stats Cards */
@@ -620,140 +668,322 @@
         grid-column: 1 / -1;
         width: 100%;
     }
+
+    /* ========================================== */
+    /* RESPONSIVE OPTIMIZATIONS FOR MOBILE (<768px) */
+    /* ========================================== */
+    @media (max-width: 991px) {
+        .app-service-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .dashboard-title-bar {
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+        }
+        .dashboard-title-bar h1 {
+            font-size: 1.35rem !important;
+        }
+        .dashboard-subtitle {
+            font-size: 12px;
+        }
+        .dashboard-section-title {
+            font-size: 15px;
+            margin-top: 22px;
+            margin-bottom: 14px;
+        }
+        .app-service-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .app-service-card {
+            padding: 14px 6px 12px 6px !important;
+            border-radius: 16px !important;
+        }
+        .app-icon-squircle {
+            width: 48px !important;
+            height: 48px !important;
+            border-radius: 14px !important;
+            font-size: 20px !important;
+            margin-bottom: 8px !important;
+        }
+        .app-service-title {
+            font-size: 11.5px !important;
+            margin-bottom: 2px !important;
+        }
+        .app-service-admin {
+            font-size: 9.5px !important;
+            padding: 2px 4px !important;
+            border-radius: 5px !important;
+            max-width: 98% !important;
+        }
+        .stat-card-gradient {
+            border-radius: 12px !important;
+        }
+        .stat-card-body {
+            padding: 12px 6px !important;
+            text-align: center;
+        }
+        .stat-card-label {
+            font-size: 8.5px !important;
+            letter-spacing: 0px !important;
+            margin-bottom: 3px !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .stat-card-value {
+            font-size: 17px !important;
+            line-height: 1.2;
+        }
+        .chart-card-header,
+        .custom-table-card .card-header {
+            padding: 12px 14px !important;
+        }
+        .chart-card-title {
+            font-size: 13px !important;
+            line-height: 1.4;
+        }
+        .custom-table-card {
+            border-radius: 14px !important;
+        }
+        .custom-table thead th,
+        .custom-table tbody td {
+            padding: 10px 8px !important;
+            font-size: 12px !important;
+        }
+        .visitor-drawer-header {
+            padding: 16px !important;
+        }
+        .visitor-drawer-search-container {
+            padding: 12px 16px !important;
+        }
+        .visitor-drawer-body {
+            padding: 14px !important;
+            gap: 10px !important;
+        }
+        .visitor-drawer-card {
+            padding: 12px !important;
+            border-radius: 12px !important;
+            gap: 12px !important;
+        }
+        .visitor-card-avatar {
+            width: 36px !important;
+            height: 36px !important;
+            font-size: 12px !important;
+        }
+    }
+
+    /* Mobile Accordion/Collapse for Statistics */
+    .stats-mobile-toggle-btn {
+        background: #ffffff;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 14px;
+        color: #1e293b;
+        padding: 12px 16px;
+        font-family: var(--font-title);
+        transition: all 0.25s ease;
+        cursor: pointer;
+    }
+    .stats-mobile-toggle-btn:hover,
+    .stats-mobile-toggle-btn:focus,
+    .stats-mobile-toggle-btn:active {
+        background: #f8fafc;
+        border-color: #0284c7;
+        color: #0284c7;
+        box-shadow: 0 4px 12px rgba(2, 132, 199, 0.12) !important;
+    }
+    .stats-toggle-icon-wrap {
+        width: 32px;
+        height: 32px;
+        background: #e0f2fe;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .toggle-chevron {
+        transition: transform 0.25s ease;
+    }
+
+    @media (max-width: 767.98px) {
+        /* Default: Sembunyikan seluruh section statistik di mobile sampai tombol toggle diklik */
+        #sectionStatistikWrapper.collapse:not(.show) {
+            display: none !important;
+        }
+        #sectionStatistikWrapper.collapsing {
+            display: block;
+        }
+        #sectionStatistikWrapper.collapse.show {
+            display: block !important;
+            animation: fadeInStats 0.3s ease;
+        }
+    }
+
+    @media (min-width: 768px) {
+        /* Desktop: Selalu tampilkan statistik */
+        #sectionStatistikWrapper {
+            display: block !important;
+            height: auto !important;
+            visibility: visible !important;
+        }
+        .stats-mobile-toggle-btn {
+            display: none !important;
+        }
+    }
+
+    @keyframes fadeInStats {
+        from { opacity: 0; transform: translateY(-8px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 360px) {
+        .app-service-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
 </style>
 
 
-<div class="container-fluid">
+<div class="container-fluid px-3 px-md-4">
     <!-- Judul Header -->
     <div class="dashboard-title-bar">
         <h1 class="h3 text-gray-800 font-weight-bold mb-1" style="font-family: var(--font-title); font-weight: 800;">Dashboard Operator</h1>
         <p class="dashboard-subtitle">Selamat datang kembali, <strong><?= $user['name'] ?></strong> (NIM: <?= $user['nim'] ?>)</p>
     </div>
 
-    <!-- Section: Antrean Berkas Terbaru -->
-    <div class="dashboard-section-title">Antrean Layanan Mahasiswa</div>
-    <div class="row">
-        <!-- Surat Aktif Kuliah -->
-        <div class="col-xl col-md-6 mb-4">
-            <div class="card service-status-card primary">
-                <div class="service-card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="service-card-tag m-0">Aktif Kuliah</div>
-                        <div class="service-card-icon-box bg-light-primary">
-                            <i class="fas fa-file-alt"></i>
-                        </div>
-                    </div>
-                    <div class="service-card-names-wrapper text-left">
-                        <?php 
-                            $names = "Subiantoro Indra"; 
-                            $name_array = explode(',', $names);
-                            foreach ($name_array as $name) {
-                                echo '<span class="badge-pill-name">' . trim($name) . '</span>';
-                            }
-                        ?>
-                    </div>
+    <!-- Section: Menu Layanan Mahasiswa (Icon Aplikasi Interaktif) -->
+    <div class="dashboard-section-title">Menu Layanan Mahasiswa</div>
+    <div class="app-service-grid">
+        <!-- 1. Surat Aktif Kuliah -->
+        <a href="<?= base_url('transaksi/aktifkuliah'); ?>" 
+           class="app-service-link service-app-item" 
+           data-service="Surat Aktif Kuliah" 
+           data-admins="Subiantoro Indra" 
+           data-allowed-keys="subiantoro,indra"
+           title="Buka Menu Surat Aktif Kuliah">
+            <div class="app-service-card">
+                <div class="app-icon-squircle bg-gradient-blue">
+                    <i class="fas fa-file-alt"></i>
                 </div>
+                <div class="app-service-title">Aktif Kuliah</div>
+                <div class="app-service-admin" title="Admin: Subiantoro Indra">
+                    <i class="fas fa-user-circle mr-1 text-primary"></i>Subiantoro
+                </div>
+                <div class="app-service-hint d-none d-md-block">Buka Layanan &rarr;</div>
             </div>
-        </div>
+        </a>
 
-        <!-- Bebas Perpustakaan -->
-        <div class="col-xl col-md-6 mb-4">
-            <div class="card service-status-card success">
-                <div class="service-card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="service-card-tag m-0">Bebas Perpustakaan</div>
-                        <div class="service-card-icon-box bg-light-success">
-                            <i class="fas fa-book"></i>
-                        </div>
-                    </div>
-                    <div class="service-card-names-wrapper text-left">
-                        <?php 
-                            $names = "Suryani"; 
-                            $name_array = explode(',', $names);
-                            foreach ($name_array as $name) {
-                                echo '<span class="badge-pill-name">' . trim($name) . '</span>';
-                            }
-                        ?>
-                    </div>
+        <!-- 2. Bebas Perpustakaan -->
+        <a href="<?= base_url('pustakawan'); ?>" 
+           class="app-service-link service-app-item" 
+           data-service="Bebas Perpustakaan" 
+           data-admins="Suryani" 
+           data-allowed-keys="suryani"
+           title="Buka Menu Bebas Perpustakaan">
+            <div class="app-service-card">
+                <div class="app-icon-squircle bg-gradient-green">
+                    <i class="fas fa-book"></i>
                 </div>
+                <div class="app-service-title">Bebas Perpus</div>
+                <div class="app-service-admin" title="Admin: Suryani">
+                    <i class="fas fa-user-circle mr-1 text-success"></i>Suryani
+                </div>
+                <div class="app-service-hint d-none d-md-block">Buka Layanan &rarr;</div>
             </div>
-        </div>
+        </a>
 
-        <!-- Bebas Laboratorium -->
-        <div class="col-xl col-md-6 mb-4">
-            <div class="card service-status-card warning">
-                <div class="service-card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="service-card-tag m-0">Bebas Lab</div>
-                        <div class="service-card-icon-box bg-light-warning">
-                            <i class="fas fa-flask"></i>
-                        </div>
-                    </div>
-                    <div class="service-card-names-wrapper text-left">
-                        <?php 
-                            $names = "Sumo Lestari, Nurul Hamsiah, Hazwani"; 
-                            $name_array = explode(',', $names);
-                            foreach ($name_array as $name) {
-                                echo '<span class="badge-pill-name">' . trim($name) . '</span>';
-                            }
-                        ?>
-                    </div>
+        <!-- 3. Bebas Laboratorium -->
+        <a href="<?= base_url('bebaslab'); ?>" 
+           class="app-service-link service-app-item" 
+           data-service="Bebas Laboratorium" 
+           data-admins="Sumo Lestari, Nurul Hamsiah, Hazwani" 
+           data-allowed-keys="sumo,lestari,nurul,hamsiah,hazwani,hazwan"
+           title="Buka Menu Bebas Laboratorium">
+            <div class="app-service-card">
+                <div class="app-icon-squircle bg-gradient-amber">
+                    <i class="fas fa-flask"></i>
                 </div>
+                <div class="app-service-title">Bebas Lab</div>
+                <div class="app-service-admin" title="Admin: Sumo Lestari, Nurul Hamsiah, Hazwani">
+                    <i class="fas fa-user-circle mr-1 text-warning"></i>Laboran
+                </div>
+                <div class="app-service-hint d-none d-md-block">Buka Layanan &rarr;</div>
             </div>
-        </div>
+        </a>
 
-        <!-- Barcode Publikasi -->
-        <div class="col-xl col-md-6 mb-4">
-            <div class="card service-status-card warning">
-                <div class="service-card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="service-card-tag m-0">Barcode Publikasi</div>
-                        <div class="service-card-icon-box bg-light-warning">
-                            <i class="fas fa-qrcode"></i>
-                        </div>
-                    </div>
-                    <div class="service-card-names-wrapper text-left">
-                        <?php 
-                            $names = "Andeff, Rino"; 
-                            $name_array = explode(',', $names);
-                            foreach ($name_array as $name) {
-                                echo '<span class="badge-pill-name">' . trim($name) . '</span>';
-                            }
-                        ?>
-                    </div>
+        <!-- 4. Barcode Publikasi -->
+        <a href="<?= base_url('jurnal'); ?>" 
+           class="app-service-link service-app-item" 
+           data-service="Barcode Publikasi" 
+           data-admins="Andeff, Rino" 
+           data-allowed-keys="andeff,rino,andef"
+           title="Buka Menu Barcode Publikasi">
+            <div class="app-service-card">
+                <div class="app-icon-squircle bg-gradient-purple">
+                    <i class="fas fa-qrcode"></i>
                 </div>
+                <div class="app-service-title">Barcode Publikasi</div>
+                <div class="app-service-admin" title="Admin: Andeff, Rino">
+                    <i class="fas fa-user-circle mr-1" style="color:#7c3aed;"></i>Andeff, Rino
+                </div>
+                <div class="app-service-hint d-none d-md-block">Buka Layanan &rarr;</div>
             </div>
-        </div>
+        </a>
 
-        <!-- SKL -->
-        <div class="col-xl col-md-6 mb-4">
-            <div class="card service-status-card info">
-                <div class="service-card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="service-card-tag m-0">Keterangan Lulus</div>
-                        <div class="service-card-icon-box bg-light-info">
-                            <i class="fas fa-graduation-cap"></i>
-                        </div>
-                    </div>
-                    <div class="service-card-names-wrapper text-left">
-                        <?php 
-                            $names = "Yasinta Pagi"; 
-                            $name_array = explode(',', $names);
-                            foreach ($name_array as $name) {
-                                echo '<span class="badge-pill-name">' . trim($name) . '</span>';
-                            }
-                        ?>
-                    </div>
+        <!-- 5. Keterangan Lulus (SKL) -->
+        <a href="<?= base_url('skl'); ?>" 
+           class="app-service-link service-app-item" 
+           data-service="Surat Keterangan Lulus (SKL)" 
+           data-admins="Yasinta Pagi, Yuti Maisyarah" 
+           data-allowed-keys="yasinta,pagi,yuti,maisyarah"
+           title="Buka Menu Surat Keterangan Lulus (SKL)">
+            <div class="app-service-card">
+                <div class="app-icon-squircle bg-gradient-indigo">
+                    <i class="fas fa-graduation-cap"></i>
                 </div>
+                <div class="app-service-title">Ket. Lulus</div>
+                <div class="app-service-admin" title="Admin: Yasinta Pagi">
+                    <i class="fas fa-user-circle mr-1 text-info"></i>Yasinta
+                </div>
+                <div class="app-service-hint d-none d-md-block">Buka Layanan &rarr;</div>
             </div>
-        </div>
+        </a>
     </div>
+
+    <!-- Tombol Toggle Statistik Khusus Layanan Mobile (Default Hidden) -->
+    <div class="d-block d-md-none mb-3">
+        <button class="btn btn-block shadow-sm stats-mobile-toggle-btn d-flex align-items-center justify-content-between" 
+                type="button" 
+                data-toggle="collapse" 
+                data-target="#sectionStatistikWrapper" 
+                aria-expanded="false" 
+                aria-controls="sectionStatistikWrapper"
+                id="btnToggleStatistik">
+            <span class="d-flex align-items-center font-weight-bold" style="font-size: 13px;">
+                <span class="stats-toggle-icon-wrap mr-2">
+                    <i class="fas fa-chart-pie text-primary"></i>
+                </span>
+                <span id="statsToggleLabel">Tampilkan Statistik & Kunjungan</span>
+            </span>
+            <span class="badge badge-light border text-muted px-2 py-1 small">
+                <i class="fas fa-chevron-down toggle-chevron" id="statsChevron"></i>
+            </span>
+        </button>
+    </div>
+
+    <!-- Wrapper Statistik (Default Hidden pada Mobile < 768px, Visible di Desktop) -->
+    <div id="sectionStatistikWrapper" class="collapse">
 
     <!-- Section: Statistik Pengunjung -->
     <div class="dashboard-section-title">Statistik Kunjungan Sistem (Visitor)</div>
     <div class="row">
         <!-- Total Visitors -->
-        <div class="col-xl-4 col-md-6 mb-4">
+        <div class="col-4 px-1 px-sm-3 col-md-4 mb-3 mb-md-4">
             <div class="card stat-card-gradient blue">
                 <div class="stat-card-body">
                     <div class="stat-card-label">Total Kunjungan</div>
@@ -763,20 +993,20 @@
         </div>
 
         <!-- Today Visitors -->
-        <div class="col-xl-4 col-md-6 mb-4">
+        <div class="col-4 px-1 px-sm-3 col-md-4 mb-3 mb-md-4">
             <div class="card stat-card-gradient teal">
                 <div class="stat-card-body">
-                    <div class="stat-card-label">Kunjungan Hari Ini</div>
+                    <div class="stat-card-label">Hari Ini</div>
                     <div class="stat-card-value"><?= number_format($today_visitors); ?></div>
                 </div>
             </div>
         </div>
 
         <!-- Unique Visitors -->
-        <div class="col-xl-4 col-md-6 mb-4">
+        <div class="col-4 px-1 px-sm-3 col-md-4 mb-3 mb-md-4">
             <div class="card stat-card-gradient purple">
                 <div class="stat-card-body">
-                    <div class="stat-card-label">Pengunjung Unik (NIM)</div>
+                    <div class="stat-card-label">Pengunjung Unik</div>
                     <div class="stat-card-value"><?= number_format($unique_visitors); ?></div>
                 </div>
             </div>
@@ -980,7 +1210,9 @@
             </div>
         </div>
     </div>
+    </div>
 </div>
+<!-- /#sectionStatistikWrapper -->
 
 <!-- Drawer Detail Pengunjung -->
 <div id="visitorDrawer" class="visitor-drawer">
@@ -1319,6 +1551,71 @@
             }
         });
 
+
+        // Toggle teks dan ikon tombol statistik pada layar mobile
+        $('#sectionStatistikWrapper').on('show.bs.collapse', function () {
+            $('#statsToggleLabel').text('Sembunyikan Statistik & Kunjungan');
+            $('#statsChevron').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+            $('#btnToggleStatistik').addClass('border-primary shadow');
+            // Trigger chart resize after animation so charts render at full container width
+            setTimeout(function() {
+                if (window.Chart) {
+                    if (Chart.instances) {
+                        Object.keys(Chart.instances).forEach(function(key) {
+                            Chart.instances[key].resize();
+                        });
+                    }
+                }
+            }, 350);
+        }).on('hide.bs.collapse', function () {
+            $('#statsToggleLabel').text('Tampilkan Statistik & Kunjungan');
+            $('#statsChevron').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+            $('#btnToggleStatistik').removeClass('border-primary shadow');
+        });
+
+        // Validasi Hak Akses Admin saat Icon Aplikasi Layanan Diklik
+        $(document).on('click', '.service-app-item', function(e) {
+            const isSuperAdmin = <?= ($this->session->userdata('role_id') == 1) ? 'true' : 'false'; ?>;
+            const currentName = "<?= strtolower(addslashes($user['name'])); ?>";
+            const currentNim = "<?= strtolower(addslashes($user['nim'])); ?>";
+            
+            const rawAllowedKeys = $(this).data('allowed-keys') || '';
+            const allowedKeys = rawAllowedKeys.toString().split(',');
+            const serviceName = $(this).data('service') || 'Layanan';
+            const adminNames = $(this).data('admins') || '-';
+
+            // Cek apakah user adalah Super Admin (role 1) atau nama/NIM sesuai dengan admin yang berwenang
+            let hasAccess = isSuperAdmin;
+            if (!hasAccess) {
+                for (let i = 0; i < allowedKeys.length; i++) {
+                    const key = allowedKeys[i].trim().toLowerCase();
+                    if (key && (currentName.indexOf(key) !== -1 || currentNim.indexOf(key) !== -1)) {
+                        hasAccess = true;
+                        break;
+                    }
+                }
+            }
+
+            // Jika bukan admin yang berwenang, cegah navigasi dan munculkan SweetAlert2
+            if (!hasAccess) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: '<span style="font-family: var(--font-title); font-weight: 800; color: #1e293b;">Akses Tidak Diizinkan!</span>',
+                    html: '<div style="font-family: var(--font-body); font-size: 13.5px; color: #475569; line-height: 1.5;">' +
+                          'Maaf, Anda tidak memiliki hak akses untuk mengelola modul <b>' + serviceName + '</b>.<br>' +
+                          '<div class="mt-3 p-3 text-left" style="background-color: #fef2f2; border: 1px solid #fee2e2; border-radius: 10px; font-size: 12px; color: #991b1b;">' +
+                          '<i class="fas fa-user-shield mr-1"></i> <strong>Admin Pengelola:</strong> ' + adminNames +
+                          '</div></div>',
+                    confirmButtonColor: '#0284c7',
+                    confirmButtonText: '<i class="fas fa-check mr-1"></i> Saya Mengerti',
+                    customClass: {
+                        popup: 'animated fadeInDown'
+                    }
+                });
+                return false;
+            }
+        });
 
     });
 </script>

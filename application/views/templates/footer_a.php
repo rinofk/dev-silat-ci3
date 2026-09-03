@@ -241,6 +241,14 @@
             }
         });
 
+        // Tutup/Sembunyikan sidebar saat tombol close (✕) atau tombol sembunyikan sidebar di-klik
+        $(document).on('click', '#sidebarCloseBtn, #sidebarHideMobileBtn, .sidebar-hide-btn', function(e) {
+            e.preventDefault();
+            $('body').addClass('sidebar-toggled').removeClass('mobile-sidebar-active');
+            $('.sidebar').addClass('toggled');
+            $('.sidebar .collapse').collapse('hide');
+        });
+
         // Tutup sidebar saat backdrop di-klik
         $(document).on('click', '.sidebar-mobile-backdrop', function() {
             $('body').addClass('sidebar-toggled').removeClass('mobile-sidebar-active');

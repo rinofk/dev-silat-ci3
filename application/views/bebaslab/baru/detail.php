@@ -93,20 +93,12 @@
         </div>
     <?php endif; ?>
 
-    <!-- Page Header & Back Button -->
-    <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between mb-3 gap-2">
-        <div class="d-flex align-items-center flex-wrap gap-2">
-            <a href="<?= base_url('bebaslab?prodi=' . $bl->slug); ?>" class="btn btn-sm btn-outline-secondary shadow-sm font-weight-bold mr-2" style="border-radius: 8px;">
-                <i class="fas fa-arrow-left mr-1"></i> Kembali
-            </a>
-            <h1 class="h5 mb-0 text-gray-800 font-weight-bold d-inline-flex align-items-center">
-                <i class="fas fa-microscope text-primary mr-2"></i> Detail Bebas Laboratorium
-            </h1>
-            <span class="badge badge-light border text-muted font-weight-bold px-2 py-1 ml-sm-2" style="font-size: 11px;">
-                #<?= $bl->id_bebaslab; ?>
-            </span>
-        </div>
-        <div class="mt-2 mt-sm-0">
+    <!-- Top Navigation Bar (Tombol Kembali & Status Badge) -->
+    <div class="d-flex align-items-center justify-content-between mb-2">
+        <a href="<?= base_url('bebaslab?prodi=' . $bl->slug); ?>" class="btn btn-sm btn-outline-secondary shadow-sm font-weight-bold" style="border-radius: 8px;">
+            <i class="fas fa-arrow-left mr-1"></i> Kembali
+        </a>
+        <div>
             <?php 
                 $status = strtolower($bl->status);
                 if ($status == 'accept') {
@@ -120,6 +112,16 @@
                 }
             ?>
         </div>
+    </div>
+
+    <!-- Page Title Bar -->
+    <div class="d-flex align-items-center mb-3">
+        <h1 class="h5 mb-0 text-gray-800 font-weight-bold d-flex align-items-center">
+            <i class="fas fa-microscope text-primary mr-2"></i> Detail Bebas Laboratorium
+        </h1>
+        <span class="badge badge-light border text-muted font-weight-bold px-2 py-1 ml-2" style="font-size: 11px;">
+            #<?= $bl->id_bebaslab; ?>
+        </span>
     </div>
 
     <div class="row">
@@ -255,65 +257,26 @@
                 </div>
             </div>
 
-            <!-- Verification Results Box (If Accept or Reject) -->
-            <?php if ($status == 'accept'): ?>
-                <div class="card shadow-sm mb-3 border-left-success" style="border-radius: 14px; overflow: hidden;">
-                    <div class="card-body p-3 p-md-4">
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="mr-3 text-success">
-                                <i class="fas fa-check-circle fa-2x"></i>
-                            </div>
-                            <div>
-                                <h6 class="font-weight-bold text-success mb-0">Pengajuan Bebas Lab Telah Disetujui</h6>
-                                <small class="text-muted">Surat resmi telah diterbitkan dan dapat dicetak.</small>
-                            </div>
-                        </div>
-
-                        <div class="alert alert-success py-2 px-3 mb-3 small d-flex align-items-center" style="border-radius: 8px; background-color: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46;">
-                            <i class="fas fa-info-circle mr-2 fa-lg text-success"></i>
-                            <div>
-                                <strong>Informasi untuk Admin:</strong> File/surat yang sudah disetujui dapat langsung diunduh dan di-upload oleh mahasiswa di <strong>halaman SILAT Mahasiswa</strong>.
-                            </div>
-                        </div>
-
-                        <div class="row pt-2 border-top">
-                            <div class="col-sm-6 mb-2">
-                                <span class="text-muted small d-block">Nomor Surat:</span>
-                                <span class="font-weight-bold text-primary" style="font-size: 0.95rem;"><?= htmlspecialchars($bl->nomor ?: '-'); ?></span>
-                            </div>
-                            <div class="col-sm-6 mb-2">
-                                <span class="text-muted small d-block">Petugas Verifikator:</span>
-                                <span class="font-weight-bold text-gray-800"><?= htmlspecialchars($bl->lab1_admin ?: '-'); ?></span>
-                            </div>
-                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                <span class="text-muted small d-block">Tanggal Surat:</span>
-                                <span class="font-weight-bold text-gray-800">
-                                    <?= (!empty($bl->date_finished) && $bl->date_finished != '0000-00-00 00:00:00') ? date('d-m-Y', strtotime($bl->date_finished)) : '-' ?>
-                                </span>
-                            </div>
-                            <div class="col-sm-6">
-                                <span class="text-muted small d-block">Masa Berlaku Sampai:</span>
-                                <span class="font-weight-bold text-success">
-                                    <?= (!empty($bl->berlaku_sampai) && $bl->berlaku_sampai != '0000-00-00') ? date('d-m-Y', strtotime($bl->berlaku_sampai)) : '-' ?>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php elseif ($status == 'reject'): ?>
+            <!-- Rejection Reason Alert (Only if Reject) -->
+            <?php if ($status == 'reject'): ?>
                 <div class="card shadow-sm mb-3 border-left-danger" style="border-radius: 14px; overflow: hidden;">
                     <div class="card-body p-3 p-md-4">
-                        <div class="d-flex align-items-start">
-                            <div class="mr-3 text-danger mt-1">
-                                <i class="fas fa-times-circle fa-2x"></i>
-                            </div>
-                            <div>
-                                <h6 class="font-weight-bold text-danger mb-1">Pengajuan Ditolak</h6>
-                                <div class="alert alert-danger py-2 px-3 mb-2 small" style="border-radius: 8px; background-color: #fef2f2; border: 1px solid #fecaca; color: #991b1b;">
-                                    <strong>Alasan:</strong> <?= htmlspecialchars($bl->keterangan ?: 'Berkas tidak sesuai syarat.'); ?>
+                        <div class="d-flex align-items-start justify-content-between flex-wrap" style="gap: 8px;">
+                            <div class="d-flex align-items-start">
+                                <div class="mr-3 text-danger mt-1">
+                                    <i class="fas fa-times-circle fa-2x"></i>
                                 </div>
-                                <small class="text-muted d-block">Ditolak oleh: <strong><?= htmlspecialchars($bl->lab1_admin ?: 'Admin'); ?></strong> pada <?= (!empty($bl->date_updated)) ? date('d-m-Y H:i', strtotime($bl->date_updated)) : '-' ?></small>
+                                <div>
+                                    <h6 class="font-weight-bold text-danger mb-1">Pengajuan Ditolak</h6>
+                                    <div class="alert alert-danger py-2 px-3 mb-2 small" style="border-radius: 8px; background-color: #fef2f2; border: 1px solid #fecaca; color: #991b1b;">
+                                        <strong>Alasan:</strong> <?= htmlspecialchars($bl->keterangan ?: 'Berkas tidak sesuai syarat.'); ?>
+                                    </div>
+                                    <small class="text-muted d-block">Ditolak oleh: <strong><?= htmlspecialchars($bl->lab1_admin ?: 'Admin'); ?></strong> pada <?= (!empty($bl->date_updated)) ? date('d-m-Y H:i', strtotime($bl->date_updated)) : '-' ?></small>
+                                </div>
                             </div>
+                            <button type="button" class="btn btn-sm btn-outline-warning text-dark font-weight-bold px-3 py-1 shadow-sm" data-toggle="modal" data-target="#modalUbahStatus" style="border-radius: 6px;">
+                                <i class="fas fa-exchange-alt mr-1"></i> Ubah Status
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -349,13 +312,16 @@
                                 </button>
                             <?php endif; ?>
 
-                            <!-- CETAK & UPDATE TANGGAL (Only for 'accept') -->
+                            <!-- CETAK & UPDATE TANGGAL & UBAH STATUS (Only for 'accept') -->
                             <?php if ($status == 'accept') : ?>
+                                <button type="button" class="btn btn-warning text-dark font-weight-bold flex-fill flex-sm-grow-0 py-2 shadow-sm" data-toggle="modal" data-target="#modalUbahStatus" style="border-radius: 8px;">
+                                    <i class="fas fa-exchange-alt mr-1"></i> Ubah Status
+                                </button>
                                 <button type="button" class="btn btn-info font-weight-bold flex-fill flex-sm-grow-0 py-2 shadow-sm" data-toggle="modal" data-target="#modalTanggal" style="border-radius: 8px;">
                                     <i class="fas fa-calendar-alt mr-1"></i> Update Tanggal
                                 </button>
                                 <a href="<?= base_url('bebaslab/cetak/' . $bl->id_bebaslab); ?>" class="btn btn-primary font-weight-bold flex-fill flex-sm-grow-0 py-2 shadow-sm" target="_blank" style="border-radius: 8px;">
-                                    <i class="fas fa-print mr-1"></i> Cetak Surat Bebas Lab
+                                    <i class="fas fa-print mr-1"></i> Cetak Surat
                                 </a>
                             <?php endif; ?>
                         </div>
@@ -587,6 +553,67 @@
 </div>
 <?php endif; ?>
 
+<!-- Modal Ubah Status Pengajuan -->
+<div class="modal fade" id="modalUbahStatus" tabindex="-1" role="dialog" aria-labelledby="modalUbahStatusLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 14px; overflow: hidden;">
+            <div class="modal-header bg-warning text-dark py-3">
+                <h6 class="modal-title font-weight-bold" id="modalUbahStatusLabel">
+                    <i class="fas fa-exchange-alt mr-2"></i> Ubah Status Pengajuan
+                </h6>
+                <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="<?= base_url('bebaslab/ubah_status/' . $bl->id_bebaslab); ?>" method="post">
+                <div class="modal-body p-4">
+                    <div class="form-group mb-3">
+                        <label class="small font-weight-bold text-gray-800 d-block">Status Saat Ini</label>
+                        <div>
+                            <?php if ($status == 'accept'): ?>
+                                <span class="badge badge-success px-3 py-1 font-weight-bold" style="font-size: 12px; border-radius: 6px;"><i class="fas fa-check-circle mr-1"></i> Diterima (Accept)</span>
+                            <?php elseif ($status == 'reject'): ?>
+                                <span class="badge badge-danger px-3 py-1 font-weight-bold" style="font-size: 12px; border-radius: 6px;"><i class="fas fa-times-circle mr-1"></i> Ditolak (Reject)</span>
+                            <?php elseif ($status == 'proses'): ?>
+                                <span class="badge badge-info px-3 py-1 font-weight-bold" style="font-size: 12px; border-radius: 6px;"><i class="fas fa-spinner fa-spin mr-1"></i> Diproses</span>
+                            <?php else: ?>
+                                <span class="badge badge-warning text-dark px-3 py-1 font-weight-bold" style="font-size: 12px; border-radius: 6px;"><i class="fas fa-clock mr-1"></i> Menunggu Validasi</span>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="small font-weight-bold text-gray-800">Pilih Status Baru <span class="text-danger">*</span></label>
+                        <select name="status" id="selectStatusUbah" class="form-control font-weight-bold" required style="border-radius: 8px;">
+                            <option value="di ajukan" <?= ($status == 'di ajukan') ? 'selected' : ''; ?>>Menunggu Validasi (Di ajukan / Reset)</option>
+                            <option value="proses" <?= ($status == 'proses') ? 'selected' : ''; ?>>Diproses</option>
+                            <option value="accept" <?= ($status == 'accept') ? 'selected' : ''; ?>>Diterima (Accept)</option>
+                            <option value="reject" <?= ($status == 'reject') ? 'selected' : ''; ?>>Ditolak (Reject)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-3" id="groupNomorUbah" style="<?= ($status == 'accept') ? '' : 'display: none;'; ?>">
+                        <label class="small font-weight-bold text-gray-800">Nomor Surat</label>
+                        <input type="text" class="form-control font-weight-bold" name="nomor" id="nomorUbah" value="<?= htmlspecialchars($bl->nomor ?: $nomor_otomatis); ?>" style="border-radius: 8px;">
+                        <small class="text-muted">Nomor surat resmi bebas laboratorium.</small>
+                    </div>
+
+                    <div class="form-group mb-0" id="groupKeteranganUbah">
+                        <label class="small font-weight-bold text-gray-800">Catatan / Alasan Perubahan</label>
+                        <textarea class="form-control" name="keterangan" rows="3" placeholder="Masukkan alasan atau keterangan perubahan status..." style="border-radius: 8px;"><?= htmlspecialchars($bl->keterangan ?: ''); ?></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer py-2 px-3 bg-light d-flex justify-content-between">
+                    <button type="button" class="btn btn-sm btn-secondary font-weight-bold" data-dismiss="modal" style="border-radius: 6px;">Batal</button>
+                    <button type="submit" class="btn btn-sm btn-warning font-weight-bold text-dark px-3 shadow-sm" style="border-radius: 6px;">
+                        <i class="fas fa-save mr-1"></i> Simpan Status Baru
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         if (window.jQuery) {
@@ -597,6 +624,16 @@
                     if (input.value.startsWith('/')) {
                         input.setSelectionRange(0, 0);
                     }
+                }
+            });
+
+            // Tampilkan/sembunyikan input nomor surat pada modal ubah status
+            $('#selectStatusUbah').on('change', function() {
+                var val = $(this).val();
+                if (val === 'accept') {
+                    $('#groupNomorUbah').slideDown(200);
+                } else {
+                    $('#groupNomorUbah').slideUp(200);
                 }
             });
         }
