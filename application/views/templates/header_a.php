@@ -26,6 +26,97 @@
             transform: scale(1.02);
             transition: 0.2s;
         }
+
+        /* Mobile Sidebar Auto-Hidden & Offcanvas Drawer Enhancement */
+        @media (max-width: 768px) {
+            /* Default: Sembunyikan sidebar di mobile agar halaman utama mendapat lebar 100% penuh */
+            .sidebar {
+                width: 0 !important;
+                min-height: 100vh;
+                overflow: hidden;
+                display: none;
+                transition: all 0.3s ease;
+            }
+
+            .sidebar.toggled {
+                width: 0 !important;
+                display: none !important;
+            }
+
+            /* Saat sidebar dibuka oleh admin via tombol hamburger */
+            body:not(.sidebar-toggled) .sidebar:not(.toggled),
+            .sidebar.mobile-open {
+                display: block !important;
+                position: fixed !important;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                z-index: 1050;
+                width: 16rem !important;
+                max-width: 82vw;
+                box-shadow: 4px 0 25px rgba(0, 0, 0, 0.35);
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                animation: slideInMobileSidebar 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            body:not(.sidebar-toggled) .sidebar:not(.toggled) .sidebar-brand-text,
+            .sidebar.mobile-open .sidebar-brand-text {
+                display: inline !important;
+            }
+
+            body:not(.sidebar-toggled) .sidebar:not(.toggled) .sidebar-heading,
+            .sidebar.mobile-open .sidebar-heading {
+                text-align: left !important;
+                padding: 0 1.25rem;
+            }
+
+            body:not(.sidebar-toggled) .sidebar:not(.toggled) .nav-item .nav-link,
+            .sidebar.mobile-open .nav-item .nav-link {
+                text-align: left !important;
+                padding: 0.75rem 1.25rem;
+                width: 100% !important;
+            }
+
+            body:not(.sidebar-toggled) .sidebar:not(.toggled) .nav-item .nav-link span,
+            .sidebar.mobile-open .nav-item .nav-link span {
+                font-size: 0.85rem !important;
+                display: inline !important;
+                margin-left: 8px;
+            }
+
+            /* Mobile Backdrop Overlay saat sidebar aktif */
+            .sidebar-mobile-backdrop {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(15, 23, 42, 0.55);
+                backdrop-filter: blur(2px);
+                z-index: 1040;
+                display: none;
+                transition: opacity 0.3s ease;
+            }
+            body.mobile-sidebar-active .sidebar-mobile-backdrop {
+                display: block;
+            }
+
+            /* Konten utama selalu 100% penuh */
+            #content-wrapper {
+                width: 100% !important;
+                overflow-x: hidden;
+            }
+        }
+
+        @keyframes slideInMobileSidebar {
+            from {
+                transform: translateX(-100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
     </style>
 
     <!-- datepicker -->

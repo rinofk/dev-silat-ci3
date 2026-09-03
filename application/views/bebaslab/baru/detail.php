@@ -268,6 +268,14 @@
                                 <small class="text-muted">Surat resmi telah diterbitkan dan dapat dicetak.</small>
                             </div>
                         </div>
+
+                        <div class="alert alert-success py-2 px-3 mb-3 small d-flex align-items-center" style="border-radius: 8px; background-color: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46;">
+                            <i class="fas fa-info-circle mr-2 fa-lg text-success"></i>
+                            <div>
+                                <strong>Informasi untuk Admin:</strong> File/surat yang sudah disetujui dapat langsung diunduh dan di-upload oleh mahasiswa di <strong>halaman SILAT Mahasiswa</strong>.
+                            </div>
+                        </div>
+
                         <div class="row pt-2 border-top">
                             <div class="col-sm-6 mb-2">
                                 <span class="text-muted small d-block">Nomor Surat:</span>
@@ -430,8 +438,11 @@
                         <li class="mb-2">Pastikan mahasiswa <b>bebas peminjaman alat lab</b> dan administrasi laboratorium.</li>
                         <li class="mb-2">Jika dokumen valid, klik <b>Setujui (Accept)</b> dan masukkan <b>Nomor Surat</b>.</li>
                         <li class="mb-2">Jika berkas tidak sesuai, klik <b>Tolak (Reject)</b> serta isi alasan penolakan.</li>
-                        <li>Gunakan tombol <b>Update Tanggal</b> jika ingin menyesuaikan kembali tanggal terbit surat.</li>
+                        <li class="mb-2">Gunakan tombol <b>Update Tanggal</b> jika ingin menyesuaikan kembali tanggal terbit surat.</li>
                     </ol>
+                    <div class="alert alert-info py-2 px-3 mt-3 mb-0 small" style="border-radius: 8px; background-color: #f0f9ff; border: 1px solid #bae6fd; color: #0369a1;">
+                        <i class="fas fa-info-circle mr-1"></i> <strong>Informasi Admin:</strong> File yang telah disetujui (Accept) dapat di-upload oleh mahasiswa di <strong>halaman SILAT Mahasiswa</strong>.
+                    </div>
                 </div>
             </div>
 
@@ -456,9 +467,12 @@
             </div>
             <form action="<?= base_url('bebaslab/accept/' . $bl->id_bebaslab); ?>" method="post">
                 <div class="modal-body p-4">
-                    <p class="small text-muted mb-3">
+                    <p class="small text-muted mb-2">
                         Anda akan menyetujui pengajuan Bebas Laboratorium untuk <strong><?= htmlspecialchars($bl->nama_lengkap); ?> (<?= htmlspecialchars($bl->nim_mahasiswa); ?>)</strong>.
                     </p>
+                    <div class="alert alert-info py-2 px-3 mb-3 small" style="border-radius: 8px; background-color: #f0f9ff; border: 1px solid #bae6fd; color: #0369a1;">
+                        <i class="fas fa-info-circle mr-1"></i> <strong>Informasi:</strong> Surat yang disetujui dapat diunduh &amp; di-upload oleh mahasiswa di <strong>halaman SILAT Mahasiswa</strong>.
+                    </div>
                     <div class="form-group mb-0">
                         <label for="nomor" class="small font-weight-bold text-gray-800">Nomor Surat Lengkap <span class="text-danger">*</span></label>
                         <input type="text" class="form-control font-weight-bold text-primary" id="nomor" name="nomor" value="<?= htmlspecialchars(isset($nomor_otomatis) ? $nomor_otomatis : ''); ?>" required placeholder="Contoh: 1234<?= htmlspecialchars(isset($base_nomor) ? $base_nomor : ''); ?>" style="border-radius: 6px;">

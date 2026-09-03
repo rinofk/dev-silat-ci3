@@ -315,6 +315,7 @@
                 <li><strong>Masa berlaku Surat Bebas Lab adalah 90 hari</strong> sejak tanggal surat diterbitkan.</li>
                 <li><strong>Mahasiswa dapat mengajukan kembali setelah 60 hari</strong> sejak pengajuan terakhir.</li>
                 <li>Pastikan kelengkapan berkas KTM dan validasi lab telah sesuai sebelum menyetujui pengajuan.</li>
+                <li><strong>File yang sudah disetujui (Accept)</strong> dapat diunduh dan di-upload oleh mahasiswa secara mandiri pada <strong>halaman SILAT Mahasiswa</strong>.</li>
             </ul>
         </div>
     </div>

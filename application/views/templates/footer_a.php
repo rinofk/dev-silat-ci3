@@ -203,6 +203,66 @@
             }
         });
     });
+
+    // Otomatis Sembunyikan Sidebar pada Layar HP / Mobile (< 768px)
+    $(document).ready(function() {
+        function checkMobileSidebar() {
+            if ($(window).width() < 768) {
+                if (!$('body').hasClass('sidebar-toggled')) {
+                    $('body').addClass('sidebar-toggled');
+                }
+                if (!$('.sidebar').hasClass('toggled')) {
+                    $('.sidebar').addClass('toggled');
+                }
+                $('.sidebar .collapse').collapse('hide');
+            } else {
+                $('body').removeClass('mobile-sidebar-active');
+            }
+        }
+
+        // Jalankan saat halaman pertama kali dimuat
+        checkMobileSidebar();
+
+        // Tambahkan elemen backdrop jika belum ada
+        if (!$('.sidebar-mobile-backdrop').length) {
+            $('<div class="sidebar-mobile-backdrop"></div>').appendTo('body');
+        }
+
+        // Kelola status backdrop saat tombol toggle topbar (hamburger) diklik
+        $('#sidebarToggleTop').on('click', function() {
+            if ($(window).width() < 768) {
+                setTimeout(function() {
+                    if (!$('.sidebar').hasClass('toggled')) {
+                        $('body').addClass('mobile-sidebar-active');
+                    } else {
+                        $('body').removeClass('mobile-sidebar-active');
+                    }
+                }, 50);
+            }
+        });
+
+        // Tutup sidebar saat backdrop di-klik
+        $(document).on('click', '.sidebar-mobile-backdrop', function() {
+            $('body').addClass('sidebar-toggled').removeClass('mobile-sidebar-active');
+            $('.sidebar').addClass('toggled');
+            $('.sidebar .collapse').collapse('hide');
+        });
+
+        // Tutup sidebar saat link menu di-klik pada mobile
+        $('.sidebar .nav-link:not([data-toggle="collapse"])').on('click', function() {
+            if ($(window).width() < 768) {
+                $('body').addClass('sidebar-toggled').removeClass('mobile-sidebar-active');
+                $('.sidebar').addClass('toggled');
+            }
+        });
+
+        // Event saat ukuran layar diubah
+        $(window).on('resize', function() {
+            if ($(window).width() >= 768) {
+                $('body').removeClass('mobile-sidebar-active');
+            }
+        });
+    });
 </script>
 
 </body>
