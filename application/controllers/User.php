@@ -29,8 +29,6 @@ class User extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['nim' => $this->session->userdata('nim')])->row_array();
         $data['mhs'] = $this->db->get_where('mahasiswa', ['nim' => $this->session->userdata('nim')])->row_array();
 
-        // echo 'Selamat Datang User ' . $data['user']['name'];
-
         $this->form_validation->set_rules('name', 'Full Name', 'required|trim');
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header_a', $data);
@@ -41,34 +39,37 @@ class User extends CI_Controller
         } else {
             $name = $this->input->post('name');
             $email = $this->input->post('email');
-            $nim = $this->input->post('nim');
+            $nim = $this->session->userdata('nim');
 
-            //cek jika ada gambar yang akan di upload
-            $upload_image = $_FILES['image']['name'];
+            // Cek jika ada file gambar yang diunggah
+            $upload_image = !empty($_FILES['image']['name']) ? $_FILES['image']['name'] : null;
             if ($upload_image) {
-                $config['allowed_types'] = 'gif|jpg|png|jpeg';
-                $config['max_size']     = '2048';
-                $config['upload_path'] = './assets/img/profile/';
-                $config['file_name'] = $this->input->post('nim');
-                $config['overwrite'] = true;
-
-                // FIX MIME type WhatsApp Web 
-                $config['mime_types'] = [
-                    'jpg'  => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
-                    'jpeg' => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
-                    'png'  => ['image/png',  'image/x-png']
-                ];
-                $this->load->library('upload', $config);
-                $old_image = $data['user']['image'];
-                if ($old_image != 'default.jpg') {
-                    unlink(FCPATH . 'assets/img/profile/' . $old_image);
+                $upload_path = './assets/img/profile/';
+                if (!is_dir($upload_path)) {
+                    mkdir($upload_path, 0777, true);
                 }
 
+                $config['allowed_types'] = 'gif|jpg|jpeg|png|webp|JPG|JPEG|PNG|GIF|WEBP';
+                $config['max_size']      = '6148'; // 6 MB
+                $config['upload_path']   = $upload_path;
+                $config['file_name']     = $nim . '_' . time();
+
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config);
+
                 if ($this->upload->do_upload('image')) {
+                    $old_image = $data['user']['image'];
+                    if (!empty($old_image) && $old_image != 'default.jpg' && file_exists(FCPATH . 'assets/img/profile/' . $old_image)) {
+                        @unlink(FCPATH . 'assets/img/profile/' . $old_image);
+                    }
+
                     $new_image = $this->upload->data('file_name');
                     $this->db->set('image', $new_image);
                 } else {
-                    echo $this->upload->display_errors();
+                    $error_msg = $this->upload->display_errors('', '');
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-circle mr-1"></i> Gagal update foto: ' . $error_msg . '</div>');
+                    redirect('user/edit');
+                    return;
                 }
             }
 
@@ -77,11 +78,13 @@ class User extends CI_Controller
             $this->db->where('nim', $nim);
             $this->db->update('user');
 
-            $this->db->set('no_hp', $this->input->post('no_hp'));
-            $this->db->where('nim', $nim);
-            $this->db->update('mahasiswa');
+            if ($this->input->post('no_hp') !== null) {
+                $this->db->set('no_hp', $this->input->post('no_hp'));
+                $this->db->where('nim', $nim);
+                $this->db->update('mahasiswa');
+            }
 
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Your profile has been update</div>');
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"><i class="fas fa-check-circle mr-1"></i> Profil Anda berhasil diperbarui!</div>');
             redirect('user');
         }
     }

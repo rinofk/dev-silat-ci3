@@ -270,21 +270,20 @@ class Admin extends CI_Controller
             
             // Handle Photo Upload
             $new_image = 'default.jpg';
-            $upload_image = $_FILES['poto']['name'];
+            $upload_image = !empty($_FILES['poto']['name']) ? $_FILES['poto']['name'] : null;
             if ($upload_image) {
-                $config['allowed_types'] = 'gif|jpg|jpeg|png';
-                $config['max_size']     = '6148';
-                $config['upload_path'] = './assets/img/alumni/';
-                $config['file_name'] = $this->input->post('nim_alumni');
-                $config['overwrite'] = true;
+                $upload_path = './assets/img/alumni/';
+                if (!is_dir($upload_path)) {
+                    mkdir($upload_path, 0777, true);
+                }
 
-                $config['mime_types'] = [
-                    'jpg'  => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
-                    'jpeg' => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
-                    'png'  => ['image/png',  'image/x-png']
-                ];
+                $config['allowed_types'] = 'gif|jpg|jpeg|png|webp|JPG|JPEG|PNG|GIF|WEBP';
+                $config['max_size']     = '6148';
+                $config['upload_path'] = $upload_path;
+                $config['file_name'] = $this->input->post('nim_alumni') . '_' . time();
 
                 $this->load->library('upload', $config);
+                $this->upload->initialize($config);
                 if ($this->upload->do_upload('poto')) {
                     $new_image = $this->upload->data('file_name');
                 } else {
@@ -344,27 +343,25 @@ class Admin extends CI_Controller
             
             // Handle Photo Upload
             $new_image = $data['alumni']['poto'];
-            $upload_image = $_FILES['poto']['name'];
+            $upload_image = !empty($_FILES['poto']['name']) ? $_FILES['poto']['name'] : null;
             if ($upload_image) {
-                $config['allowed_types'] = 'gif|jpg|jpeg|png';
-                $config['max_size']     = '6148';
-                $config['upload_path'] = './assets/img/alumni/';
-                $config['file_name'] = $data['alumni']['nim_alumni'];
-                $config['overwrite'] = true;
-
-                $config['mime_types'] = [
-                    'jpg'  => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
-                    'jpeg' => ['image/jpeg', 'image/jpg', 'image/pjpeg'],
-                    'png'  => ['image/png',  'image/x-png']
-                ];
-
-                $this->load->library('upload', $config);
-                
-                if ($new_image && $new_image != 'default.jpg') {
-                    @unlink(FCPATH . 'assets/img/alumni/' . $new_image);
+                $upload_path = './assets/img/alumni/';
+                if (!is_dir($upload_path)) {
+                    mkdir($upload_path, 0777, true);
                 }
 
+                $config['allowed_types'] = 'gif|jpg|jpeg|png|webp|JPG|JPEG|PNG|GIF|WEBP';
+                $config['max_size']     = '6148';
+                $config['upload_path'] = $upload_path;
+                $config['file_name'] = $data['alumni']['nim_alumni'] . '_' . time();
+
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config);
+
                 if ($this->upload->do_upload('poto')) {
+                    if ($new_image && $new_image != 'default.jpg' && file_exists(FCPATH . 'assets/img/alumni/' . $new_image)) {
+                        @unlink(FCPATH . 'assets/img/alumni/' . $new_image);
+                    }
                     $new_image = $this->upload->data('file_name');
                 } else {
                     $this->session->set_flashdata('flash_error', $this->upload->display_errors());
