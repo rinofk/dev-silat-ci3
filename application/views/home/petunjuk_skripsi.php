@@ -127,12 +127,34 @@
                             </div>
                         </div>
 
+                        <!-- Template Download Box -->
+                        <div class="p-3 mb-3 d-flex align-items-center justify-content-between flex-wrap" style="background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 14px; gap: 12px;">
+                            <div class="d-flex align-items-center">
+                                <div class="mr-3 d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; min-width: 44px; background: rgba(56, 189, 248, 0.2); border-radius: 10px; color: #38bdf8; font-size: 20px;">
+                                    <i class="fas fa-file-word"></i>
+                                </div>
+                                <div>
+                                    <strong class="text-white d-block" style="font-size: 15px;">Template Pengantar Penyerahan Skripsi</strong>
+                                    <span class="small" style="color: #94a3b8;">Format dokumen pengantar penyerahan softfile/jilid skripsi</span>
+                                </div>
+                            </div>
+                            <div>
+                                <a href="https://docs.google.com/document/d/16wIFJ4SM2WupfDuP6-Jn-GgLfHfjB4pP/export?format=docx" 
+                                   class="btn btn-sm font-weight-bold text-white shadow-sm d-inline-flex align-items-center" 
+                                   style="background: linear-gradient(135deg, #0284c7, #0d9488); border: none; border-radius: 10px; padding: 8px 16px; font-size: 13px; transition: all 0.2s;"
+                                   onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(2, 132, 199, 0.4)';"
+                                   onmouseout="this.style.transform='none'; this.style.boxShadow='none';">
+                                    <i class="fas fa-download mr-2"></i> Download Template
+                                </a>
+                            </div>
+                        </div>
+
                         <!-- Tips Incognito Mode -->
-                        <div class="alert alert-warning border-0 p-3 mt-4 text-left d-flex align-items-start" style="background: rgba(245, 158, 11, 0.15); border-left: 4px solid #f59e0b !important; border-radius: 12px; color: #ffedd5; font-size: 14px;">
+                        <div class="alert alert-warning border-0 p-3 mt-2 text-left d-flex align-items-start" style="background: rgba(245, 158, 11, 0.15); border-left: 4px solid #f59e0b !important; border-radius: 12px; color: #ffedd5; font-size: 14px;">
                             <div class="mr-2 text-warning"><i class="fas fa-exclamation-triangle mt-1"></i></div>
                             <div>
                                 <strong class="text-warning">Tips Akun Google (Incognito Mode):</strong><br>
-                                Jika Anda mengalami error "butuh izin akses" saat membuka aplikasi, mohon gunakan **Mode Incognito/Samaran** di browser Anda. Klik tombol <strong>Salin Link</strong> di bawah, lalu buka Jendela Samaran baru (Incognito Window) dan tempel (paste) link tersebut di sana.
+                                Jika Anda mengalami error "butuh izin akses" saat membuka aplikasi, mohon gunakan <strong>Mode Incognito/Samaran</strong> di browser Anda. Klik tombol <strong>Salin Link</strong> di bawah, lalu buka Jendela Samaran baru (Incognito Window) dan tempel (paste) link tersebut di sana.
                             </div>
                         </div>
 
